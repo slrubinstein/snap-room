@@ -8,6 +8,15 @@ angular.module('roomApp')
       $scope.awesomeThings = awesomeThings;
       socket.syncUpdates('thing', $scope.awesomeThings);
     });
+////////////////////////////////////
+    this.createRoom = function () {
+       $http.post("/api/room").success(function(data){
+           $state.go("room", data);
+       }); 
+/////////////////////////////////////////////       
+    }
+
+
 
     $scope.addThing = function() {
       if($scope.newThing === '') {
