@@ -5,9 +5,12 @@ angular.module('roomApp')
     $scope.message = 'Hello';
 
     this.params = $stateParams;
+    var roomNumber = $stateParams;
+
+    console.log("room# ", roomNumber)
 
     $scope.roomData = [];
-    socket.syncUpdates('room', $scope.roomData);
+    socket.syncUpdates('room', $scope.roomData, roomNumber.data);
 
     this.submitInput = function() {
       $http.put("/api/room/" + this.params.data, 

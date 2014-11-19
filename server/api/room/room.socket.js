@@ -16,7 +16,13 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('room:save', doc);
+	// console.log('iiiiiiiiiiiiiiiiiiiiiiiiiii')
+	// console.log(doc);
+	// console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
+	var roomNumber = doc.roomNumber
+	console.log('room:save' + roomNumber);
+  socket.emit('room:save' + roomNumber, doc);
 }
 
 function onRemove(socket, doc, cb) {
