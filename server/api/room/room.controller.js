@@ -23,22 +23,33 @@ exports.show = function(req, res) {
 // Creates a new room in the DB.
 exports.create = function(req, res) {
   var roomNumber = Math.floor(Math.random()*100);
-  console.log(roomNumber);
-  return res.send(String(roomNumber));
-  // Room.create(req.body, function(err, room) {
+  Room.create({roomNumber:roomNumber}, function(err, room) {
   //   if(err) { return handleError(res, err); }
   //   return res.json(201, room);
-  // });
+       return res.send(String(roomNumber));
+  });
 };
 
 // Updates an existing room in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Room.findById(req.params.id, function (err, room) {
+  Room.findOne({roomNumber:req.params.id}, function (err, room) {
+  //Room.findById(req.params.id, function (err, room) {
+    console.log('ROOM', room)
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
-    var updated = _.merge(room, req.body);
-    updated.save(function (err) {
+    var newChoice = true;
+    room.choices.forEach(function(choice){
+      if (choice.choice === req.body.choice) {
+        choice.votes++;
+        newChoice = false;
+      }
+    });
+    if (newChoice) {
+      room.choices.push({choice: req.body.choice, votes: 1});
+    }
+    //_.merge(room, req.body);
+    room.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, room);
     });

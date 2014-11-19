@@ -6,6 +6,7 @@ angular.module('roomApp')
       .state('room', {
         url: '/room/:data',
         templateUrl: 'app/room/room.html',
-        controller: 'RoomCtrl'
+        controller: 'RoomCtrl',
+        controllerAs: 'room'
       });
   });

@@ -6,7 +6,10 @@ var mongoose = require('mongoose'),
 var RoomSchema = new Schema({
   name: String,
   info: String,
-  active: Boolean
+  active: Boolean,
+  choices: [{choice: String, votes: Number}],
+  roomNumber: Number
+
 });
 
 module.exports = mongoose.model('Room', RoomSchema);

@@ -1,3 +1,22 @@
 <div class="col-md-12">
-This is the room view.
+This is room #{{room.params.data}}
+<p></p>
+<!-- Room data: {{roomData}}
+<p></p> -->
+
+<div ng-repeat="choice in roomData[0].choices">
+	Choice: <button
+						class="btn-default btn"
+						ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
+	Votes: <button class="btn-default btn">{{choice.votes}}</button>
+</div>
+
+
+
+
+<form name="chatForm" ng-submit="room.submitInput()">
+<input name="textInput" type="text">
+<input type="submit">
+</form>
+
 </div>
