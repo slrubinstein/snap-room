@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($state, $scope, $http, socket) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -11,7 +11,8 @@ angular.module('roomApp')
 ////////////////////////////////////
     this.createRoom = function () {
        $http.post("/api/room").success(function(data){
-           $state.go("room", data);
+           console.log(data)
+           $state.go("room", {'data': data});
        }); 
 /////////////////////////////////////////////       
     }

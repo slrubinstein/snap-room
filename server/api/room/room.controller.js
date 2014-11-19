@@ -22,7 +22,9 @@ exports.show = function(req, res) {
 
 // Creates a new room in the DB.
 exports.create = function(req, res) {
-  return res.send("abcdef");
+  var roomNumber = Math.floor(Math.random()*100);
+  console.log(roomNumber);
+  return res.send(String(roomNumber));
   // Room.create(req.body, function(err, room) {
   //   if(err) { return handleError(res, err); }
   //   return res.json(201, room);
