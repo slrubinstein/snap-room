@@ -17,6 +17,9 @@ angular.module('roomApp')
       	{choice : chatForm.textInput.value})
         .success(function(data){
             // console.log(data);
+        })
+        .error(function(data){
+            console.log("error");
         });
     }
 
@@ -25,6 +28,9 @@ angular.module('roomApp')
         {choice : choice})
         .success(function(data){
             // console.log(data);
+        })
+        .error(function(data){
+            console.log("error");
         });
     }
   });

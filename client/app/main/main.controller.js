@@ -14,9 +14,13 @@ angular.module('roomApp')
     var ctrl = this;
 
     this.createRoom = function () {
-       $http.post("/api/room").success(function(data){
+       $http.post("/api/room")
+       .success(function(data){
            $state.go("room", {'data': data});
-       }); 
+       })
+       .error(function(data){
+          console.log("error creating room");
+        }); 
     };
 
     this.getRoom = function() {

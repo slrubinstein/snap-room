@@ -25,9 +25,9 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   var roomNumber = Math.floor(Math.random()*100);
   Room.create({roomNumber:roomNumber}, function(err, room) {
-  //   if(err) { return handleError(res, err); }
+     if(err) { return handleError(res, err); }
   //   return res.json(201, room);
-       return res.send(String(roomNumber));
+    return res.status(200).send(String(roomNumber));
   });
 };
 
@@ -36,7 +36,6 @@ exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   Room.findOne({roomNumber:req.params.id}, function (err, room) {
   //Room.findById(req.params.id, function (err, room) {
-    console.log('ROOM', room)
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
     var newChoice = true;
