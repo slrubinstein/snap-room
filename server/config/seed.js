@@ -7,6 +7,7 @@
 
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
+var Room = require('../api/room/room.model');
 
 Thing.find({}).remove(function() {
   Thing.create({
@@ -47,3 +48,5 @@ User.find({}).remove(function() {
     }
   );
 });
+
+Room.find({}).remove().exec();

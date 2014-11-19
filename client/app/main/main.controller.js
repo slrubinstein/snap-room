@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('MainCtrl', function ($state, $scope, $http, socket) {
+  .controller('MainCtrl', function ($state, $scope, $http, socket, $stateParams) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -9,13 +9,29 @@ angular.module('roomApp')
       socket.syncUpdates('thing', $scope.awesomeThings);
     });
 ////////////////////////////////////
+    
+    this.message;
+    var ctrl = this;
+
     this.createRoom = function () {
        $http.post("/api/room").success(function(data){
-           console.log(data)
            $state.go("room", {'data': data});
        }); 
+    };
+
+    this.getRoom = function() {
+      console.log("main.getRoom");
+       $http.get("/api/room/" + roomIdForm.idInput.value)
+         .success(function(data){
+           if (data === "OK"){
+             $state.go("room", {'data': roomIdForm.idInput.value});
+           }
+           else {
+             ctrl.message = "room doesn't exist";
+           }
+       });
+    };   
 /////////////////////////////////////////////       
-    }
 
 
 

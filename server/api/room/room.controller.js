@@ -13,10 +13,11 @@ exports.index = function(req, res) {
 
 // Get a single room
 exports.show = function(req, res) {
-  Room.findById(req.params.id, function (err, room) {
+  Room.findOne({roomNumber:req.params.id}, function (err, room) {
     if(err) { return handleError(res, err); }
-    if(!room) { return res.send(404); }
-    return res.json(room);
+    if(!room) { return res.send("not OK"); }
+    console.log()
+    return res.send("OK");
   });
 };
 
