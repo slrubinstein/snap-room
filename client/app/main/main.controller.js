@@ -23,12 +23,10 @@ angular.module('roomApp')
       console.log("main.getRoom");
        $http.get("/api/room/" + roomIdForm.idInput.value)
          .success(function(data){
-           if (data === "OK"){
-             $state.go("room", {'data': roomIdForm.idInput.value});
-           }
-           else {
-             ctrl.message = "room doesn't exist";
-           }
+           $state.go("room", {'data': roomIdForm.idInput.value});
+
+       }).error(function(data){
+           ctrl.message = "room doesn't exist";
        });
     };   
 /////////////////////////////////////////////       

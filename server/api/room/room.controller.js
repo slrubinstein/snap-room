@@ -15,9 +15,9 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
   Room.findOne({roomNumber:req.params.id}, function (err, room) {
     if(err) { return handleError(res, err); }
-    if(!room) { return res.send("not OK"); }
+    if(!room) { return res.status(500).send("not OK"); }
     console.log()
-    return res.send("OK");
+    return res.status(200).send("OK");
   });
 };
 
