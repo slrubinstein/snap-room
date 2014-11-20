@@ -6,10 +6,10 @@ angular.module('roomApp')
     var self = this;
 
     this.params = $stateParams;
-    var roomNumber = $stateParams;
+    var roomNumber = $stateParams.data;
 
     $scope.roomData = [];
-    socket.syncUpdates('room', $scope.roomData, roomNumber.data);
+    socket.syncUpdates('room', $scope.roomData, roomNumber);
 
     this.submitInput = function() {
       $http.put("/api/room/" + this.params.data, 
@@ -23,9 +23,11 @@ angular.module('roomApp')
     }
 
     this.vote = function(choice, index, event) {
-      $(event.target).parent().addClass('animated fadeOutUp');
-      self.restaurants.splice(index,1);
-      $http.put("/api/room/" + this.params.data, 
+      if (event) {
+        $(event.target).parent().addClass('animated fadeOutUp');
+        self.restaurants.splice(index,1);
+      }
+      $http.put("/api/room/" + roomNumber, 
         {choice : choice})
         .success(function(data){
         })
@@ -37,7 +39,7 @@ angular.module('roomApp')
     this.restaurants = [];
 
     this.getFourSquare = function() {
-        $http.get('/api/room/' + roomNumber.data + '/vendor/foursquare')
+        $http.get('/api/room/' + roomNumber + '/vendor/foursquare')
             .success(function(data) {
                 console.log('returned data', data)
                 var restaurants = data.response.groups[0].items;
