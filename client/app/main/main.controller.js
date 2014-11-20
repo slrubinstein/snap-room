@@ -13,19 +13,18 @@ angular.module('roomApp')
     this.message;
     var ctrl = this;
     this.availableRooms = [];
+    this.lat;
+    this.lon;
+    this.geoLocated = false;
 
     this.createRoom = function () {
-      navigator.geolocation.getCurrentPosition(function(position) {
-         var lat = position.coords.latitude;
-         var lon = position.coords.longitude;
-         $http.post("/api/room", {lat: lat.toFixed(3), lon: lon.toFixed(3)})
-         .success(function(data){
-             $state.go("room", {'data': data});
-         })
-         .error(function(data){
-            console.log("error creating room");
-          }); 
-      });
+      $http.post("/api/room", {lat: ctrl.lat, lon: ctrl.lon})
+        .success(function(data){
+          $state.go("room", {'data': data});
+        })
+        .error(function(data){
+          console.log("error creating room");
+        }); 
     };
 
     this.getRoom = function(roomNumber) {
@@ -53,9 +52,10 @@ angular.module('roomApp')
     this.getRoomByGeo = function() {
 
       navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-        $http.get("/api/room/" + lat.toFixed(3) + "/" + lon.toFixed(3))
+        ctrl.geoLocated = true;
+        ctrl.lat = position.coords.latitude.toFixed(1);
+        ctrl.lon = position.coords.longitude.toFixed(1);
+        $http.get("/api/room/" + ctrl.lat + "/" + ctrl.lon)
          .success(function(data){
             console.log(data);
             ctrl.availableRooms = data;
@@ -67,9 +67,9 @@ angular.module('roomApp')
       }); 
     };
 
-      this.getRoomByGeo();   
+    
+    this.getRoomByGeo();   
 /////////////////////////////////////////////       
-
 
 
     $scope.addThing = function() {

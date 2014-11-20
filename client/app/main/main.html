@@ -6,20 +6,16 @@
     <div class="myContainer">
       <h1 class="page-header animated zoomIn">Snaproom</h1>
 
-      <h1>{{main.message}}</h1>
+      <h1>Lat: {{main.lat}} Long: {{main.lon}}</h1>
 
-      <button class="btn btn-primary" ng-click="main.createRoom()">Create Room</button><br/>
-      Input room ID:
-      <form name="roomIdForm" ng-submit="main.getRoom()">
-        <input name="idInput" type="text"/><br/>
-        <input class="btn btn-primary" type="submit">      
-      </form>
+
+      <p ng-hide="main.geoLocated">Finding your location...</p>
+
+      <button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom()">Create Room</button><br/>
 
       <div ng-repeat="room in main.availableRooms">
         <button ng-click="main.getRoom(room.roomNumber)">Room#{{room.roomNumber}}</button>
      </div>
-
-      <button class="btn btn-primary" ng-click="main.getRoomByGeo()">Join Room by geolocation</button><br/>
 
     </div>
 </div>

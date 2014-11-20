@@ -37,13 +37,7 @@ angular.module('roomApp')
     this.restaurants = [];
 
     this.getFourSquare = function() {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-        $http.post('/api/room/' + roomNumber.data + '/foursquare', {
-                                                            lat: lat,
-                                                            lon: lon
-                                                          })
+        $http.get('/api/room/' + roomNumber.data + '/vendor/foursquare')
             .success(function(data) {
                 console.log('returned data', data)
                 var restaurants = data.response.groups[0].items;
@@ -51,6 +45,6 @@ angular.module('roomApp')
             })
 
         
-      })
+      
     }
   });

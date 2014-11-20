@@ -25,6 +25,7 @@ exports.show = function(req, res) {
 
 // Get a single room by geolocation
 exports.showByGeo = function(req, res) {
+  console.log('lat!!!!!!!!!', req.params.lat)
   Room.find({lat:req.params.lat}, function (err, rooms) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
@@ -87,8 +88,8 @@ exports.foursquare = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!room) { return res.status(500).send("not OK"); }
 
-    var lat = req.body.lat;
-    var lon = req.body.lon;
+    var lat = room.lat;
+    var lon = room.lon;
 
     var url = 'https://api.foursquare.com/v2/venues/explore?' +
     'll='+ lat + ','+ lon + '&section=food&client_id=' + foursquareID + '&client_secret=' +
