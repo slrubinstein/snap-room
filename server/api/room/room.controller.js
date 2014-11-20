@@ -3,8 +3,8 @@
 var _ = require('lodash');
 var Room = require('./room.model');
 var request = require('request');
-var foursquareID = process.env.FOURSQUARE_ID
-var foursquareSecret = process.env.FOURSQUARE_SECRET
+var foursquareID = process.env.FOURSQUARE_ID;
+var foursquareSecret = process.env.FOURSQUARE_SECRET;
 
 // Get list of rooms
 exports.index = function(req, res) {
@@ -77,7 +77,6 @@ exports.foursquare = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!room) { return res.status(500).send("not OK"); }
 
-    console.log('in foursquare')
     var lat = req.body.lat;
     var lon = req.body.lon;
 

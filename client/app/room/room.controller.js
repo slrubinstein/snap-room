@@ -35,6 +35,10 @@ angular.module('roomApp')
         });
     }
 
+    this.load = function() {
+        this.restaurants.push('dig inn', 'tres carnes', 'chipotle', 'chopt')
+    }
+
     this.restaurants = [];
 
     this.getFourSquare = function() {
