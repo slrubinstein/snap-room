@@ -34,15 +34,17 @@ angular.module('roomApp')
         /**
          * Syncs item creation/updates on 'model:save'
          */
-        console.log(modelName + ':save' + roomNumber);
         socket.on(modelName + ':save' + roomNumber , function (item) {
           var oldItem = _.find(array, {_id: item._id});
           var index = array.indexOf(oldItem);
           var event = 'created';
 
+          $(oldItem).removeClass('animated')
+
           // replace oldItem if it exists
           // otherwise just add item to the collection
           if (oldItem) {
+            console.log('oldItem', oldItem)
             array.splice(index, 1, item);
             event = 'updated';
           } else {

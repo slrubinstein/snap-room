@@ -8,8 +8,6 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomNumber = $stateParams;
 
-    console.log("room# ", roomNumber)
-
     $scope.roomData = [];
     socket.syncUpdates('room', $scope.roomData, roomNumber.data);
 
@@ -24,11 +22,12 @@ angular.module('roomApp')
         });
     }
 
-    this.vote = function(choice) {
+    this.vote = function(choice, index, event) {
+      $(event.target).parent().addClass('animated fadeOutUp');
+      self.restaurants.splice(index,1);
       $http.put("/api/room/" + this.params.data, 
         {choice : choice})
         .success(function(data){
-            // console.log(data);
         })
         .error(function(data){
             console.log("error");
