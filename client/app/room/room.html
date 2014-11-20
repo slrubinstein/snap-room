@@ -6,11 +6,15 @@ This is room #{{room.params.data}}
 
 <button ng-click="room.getFourSquare()">get Foursquare info</button>
 
-<div ng-repeat="choice in roomData[0].choices">
-	Choice: <button
-						class="btn-default btn"
-						ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
-	Votes: <button class="btn-default btn">{{choice.votes}}</button>
+
+<div id="voted-list">
+	<div  ng-repeat="choice in roomData[0].choices"
+			 >
+		Choice: <button
+							class="btn-default btn"
+							ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
+		Votes: <button class="btn-default btn">{{choice.votes}}</button>
+	</div>
 </div>
 
 <form name="chatForm" ng-submit="room.submitInput()">
@@ -21,21 +25,10 @@ This is room #{{room.params.data}}
 <div class="jumbotron">
 	<h3>Restaurants via Foursquare</h3>
 	<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
-		<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name)">{{restaurant.venue.name}}</button>, {{restaurant.venue.location.address}}</p>
+		<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, $index, $event)">{{restaurant.venue.name}}</button>, {{restaurant.venue.location.address}}</p>
 	</div>	
 
 </div>
-
-<!-- <div class="jumbotron">
-	<button ng-click="room.load()">LOAD</button>
-	<h3>Restaurants via Foursquare</h3>
-	<div class="animated fadeInDownBig" 
-			 ng-repeat="restaurant in room.restaurants">
-		<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name)">{{restaurant}}</button></p>
-	</div>	
-
-</div> -->
-
 
 
 
