@@ -6,15 +6,16 @@
 		<button ng-click="main.getRoom(room.roomNumber)">Room#{{room.roomNumber}}</button>
 	</div>
 
-	<div id="voted-list">
-
-		<div  ng-repeat="choice in roomData[0].choices"
-				 >
-			Choice: <button
-								class="btn-default btn"
-								ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
-			Votes: <button class="btn-default btn">{{choice.votes}}</button>
-		</div>
+	<div id="voted-list" class="col-sm-12 col-md-12 col-lg-6">
+		<ul class="list-group">
+			<li ng-repeat="choice in roomData[0].choices"
+					class="list-group-item">
+				<button
+									class="btn-default btn"
+									ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
+				 <span class="badge">{{choice.votes}}</span>
+			</li>
+		</ul>
 	</div>
 
 

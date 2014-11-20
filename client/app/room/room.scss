@@ -42,6 +42,7 @@
 #voted-list {
 
   min-height: 200px;
+  text-align: left;
 
   > div:last-child {
     @extend .fadeInUp;
