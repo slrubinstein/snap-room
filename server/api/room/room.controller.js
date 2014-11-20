@@ -14,20 +14,30 @@ exports.index = function(req, res) {
   });
 };
 
-// Get a single room
+// Get a single room by roomNumber
 exports.show = function(req, res) {
   Room.findOne({roomNumber:req.params.id}, function (err, room) {
     if(err) { return handleError(res, err); }
     if(!room) { return res.status(500).send("not OK"); }
-    console.log()
     return res.status(200).send("OK");
+  });
+};
+
+// Get a single room by geolocation
+exports.showByGeo = function(req, res) {
+  Room.findOne({lat:req.params.lat}, function (err, room) {
+    if(err) { return handleError(res, err); }
+    if(!room) { return res.status(500).send("not OK"); }
+    return res.status(200).send(String(room.roomNumber));
   });
 };
 
 // Creates a new room in the DB.
 exports.create = function(req, res) {
+  var lat = req.body.lat; 
+  var lon = req.body.lon;
   var roomNumber = Math.floor(Math.random()*100);
-  Room.create({roomNumber:roomNumber}, function(err, room) {
+  Room.create({roomNumber:roomNumber, lat: lat, lon: lon}, function(err, room) {
      if(err) { return handleError(res, err); }
   //   return res.json(201, room);
     return res.status(200).send(String(roomNumber));
@@ -72,7 +82,6 @@ exports.destroy = function(req, res) {
 };
 
 exports.foursquare = function(req, res) {
-  console.log(req.body.lat, req.body.lon, 'LOCATION')
   Room.findOne({roomNumber:req.params.id}, function (err, room) {
     if(err) { return handleError(res, err); }
     if(!room) { return res.status(500).send("not OK"); }

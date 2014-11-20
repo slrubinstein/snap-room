@@ -8,7 +8,10 @@ var RoomSchema = new Schema({
   info: String,
   active: Boolean,
   choices: [{choice: String, votes: Number}],
-  roomNumber: Number
+  roomNumber: Number,
+  lat: Number,
+  lon: Number,
+  createdAt: {type: Date, expires: 60, default: Date.now}
 
 });
 
