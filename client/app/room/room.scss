@@ -1,7 +1,18 @@
 
+.restaurant {
+	position: absolute;
+}
 
 
+@-webkit-keyframes move {
+  from  { top: 0; left: 0; }
+  to { top: 500px; left: 500px; }
 
+}
+
+.restaurant.ng-enter {
+  -webkit-animation: move 2s forwards;
+}
 
 
 

@@ -20,7 +20,7 @@ This is room #{{room.params.data}}
 
 <div class="jumbotron">
 	<h3>Restaurants via Foursquare</h3>
-	<div class= "animate" ng-repeat="restaurant in room.restaurants">
+	<div class= "restaurant" ng-repeat="restaurant in room.restaurants">
 		<p><button ng-click="room.vote(restaurant.venue.name)">{{restaurant.venue.name}}</button>, {{restaurant.venue.location.address}}</p>
 	</div>	
 
