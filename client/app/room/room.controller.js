@@ -3,6 +3,7 @@
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http) {
     $scope.message = 'Hello';
+    var self = this;
 
     this.params = $stateParams;
     var roomNumber = $stateParams;
@@ -32,5 +33,25 @@ angular.module('roomApp')
         .error(function(data){
             console.log("error");
         });
+    }
+
+    this.restaurants = [];
+
+    this.getFourSquare = function() {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        $http.post('/api/room/' + roomNumber.data + '/foursquare', {
+                                                            lat: lat,
+                                                            lon: lon
+                                                          })
+            .success(function(data) {
+                console.log('returned data', data)
+                var restaurants = data.response.groups[0].items;
+                self.restaurants = restaurants;
+            })
+
+        
+      })
     }
   });

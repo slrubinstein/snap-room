@@ -4,7 +4,7 @@ This is room #{{room.params.data}}
 <!-- Room data: {{roomData}}
 <p></p> -->
 
-<button>get Yelp info</button>
+<button ng-click="room.getFourSquare()">get Foursquare info</button>
 
 <div ng-repeat="choice in roomData[0].choices">
 	Choice: <button
@@ -20,5 +20,17 @@ This is room #{{room.params.data}}
 <input name="textInput" type="text">
 <input type="submit">
 </form>
+
+<div class="jumbotron">
+	<h3>Restaurants via Foursquare</h3>
+	<div ng-animate="{enter:'animate-enter', leave:'animate-leave'}"ng-repeat="restaurant in room.restaurants">
+		<p><button ng-click="room.vote(restaurant.venue.name)">{{restaurant.venue.name}}</button>, {{restaurant.venue.location.address}}</p>
+	</div>	
+
+</div>
+
+
+
+
 
 </div>

@@ -7,6 +7,7 @@ angular.module('roomApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
+  'ngAnimate'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
