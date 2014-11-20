@@ -12,7 +12,7 @@ angular.module('roomApp')
     
     this.message;
     var ctrl = this;
-
+  
     this.createRoom = function () {
        $http.post("/api/room")
        .success(function(data){
