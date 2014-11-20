@@ -25,10 +25,11 @@ exports.show = function(req, res) {
 
 // Get a single room by geolocation
 exports.showByGeo = function(req, res) {
-  Room.findOne({lat:req.params.lat}, function (err, room) {
+  Room.find({lat:req.params.lat}, function (err, rooms) {
     if(err) { return handleError(res, err); }
-    if(!room) { return res.status(500).send("not OK"); }
-    return res.status(200).send(String(room.roomNumber));
+    if(!rooms) { return res.status(500).send("not OK"); }
+    console.log("rooms", rooms);
+    return res.status(200).send(rooms);
   });
 };
 

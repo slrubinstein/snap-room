@@ -15,6 +15,10 @@
         <input class="btn btn-primary" type="submit">      
       </form>
 
+      <div ng-repeat="room in main.availableRooms">
+        <button ng-click="main.getRoom(room.roomNumber)">Room#{{room.roomNumber}}</button>
+     </div>
+
       <button class="btn btn-primary" ng-click="main.getRoomByGeo()">Join Room by geolocation</button><br/>
 
     </div>

@@ -12,7 +12,7 @@ angular.module('roomApp')
     
     this.message;
     var ctrl = this;
-
+    this.availableRooms = [];
 
     this.createRoom = function () {
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -28,14 +28,26 @@ angular.module('roomApp')
       });
     };
 
-    this.getRoom = function() {
-       $http.get("/api/room/" + roomIdForm.idInput.value)
-         .success(function(data){
-           $state.go("room", {'data': roomIdForm.idInput.value});
+    this.getRoom = function(roomNumber) {
+      console.log(roomNumber);
+      if (roomNumber) {
+         $http.get("/api/room/" + roomNumber)
+           .success(function(data){
+             $state.go("room", {'data': roomNumber});
 
-       }).error(function(data){
-           ctrl.message = "room doesn't exist";
-       });
+         }).error(function(data){
+             ctrl.message = "room doesn't exist";
+         });
+      }
+      else {
+         $http.get("/api/room/" + roomIdForm.idInput.value)
+           .success(function(data){
+             $state.go("room", {'data': roomIdForm.idInput.value});
+
+         }).error(function(data){
+             ctrl.message = "room doesn't exist";
+         });
+      }
     };
 
     this.getRoomByGeo = function() {
@@ -46,13 +58,16 @@ angular.module('roomApp')
         $http.get("/api/room/" + lat.toFixed(3) + "/" + lon.toFixed(3))
          .success(function(data){
             console.log(data);
-            $state.go("room", {'data': data});
+            ctrl.availableRooms = data;
+            //$state.go("room", {'data': data});
 
        }).error(function(data){
            ctrl.message = "room doesn't exist";
        });
       }); 
-    };   
+    };
+
+      this.getRoomByGeo();   
 /////////////////////////////////////////////       
 
 
