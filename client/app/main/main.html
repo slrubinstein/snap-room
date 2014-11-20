@@ -2,20 +2,18 @@
 
 
 
-<div ng-controller="MainCtrl as main" class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Snaproom:</h1>
+<div ng-controller="MainCtrl as main">
+    <div class="myContainer">
+      <h1 class="page-header animated zoomIn">Snaproom</h1>
 
       <h1>{{main.message}}</h1>
 
-      <button class="animate" ng-click="main.createRoom()">Create Room</button>
+      <button class="btn btn-primary" ng-click="main.createRoom()">Create Room</button><br/>
       Input room ID:
       <form name="roomIdForm" ng-submit="main.getRoom()">
-        <input name="idInput" type="text"/>
-        <input type="submit">      
+        <input name="idInput" type="text"/><br/>
+        <input class="btn btn-primary" type="submit">      
       </form>
 
     </div>
-  </div>
 </div>
