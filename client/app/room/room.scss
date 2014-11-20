@@ -39,12 +39,30 @@
           animation-fill-mode: both;
 }
 
-#voted-list > div:last-child {
-  @extend .fadeInUp;
-  @extend .animated;
+#voted-list {
+
+  min-height: 200px;
+
+  > div:last-child {
+    @extend .fadeInUp;
+    @extend .animated;
+  
+  }
+
 }
 
+#foursquareButton {
+  margin-bottom: 10px;
+}
 
+.foursquareRests {
+   max-height: 300px;
+   overflow-y: scroll;
+}
+
+#restForm {
+  margin-bottom: 20px;
+}
 
 
 

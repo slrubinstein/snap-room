@@ -1,37 +1,42 @@
-<div class="col-md-12">
-This is room #{{room.params.data}}
-<p></p>
-<!-- Room data: {{roomData}}
-<p></p> -->
+<div class="myContainer">
 
-<button class="btn btn-default" ng-click="room.getFourSquare()">get Foursquare info</button>
+	<button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom()">Create Room</button><br/>
 
-
-<div id="voted-list">
-	<div  ng-repeat="choice in roomData[0].choices"
-			 >
-		Choice: <button
-							class="btn-default btn"
-							ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
-		Votes: <button class="btn-default btn">{{choice.votes}}</button>
+	<div class="container jumbotron" ng-repeat="room in main.availableRooms">
+		<button ng-click="main.getRoom(room.roomNumber)">Room#{{room.roomNumber}}</button>
 	</div>
+
+	<div id="voted-list">
+
+		<div  ng-repeat="choice in roomData[0].choices"
+				 >
+			Choice: <button
+								class="btn-default btn"
+								ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
+			Votes: <button class="btn-default btn">{{choice.votes}}</button>
+		</div>
+	</div>
+
+
+	<button id="foursquareButton" class="btn btn-primary" ng-click="room.getFourSquare()">Find Local Restaurants From Foursquare</button>
+    <div class="foursquareRests"> 
+		<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
+			<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, $index, $event)">{{restaurant.venue.name}}</button>, {{restaurant.venue.location.address}}</p>
+		</div>	
+    </div>
+    <h1>Or</h1>
+
+	<form id="restForm" name="chatForm" ng-submit="room.submitInput()" novalidate>
+        <label for="restInput">Enter the name of a restaurant:</label>
+		<input id="restInput" name="textInput" type="text" ng-model="room.restName"><br/>
+		<input ng-show="room.restName" class="btn btn-primary" type="submit">
+	</form>
+
 </div>
 
-<form name="chatForm" ng-submit="room.submitInput()">
-<input name="textInput" type="text">
-<input class="btn btn-default" type="submit">
-</form>
 
-
-<div class="jumbotron">
-	<h3>Restaurants via Foursquare</h3>
-
-	<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
-		<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, $index, $event)">{{restaurant.venue.name}}</button>, {{restaurant.venue.location.address}}</p>
-	</div>	
-
-</div>
 
 
 
 </div>
+
