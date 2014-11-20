@@ -28,3 +28,18 @@
     margin-top: 70px;
     border-top: 1px solid #E5E5E5;
 }
+
+.animate{
+  position: absolute;
+  top: 500px;
+  left: 500px;
+}
+
+@-webkit-keyframes move {
+  from { top: 500px; left: 500px; }
+  to  { top: 0; left: 0; }
+}
+
+.animate{
+  -webkit-animation: move 2s forwards;
+}
