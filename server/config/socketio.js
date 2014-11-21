@@ -4,6 +4,8 @@
 
 'use strict';
 
+var Room = require('../api/room/room.model');
+
 var config = require('./environment');
 
 // When the user disconnects.. perform this
@@ -19,7 +21,7 @@ function onConnect(socket) {
 
   // Insert sockets below
   require('../api/room/room.socket').register(socket);
-  require('../api/thing/thing.socket').register(socket);
+  // require('../api/thing/thing.socket').register(socket);
 }
 
 module.exports = function (socketio) {
@@ -44,6 +46,25 @@ module.exports = function (socketio) {
             process.env.DOMAIN;
 
     socket.connectedAt = new Date();
+
+    // Join a Room
+    socket.on('join', function(room) {
+      console.log('You are joining the ' + room + ' room.' +
+        'with ID' + socket.id);
+
+      socket.emit('update', 'Welcome to the ' + room+ 'room, ' + socket.id)
+
+      Room.findOne({roomNumber:room}, function(err, room) {
+        room.people.push(socket.id);
+        room.save();
+      })
+
+    })
+
+    socket.on('newRoom', function() {
+      socket.emit('update', 'you are in a room')
+    })
+
 
     // Call onDisconnect.
     socket.on('disconnect', function () {

@@ -4,10 +4,10 @@ angular.module('roomApp')
   .controller('MainCtrl', function ($state, $scope, $http, socket, $stateParams) {
     $scope.awesomeThings = [];
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-      socket.syncUpdates('thing', $scope.awesomeThings);
-    });
+    // $http.get('/api/things').success(function(awesomeThings) {
+    //   $scope.awesomeThings = awesomeThings;
+    //   socket.syncUpdates('thing', $scope.awesomeThings);
+    // });
 ////////////////////////////////////
     
     this.message;
@@ -23,6 +23,7 @@ angular.module('roomApp')
                                color: color})
         .success(function(data){
           $state.go("room", {'data': data});
+          socket.socket.emit('join', data);
         })
         .error(function(data){
           console.log("error creating room");
@@ -30,7 +31,6 @@ angular.module('roomApp')
     };
 
     this.getRoom = function(roomNumber) {
-      console.log(roomNumber);
       if (roomNumber) {
          $http.get("/api/room/" + roomNumber)
            .success(function(data){
@@ -73,7 +73,6 @@ angular.module('roomApp')
         ctrl.lon = position.coords.longitude.toFixed(1);
         $http.get("/api/room/" + ctrl.lat + "/" + ctrl.lon)
          .success(function(data){
-            console.log(data);
             ctrl.availableRooms = data;
             //$state.go("room", {'data': data});
             ctrl.availableRooms.forEach(function(room){
@@ -93,6 +92,12 @@ angular.module('roomApp')
       }); 
     };
 
+
+    socket.socket.on('update', function(data) {
+        console.log(data);
+        console.log('socket this', this)
+
+    })
     
     this.getRoomByGeo();   
 /////////////////////////////////////////////       

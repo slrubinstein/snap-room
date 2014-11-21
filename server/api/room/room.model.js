@@ -12,7 +12,8 @@ var RoomSchema = new Schema({
   lat: Number,
   lon: Number,
   color: String,
-  createdAt: {type: Date, expires: 6000, default: Date.now}
+  createdAt: {type: Date, expires: 6000, default: Date.now},
+  people: []
 
 });
 

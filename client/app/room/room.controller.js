@@ -3,7 +3,9 @@
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http) {
     $scope.message = 'Hello';
-    var self = this;
+    var ctrl = this;
+
+    this.restName = '';
 
     this.params = $stateParams;
     var roomNumber = $stateParams.data;
@@ -16,6 +18,7 @@ angular.module('roomApp')
       	{choice : chatForm.textInput.value})
         .success(function(data){
             // console.log(data);
+            ctrl.restName = '';
         })
         .error(function(data){
             console.log("error");
@@ -25,7 +28,7 @@ angular.module('roomApp')
     this.vote = function(choice, index, event) {
       if (event) {
         $(event.target).parent().addClass('animated fadeOutUp');
-        self.restaurants.splice(index,1);
+        ctrl.restaurants.splice(index,1);
       }
       $http.put("/api/room/" + roomNumber, 
         {choice : choice})
@@ -43,10 +46,18 @@ angular.module('roomApp')
             .success(function(data) {
                 console.log('returned data', data)
                 var restaurants = data.response.groups[0].items;
-                self.restaurants = restaurants;
+                ctrl.restaurants = restaurants;
             })
 
-        
-      
     }
+
+    this.messages = [];
+
+    socket.socket.emit('newRoom')
+
+    socket.socket.on('update', function(msg) {
+        console.log(msg);
+        ctrl.restaurants.push(msg);
+    })
+
   });
