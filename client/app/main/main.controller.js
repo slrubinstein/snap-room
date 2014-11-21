@@ -17,8 +17,8 @@ angular.module('roomApp')
     this.lon;
     this.geoLocated = false;
 
-    this.createRoom = function () {
-      $http.post("/api/room", {lat: ctrl.lat, lon: ctrl.lon})
+    this.createRoom = function (color) {
+      $http.post("/api/room", {lat: ctrl.lat, lon: ctrl.lon, color: color})
         .success(function(data){
           $state.go("room", {'data': data});
         })
@@ -49,6 +49,9 @@ angular.module('roomApp')
       }
     };
 
+    this.possibleColors = {"blue":true,"green":true,"red":true,"yellow":true};
+    this.roomToCreateColor;
+
     this.getRoomByGeo = function() {
 
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -60,6 +63,17 @@ angular.module('roomApp')
             console.log(data);
             ctrl.availableRooms = data;
             //$state.go("room", {'data': data});
+            ctrl.availableRooms.forEach(function(room){
+               if (ctrl.possibleColors[room.color]) {
+                  ctrl.possibleColors[room.color] = false;
+               }
+            });
+            angular.forEach(ctrl.possibleColors, function(value, color){
+               if (value) {
+                    ctrl.roomToCreateColor = color;
+               }
+            });
+            console.log(ctrl.roomToCreateColor);
 
        }).error(function(data){
            ctrl.message = "room doesn't exist";
