@@ -64,6 +64,8 @@ angular.module('roomApp')
             ctrl.availableRooms = data;
             //$state.go("room", {'data': data});
             ctrl.availableRooms.forEach(function(room){
+              //also keep track of which colors are assigned,
+              //so duplicate colors can be green2, blue2, etc.
                if (ctrl.possibleColors[room.color]) {
                   ctrl.possibleColors[room.color] = false;
                }
