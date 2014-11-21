@@ -9,10 +9,10 @@
 
       <p ng-hide="main.geoLocated">Finding your location...</p>
 
-      <button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom()">Create Room</button><br/>
+      <button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom(main.roomToCreateColor)">Create Room</button><br/>
 
       <div ng-repeat="room in main.availableRooms">
-        <button ng-click="main.getRoom(room.roomNumber)">Room#{{room.roomNumber}}</button>
+        <button ng-click="main.getRoom(room.roomNumber)" style="background-color: {{room.color}}">{{room.colorAndNum}} room</button>
      </div>
 
     </div>
