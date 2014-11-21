@@ -40,7 +40,11 @@ exports.create = function(req, res) {
   var lon = req.body.lon;
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*100);
-  Room.create({roomNumber:roomNumber, lat: lat, lon: lon, color: color}, function(err, room) {
+  Room.create({roomNumber:roomNumber, 
+               lat: lat, 
+               lon: lon, 
+               color: color
+               }, function(err, room) {
      if(err) { return handleError(res, err); }
   //   return res.json(201, room);
     return res.status(200).send(String(roomNumber));

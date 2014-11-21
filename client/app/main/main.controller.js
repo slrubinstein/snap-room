@@ -18,7 +18,9 @@ angular.module('roomApp')
     this.geoLocated = false;
 
     this.createRoom = function (color) {
-      $http.post("/api/room", {lat: ctrl.lat, lon: ctrl.lon, color: color})
+      $http.post("/api/room", {lat: ctrl.lat, 
+                               lon: ctrl.lon, 
+                               color: color})
         .success(function(data){
           $state.go("room", {'data': data});
         })
@@ -49,8 +51,19 @@ angular.module('roomApp')
       }
     };
 
-    this.possibleColors = {"blue":true,"green":true,"red":true,"yellow":true};
+    this.assignedColors = {"blue": 0, "green": 0, "red": 0};
     this.roomToCreateColor;
+
+    this.setRoomToCreateColor = function(num) {
+      for (var color in this.assignedColors) {
+        var colorCount = this.assignedColors[color];
+        if (colorCount === num) {
+          ctrl.roomToCreateColor = color;
+        }
+      }
+      if (ctrl.roomToCreateColor) return;
+      this.setRoomToCreateColor(num + 1);
+    };
 
     this.getRoomByGeo = function() {
 
@@ -64,18 +77,15 @@ angular.module('roomApp')
             ctrl.availableRooms = data;
             //$state.go("room", {'data': data});
             ctrl.availableRooms.forEach(function(room){
-              //also keep track of which colors are assigned,
-              //so duplicate colors can be green2, blue2, etc.
-               if (ctrl.possibleColors[room.color]) {
-                  ctrl.possibleColors[room.color] = false;
-               }
+              ctrl.assignedColors[room.color] += 1;
+              room.colorAndNum = room.color;
+              if (ctrl.assignedColors[room.color] > 1) {
+                room.colorAndNum += ctrl.assignedColors[room.color];
+                console.log(room.color);
+                console.log(room.colorAndNum);
+              }
             });
-            angular.forEach(ctrl.possibleColors, function(value, color){
-               if (value) {
-                    ctrl.roomToCreateColor = color;
-               }
-            });
-            console.log(ctrl.roomToCreateColor);
+            ctrl.setRoomToCreateColor(0);
 
        }).error(function(data){
            ctrl.message = "room doesn't exist";
