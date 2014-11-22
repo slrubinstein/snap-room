@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('MainCtrl', function ($state, $scope, $http, socket, $stateParams) {
+  .controller('MainCtrl', function ($state, $scope, $http, 
+          socket, $stateParams, $window) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -16,6 +17,10 @@ angular.module('roomApp')
     this.lat;
     this.lon;
     this.geoLocated = false;
+
+    $scope.loginOauth = function(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
 
     this.createRoom = function () {
       $http.post("/api/room", {lat: ctrl.lat, lon: ctrl.lon})
