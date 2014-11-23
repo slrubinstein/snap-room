@@ -17,7 +17,11 @@ angular.module('roomApp')
       $http.put("/api/room/" + this.params.data, 
       	{choice : chatForm.textInput.value})
         .success(function(data){
-            // console.log(data);
+            //socket send message
+            socket.socket.emit('sendMsg', {
+                room: roomNumber,
+                msg: chatForm.textInput.value
+            })
             ctrl.restName = '';
         })
         .error(function(data){
@@ -51,13 +55,9 @@ angular.module('roomApp')
 
     }
 
-    this.messages = [];
-
-    socket.socket.emit('newRoom')
-
-    socket.socket.on('update', function(msg) {
-        console.log(msg);
-        ctrl.restaurants.push(msg);
+    // socket receive a message
+    socket.socket.on('msg', function(msg, votes) {
+        $scope.roomData.push({msg: msg, votes: votes});
     })
 
   });

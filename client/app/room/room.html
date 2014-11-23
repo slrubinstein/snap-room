@@ -8,11 +8,11 @@
 
 	<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
 		<ul class="list-group">
-			<li ng-repeat="choice in roomData[0].choices"
+			<li ng-repeat="choice in roomData"
 					class="list-group-item">
 				<button
 									class="btn-default btn"
-									ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
+									ng-click="room.vote(choice.choice)">{{choice.msg}}</button>
 				 <span class="badge">{{choice.votes}}</span>
 			</li>
 		</ul>

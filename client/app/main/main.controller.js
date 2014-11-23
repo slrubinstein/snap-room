@@ -21,9 +21,9 @@ angular.module('roomApp')
       $http.post("/api/room", {lat: ctrl.lat, 
                                lon: ctrl.lon, 
                                color: color})
-        .success(function(data){
-          $state.go("room", {'data': data});
-          socket.socket.emit('join', data);
+        .success(function(room){
+          $state.go("room", {'data': room});
+          socket.socket.emit('create', room, color);
         })
         .error(function(data){
           console.log("error creating room");
@@ -35,6 +35,7 @@ angular.module('roomApp')
          $http.get("/api/room/" + roomNumber)
            .success(function(data){
              $state.go("room", {'data': roomNumber});
+             socket.socket.emit('join', roomNumber);
 
          }).error(function(data){
              ctrl.message = "room doesn't exist";
@@ -93,10 +94,14 @@ angular.module('roomApp')
     };
 
 
-    socket.socket.on('update', function(data) {
-        console.log(data);
-        console.log('socket this', this)
+    socket.socket.on('welcome', function(data) {
+      console.log('You have created a room', data.msg);
+    })
 
+    // when new room is created, run getRoomByGeo to
+    // populate landing page with new rooms
+    socket.socket.on('newRoomCreated', function() {
+      ctrl.getRoomByGeo();
     })
     
     this.getRoomByGeo();   

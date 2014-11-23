@@ -19,10 +19,88 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+
+  // create a new room
+  socket.on('create', function(room, color) {
+
+    console.log('Creating ' + color + ' room number', room)
+
+    // add this room to the database
+    Room.findOne({roomNumber:room}, function(err, room) {
+      room.people.push(socket.id);
+      room.save();
+    })
+
+    // creator joins room
+    socket.join(room);
+
+    // initiate votes count
+    // socket.votes = 0;
+
+    // send new room to the landing page
+    socket.broadcast.emit('newRoomCreated');
+  });
+
+  // join an existing room
+  socket.on('join', function(room) {
+    console.log('Joining room number', room)
+    socket.join(room);
+
+    // add new person to room in database
+    Room.findOne({roomNumber:room}, function(err, room) {
+      room.people.push(socket.id);
+      room.save();
+    })
+  });
+
+  socket.on('leave', function(room) {
+    socket.leave(room);
+
+    // remove person from room in database
+    Room.findOne({roomNumber:room}, function(err, room) {
+      room.people.splice(room.people.indexOf(socket.id, 1));
+      room.save();
+    });
+  });
+
+  socket.on('sendMsg', function(data) {
+    // if (socket.votes < 3) {
+      var room = data.room;
+      var msg = data.msg;
+      var votes = 0;
+
+      // save choice to database
+      Room.findOne({roomNumber:room}, function(err, room) {
+        var newChoice = true;
+        room.choices.forEach(function(choice){
+          if (choice.choice === msg) {
+            choice.votes++;
+            newChoice = false;
+            votes = choice.votes;
+          };
+        });        
+        if (newChoice) {
+          room.choices.push({choice: msg, votes: 1});
+          votes = 1;
+        }
+        room.save();
+      })
+
+      // give users only one vote
+      // socket.votes++;
+
+      socket.broadcast.to(room).emit('msg', msg, votes);
+      socket.emit('msg', msg);
+    // }
+  });
+
+
   // Insert sockets below
-  require('../api/room/room.socket').register(socket);
-  // require('../api/thing/thing.socket').register(socket);
+
 }
+  // require('../api/room/room.socket.js').register(socket);
+  // require('../api/thing/thing.socket').register(socket);
+
 
 module.exports = function (socketio) {
   // socket.io (v1.x.x) is powered by debug.
@@ -47,25 +125,6 @@ module.exports = function (socketio) {
 
     socket.connectedAt = new Date();
 
-    // Join a Room
-    socket.on('join', function(room) {
-      console.log('You are joining the ' + room + ' room.' +
-        'with ID' + socket.id);
-
-      socket.emit('update', 'Welcome to the ' + room+ 'room, ' + socket.id)
-
-      Room.findOne({roomNumber:room}, function(err, room) {
-        room.people.push(socket.id);
-        room.save();
-      })
-
-    })
-
-    socket.on('newRoom', function() {
-      socket.emit('update', 'you are in a room')
-    })
-
-
     // Call onDisconnect.
     socket.on('disconnect', function () {
       onDisconnect(socket);
@@ -75,5 +134,7 @@ module.exports = function (socketio) {
     // Call onConnect.
     onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
+
   });
-};
+  require('../api/room/room.socket')(socketio);
+}
