@@ -4,6 +4,8 @@
 
 'use strict';
 
+var Room = require('../api/room/room.model');
+
 var config = require('./environment');
 
 // When the user disconnects.. perform this
@@ -23,16 +25,40 @@ function onConnect(socket) {
     socket.join(room);
 
     socket.broadcast.emit('newRoomCreated');
-    socket.emit('startTimer')
+    socket.emit('startTimer', room, 15)
   });
 
   socket.on('join', function(room) {
     socket.join(room);
   })
 
+  socket.on('timerDecrement', function(room, timer) {
+    socket.broadcast.to(room).emit('decrementTimer', timer);
+    socket.emit('decrementTimer', timer)
+  })
 
+  socket.on('timeUp', function(room) {
+    console.log('time is up')
+    Room.findOne({roomNumber:room}, function(err, room) {
+      if (room.choices.length > 0) {
+        var winner = [room.choices[0].choice];
+        var maxVotes = room.choices[0].votes;
+        for (var i = 0; i < room.choices.length; i++) {
+          if (room.choices[i].votes > maxVotes) {
+            winner[0] = room.choices[i].choice;
+            maxVotes = room.choices[i].votes;
+          }
+          else if (room.choices[i].votes === maxVotes
+                  && room.choices[i].choice !== winner[0]) {
+            winner.push(room.choices[i].choice);
+          }
+        }
+        console.log("winner: ", winner);
+        console.log("maxVotes: ", maxVotes);
+      }  
+    })
 
-
+  })
 
   // Insert sockets below
   require('../api/room/room.socket').register(socket);

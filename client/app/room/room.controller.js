@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('RoomCtrl', function ($scope, $stateParams, socket, $http) {
+  .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
+                                    timerFactory) {
     $scope.message = 'Hello';
-    var self = this;
+    var ctrl = this;
 
     this.params = $stateParams;
     var roomNumber = $stateParams.roomNumber;
@@ -25,7 +26,7 @@ angular.module('roomApp')
             $scope.roomColor = data.color;
              
          }).error(function(data){
-             self.message = "error";
+             ctrl.message = "error";
          });
     };
 
@@ -36,7 +37,7 @@ angular.module('roomApp')
       	{choice : chatForm.textInput.value})
         .success(function(data){
             // console.log(data);
-            self.restName = '';
+            ctrl.restName = '';
         })
         .error(function(data){
             console.log("error");
@@ -46,7 +47,7 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, index, event) {
       if (event) {
         $(event.target).parent().addClass('animated fadeOutUp');
-        self.restaurants.splice(index,1);
+        ctrl.restaurants.splice(index,1);
       }
       $http.put("/api/room/" + roomNumber, 
         {choice : choice,
@@ -65,12 +66,17 @@ angular.module('roomApp')
             .success(function(data) {
                 console.log('returned data', data)
                 var restaurants = data.response.groups[0].items;
-                self.restaurants = restaurants;
+                ctrl.restaurants = restaurants;
             }) 
     }
 
-    socket.socket.on('startTimer', function() {
-      console.log('start timer')
-    })
+
+    this.timer = timerFactory.timer;
+
+
+    socket.socket.on('decrementTimer', function(timer) {
+      console.log('timer: ', timer)
+      ctrl.timer = timer;
+    });
 
   });

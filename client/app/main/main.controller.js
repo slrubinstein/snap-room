@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('MainCtrl', function ($state, $scope, $http, 
-          socket, $stateParams, $window) {
+          socket, $stateParams, $window, timerFactory) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -30,6 +30,7 @@ angular.module('roomApp')
           $state.go("room", {'roomNumber': data});
 
           socket.socket.emit('createRoom', data, color)
+          timerFactory.timerListener();
         })
         .error(function(data){
           console.log("error creating room");
@@ -48,15 +49,15 @@ angular.module('roomApp')
              ctrl.message = "room doesn't exist";
          });
       }
-      else {
-         $http.get("/api/room/" + roomIdForm.idInput.value)
-           .success(function(data){
-             $state.go("room", {'data': roomIdForm.idInput.value});
+      // else {
+      //    $http.get("/api/room/" + roomIdForm.idInput.value)
+      //      .success(function(data){
+      //        $state.go("room", {'data': roomIdForm.idInput.value});
 
-         }).error(function(data){
-             ctrl.message = "room doesn't exist";
-         });
-      }
+      //    }).error(function(data){
+      //        ctrl.message = "room doesn't exist";
+      //    });
+      // }
     };
 
     this.assignedColors = {"blue": 0, "green": 0, "red": 0};
@@ -109,9 +110,6 @@ angular.module('roomApp')
       ctrl.getRoomByGeo();
     });
 
-    socket.socket.on('startTimer', function() {
-      console.log('start timer')
-    })
 /////////////////////////////////////////////       
 
 
