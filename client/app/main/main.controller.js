@@ -27,7 +27,7 @@ angular.module('roomApp')
                                lon: ctrl.lon, 
                                color: color})
         .success(function(data){
-          $state.go("room", {'data': data});
+          $state.go("room", {'roomNumber': data});
         })
         .error(function(data){
           console.log("error creating room");
@@ -39,7 +39,7 @@ angular.module('roomApp')
       if (roomNumber) {
          $http.get("/api/room/" + roomNumber)
            .success(function(data){
-             $state.go("room", {'data': roomNumber});
+             $state.go("room", {'roomNumber': roomNumber});
 
          }).error(function(data){
              ctrl.message = "room doesn't exist";

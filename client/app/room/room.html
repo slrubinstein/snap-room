@@ -1,12 +1,27 @@
 <div class="myContainer">
 
-	<button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom()">Create Room</button><br/>
+<!-- 	<button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom()">Create Room</button><br/>
 
 	<div class="container jumbotron" ng-repeat="room in main.availableRooms">
 		<button ng-click="main.getRoom(room.roomNumber)">Room#{{room.roomNumber}}</button>
-	</div>
+	</div> -->
+
+    <div class="col-sm-12 col-md-12 col-lg-12" 
+         style="background-color: {{roomColor}};
+                height: 50px">
+    </div>
 
 	<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
+          <ul ng-if="roomData.length === 0" class="list-group">
+			<li ng-repeat="choice in initialRoomData.choices"
+					class="list-group-item">
+				<button
+									class="btn-default btn"
+									ng-click="room.vote(choice.choice)">{{choice.choice}}</button>
+				 <span class="badge">{{choice.votes}}</span>
+			</li>
+		</ul>
+
 		<ul class="list-group">
 			<li ng-repeat="choice in roomData[0].choices"
 					class="list-group-item">

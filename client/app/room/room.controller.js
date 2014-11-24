@@ -6,13 +6,32 @@ angular.module('roomApp')
     var self = this;
 
     this.params = $stateParams;
-    var roomNumber = $stateParams.data;
+    var roomNumber = $stateParams.roomNumber;
 
     $scope.roomData = [];
-    socket.syncUpdates('room', $scope.roomData, roomNumber);
+    //$scope.roomData = this.getRoom(roomNumber);
+
+    socket.syncUpdates('room', $scope.roomData, roomNumber);    
+
+    $scope.initialRoomData;
+    $scope.roomColor;
+
+    this.getRoom = function(roomNumber) {
+         $http.get("/api/room/" + roomNumber)
+           .success(function(data){
+            $scope.initialRoomData = data;
+            console.log(data);
+            $scope.roomColor = data.color;
+             
+         }).error(function(data){
+             self.message = "error";
+         });
+    };
+
+    this.getRoom(roomNumber);
 
     this.submitInput = function() {
-      $http.put("/api/room/" + this.params.data, 
+      $http.put("/api/room/" + this.params.roomNumber, 
       	{choice : chatForm.textInput.value})
         .success(function(data){
             // console.log(data);

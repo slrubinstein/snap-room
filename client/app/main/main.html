@@ -1,7 +1,7 @@
 
 
 <div ng-controller="MainCtrl as main">
-    <div class="myContainer">
+    <div class="myContainer container">
       <h1 class="page-header animated zoomIn">Snaproom</h1>
 
       <h1>Lat: {{main.lat}} Long: {{main.lon}}</h1>
@@ -11,13 +11,13 @@
 
       <button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom(main.roomToCreateColor)">Create Room</button><br/>
 
-      <div ng-repeat="room in main.availableRooms">
-        <button ng-click="main.getRoom(room.roomNumber)" style="background-color: {{room.color}}">{{room.colorAndNum}} room</button>
+      <div id="buttonDiv" ng-repeat="room in main.availableRooms">
+        <button class="btn" ng-click="main.getRoom(room.roomNumber)" style="background-color: {{room.color}}">{{room.colorAndNum}} room</button>
      </div>
 
-      <a class="btn btn-facebook" href="" ng-click="loginOauth('facebook')">
+<!--       <a class="btn btn-facebook" href="" ng-click="loginOauth('facebook')">
         <i class="fa fa-facebook"></i> Connect with Facebook
-      </a>
+      </a> -->
 
     </div>
 </div>
