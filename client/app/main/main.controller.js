@@ -74,8 +74,8 @@ angular.module('roomApp')
 
       navigator.geolocation.getCurrentPosition(function(position) {
         ctrl.geoLocated = true;
-        ctrl.lat = position.coords.latitude.toFixed(1);
-        ctrl.lon = position.coords.longitude.toFixed(1);
+        ctrl.lat = position.coords.latitude;
+        ctrl.lon = position.coords.longitude;
         $http.get("/api/room/" + ctrl.lat + "/" + ctrl.lon)
          .success(function(data){
             console.log(data);
