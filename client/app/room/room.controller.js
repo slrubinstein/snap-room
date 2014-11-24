@@ -11,6 +11,8 @@ angular.module('roomApp')
     $scope.roomData = [];
     //$scope.roomData = this.getRoom(roomNumber);
 
+    this.restName = '';
+
     socket.syncUpdates('room', $scope.roomData, roomNumber);    
 
     $scope.initialRoomData;
@@ -35,6 +37,7 @@ angular.module('roomApp')
       	{choice : chatForm.textInput.value})
         .success(function(data){
             // console.log(data);
+            self.restName = '';
         })
         .error(function(data){
             console.log("error");
