@@ -22,15 +22,28 @@ angular.module('roomApp')
       $window.location.href = '/auth/' + provider;
     };
 
+    this.checkIfCreatedRoom = function() {
+      socket.socket.emit('checkIfCreator');
+    }
+
+    ctrl.hasCreatedRoom = false;
+
+    this.checkIfCreatedRoom();
+
+    socket.socket.on("creatorInfo", function(hasCreatedRoom){
+      ctrl.hasCreatedRoom = hasCreatedRoom;
+    })
+
+
     this.createRoom = function (color) {
       $http.post("/api/room", {lat: ctrl.lat, 
                                lon: ctrl.lon, 
                                color: color})
         .success(function(data){
           $state.go("room", {'roomNumber': data});
-
           socket.socket.emit('createRoom', data, color)
           timerFactory.timerListener();
+          ctrl.hasCreatedRoom = true;
         })
         .error(function(data){
           console.log("error creating room");
@@ -38,7 +51,6 @@ angular.module('roomApp')
     };
 
     this.getRoom = function(roomNumber) {
-      console.log(roomNumber);
       if (roomNumber) {
          $http.get("/api/room/" + roomNumber)
            .success(function(data){
@@ -82,7 +94,6 @@ angular.module('roomApp')
         ctrl.lon = position.coords.longitude;
         $http.get("/api/room/" + ctrl.lat.toFixed(1) + "/" + ctrl.lon.toFixed(1))
          .success(function(data){
-            console.log(data);
             ctrl.availableRooms = data;
             //$state.go("room", {'data': data});
             ctrl.availableRooms.forEach(function(room){
@@ -90,8 +101,6 @@ angular.module('roomApp')
               room.colorAndNum = room.color;
               if (ctrl.assignedColors[room.color] > 1) {
                 room.colorAndNum += ctrl.assignedColors[room.color];
-                console.log(room.color);
-                console.log(room.colorAndNum);
               }
             });
             ctrl.setRoomToCreateColor(0);
@@ -106,7 +115,6 @@ angular.module('roomApp')
     this.getRoomByGeo();
 
     socket.socket.on('newRoomCreated', function() {
-      console.log('new room created')
       ctrl.getRoomByGeo();
     });
 

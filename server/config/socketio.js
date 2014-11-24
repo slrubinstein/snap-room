@@ -19,13 +19,18 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+  socket.on('checkIfCreator', function(){
+     socket.emit("creatorInfo", socket.hasCreatedRoom);
+  });
+
   socket.on('createRoom', function(room, color) {
-    console.log('creating ' + color + ' room number ' + room);
 
-    socket.join(room);
+      socket.join(room);
 
-    socket.broadcast.emit('newRoomCreated');
-    socket.emit('startTimer', room, 15)
+      socket.hasCreatedRoom = true;
+
+      socket.broadcast.emit('newRoomCreated');
+      socket.emit('startTimer', room, 300)
   });
 
   socket.on('join', function(room) {

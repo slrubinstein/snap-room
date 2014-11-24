@@ -64,7 +64,6 @@ angular.module('roomApp')
     this.getFourSquare = function() {
         $http.get('/api/room/' + roomNumber + '/vendor/foursquare')
             .success(function(data) {
-                console.log('returned data', data)
                 var restaurants = data.response.groups[0].items;
                 ctrl.restaurants = restaurants;
             }) 
@@ -75,7 +74,6 @@ angular.module('roomApp')
 
 
     socket.socket.on('decrementTimer', function(timer) {
-      console.log('timer: ', timer)
       ctrl.timer = timer;
     });
 
