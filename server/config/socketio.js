@@ -4,8 +4,6 @@
 
 'use strict';
 
-var Room = require('../api/room/room.model');
-
 var config = require('./environment');
 
 // When the user disconnects.. perform this
@@ -19,58 +17,45 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+  // Insert sockets below
+  require('../api/room/room.socket').register(socket);
+  require('../api/thing/thing.socket').register(socket);
+}
 
-  // create a new room
-  socket.on('create', function(room, color) {
+module.exports = function (socketio) {
+  // socket.io (v1.x.x) is powered by debug.
+  // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
+  //
+  // ex: DEBUG: "http*,socket.io:socket"
 
-    console.log('Creating ' + color + ' room number', room)
+  // We can authenticate socket.io users and access their token through socket.handshake.decoded_token
+  //
+  // 1. You will need to send the token in `client/components/socket/socket.service.js`
+  //
+  // 2. Require authentication here:
+  // socketio.use(require('socketio-jwt').authorize({
+  //   secret: config.secrets.session,
+  //   handshake: true
+  // }));
 
-    // add this room to the database
-    Room.findOne({roomNumber:room}, function(err, room) {
-      room.people.push(socket.id);
-      room.save();
-    })
+  socketio.on('connection', function (socket) {
+    socket.address = socket.handshake.address !== null ?
+            socket.handshake.address.address + ':' + socket.handshake.address.port :
+            process.env.DOMAIN;
 
-    // creator joins room
-    socket.join(room);
+    socket.connectedAt = new Date();
 
-    // initiate votes count
-    // socket.votes = 0;
-
-    // send new room to the landing page
-    socket.broadcast.emit('newRoomCreated');
-  });
-
-  // join an existing room
-  socket.on('join', function(room) {
-    console.log('Joining room number', room)
-    socket.join(room);
-
-    // add new person to room in database
-    Room.findOne({roomNumber:room}, function(err, room) {
-      room.people.push(socket.id);
-      room.save();
-    })
-  });
-
-  socket.on('leave', function(room) {
-    socket.leave(room);
-
-    // remove person from room in database
-    Room.findOne({roomNumber:room}, function(err, room) {
-      room.people.splice(room.people.indexOf(socket.id, 1));
-      room.save();
+    // Call onDisconnect.
+    socket.on('disconnect', function () {
+      onDisconnect(socket);
+      console.info('[%s] DISCONNECTED', socket.address);
     });
+
+    // Call onConnect.
+    onConnect(socket);
+    console.info('[%s] CONNECTED', socket.address);
   });
-
-  socket.on('sendMsg', function(data) {
-    // if (socket.votes < 3) {
-      var room = data.room;
-      var msg = data.msg;
-      // var votes = 0;
-
-      // save choice to database
-      Room.findOne({roomNumber:room}, function(err, room) {
+};oom.findOne({roomNumber:room}, function(err, room) {
         var newChoice = true;
         room.choices.forEach(function(choice){
           if (choice.choice === msg) {
