@@ -44,13 +44,14 @@ angular.module('roomApp')
         });
     }
 
-    this.vote = function(choice, index, event) {
+    this.vote = function(choice, upOrDown, index, event) {
       if (event) {
         $(event.target).parent().addClass('animated fadeOutUp');
         self.restaurants.splice(index,1);
       }
       $http.put("/api/room/" + roomNumber, 
-        {choice : choice})
+        {choice : choice,
+          upOrDown: upOrDown})
         .success(function(data){
         })
         .error(function(data){

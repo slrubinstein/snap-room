@@ -61,8 +61,13 @@ exports.update = function(req, res) {
     var newChoice = true;
     room.choices.forEach(function(choice){
       if (choice.choice === req.body.choice) {
-        choice.votes++;
-        newChoice = false;
+        if (req.body.upOrDown === 'up') {
+          choice.votes++;
+          newChoice = false;
+        } else if (req.body.upOrDown === 'down') {
+          choice.votes--;
+          newChoice = false;
+        }
       }
     });
     if (newChoice) {
