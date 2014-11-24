@@ -40,13 +40,8 @@ exports.create = function(req, res) {
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*100);
   Room.create({roomNumber:roomNumber, 
-<<<<<<< Updated upstream
-               lat: lat.toFixed(1), 
-               lon: lon.toFixed(1), 
-=======
                lat: lat.toFixed(1),
                lon: lon.toFixed(1),
->>>>>>> Stashed changes
                rawLat: lat,
                rawLon: lon,
                color: color
