@@ -4,9 +4,6 @@
     <div class="myContainer container">
       <h1 class="page-header animated zoomIn">Snaproom</h1>
 
-      <h1>Lat: {{main.lat}} Long: {{main.lon}}</h1>
-
-
       <p ng-hide="main.geoLocated">Finding your location...</p>
 
       <button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom(main.roomToCreateColor)">Create Room</button><br/>

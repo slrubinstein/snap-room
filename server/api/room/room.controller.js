@@ -25,11 +25,9 @@ exports.show = function(req, res) {
 
 // Get a single room by geolocation
 exports.showByGeo = function(req, res) {
-  console.log('lat!!!!!!!!!', req.params.lat)
   Room.find({lat:req.params.lat}, function (err, rooms) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
-    console.log("rooms", rooms);
     return res.status(200).send(rooms);
   });
 };
@@ -41,8 +39,10 @@ exports.create = function(req, res) {
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*100);
   Room.create({roomNumber:roomNumber, 
-               lat: lat, 
-               lon: lon, 
+               lat: lat.toFixed(1), 
+               lon: lon.toFixed(1),
+               rawLat: lat,
+               rawLon: lon, 
                color: color
                }, function(err, room) {
      if(err) { return handleError(res, err); }
@@ -93,8 +93,8 @@ exports.foursquare = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!room) { return res.status(500).send("not OK"); }
 
-    var lat = room.lat;
-    var lon = room.lon;
+    var lat = room.rawLat;
+    var lon = room.rawLon;
 
     var url = 'https://api.foursquare.com/v2/venues/explore?' +
     'll='+ lat + ','+ lon + '&section=food&client_id=' + foursquareID + '&client_secret=' +
