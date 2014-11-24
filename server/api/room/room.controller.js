@@ -28,7 +28,6 @@ exports.showByGeo = function(req, res) {
   Room.find({lat:req.params.lat}, function (err, rooms) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
-    console.log("rooms", rooms);
     return res.status(200).send(rooms);
   });
 };
@@ -39,11 +38,11 @@ exports.create = function(req, res) {
   var lon = req.body.lon;
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*100);
-  Room.create({roomNumber:roomNumber, 
-               lat: lat.toFixed(1),
+  Room.create({roomNumber:roomNumber,
+               lat: lat.toFixed(1), 
                lon: lon.toFixed(1),
                rawLat: lat,
-               rawLon: lon,
+               rawLon: lon, 
                color: color
                }, function(err, room) {
      if(err) { return handleError(res, err); }

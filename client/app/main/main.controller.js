@@ -76,7 +76,7 @@ angular.module('roomApp')
         ctrl.geoLocated = true;
         ctrl.lat = position.coords.latitude;
         ctrl.lon = position.coords.longitude;
-        $http.get("/api/room/" + ctrl.lat + "/" + ctrl.lon)
+        $http.get("/api/room/" + ctrl.lat.toFixed(1) + "/" + ctrl.lon.toFixed(1))
          .success(function(data){
             console.log(data);
             ctrl.availableRooms = data;
