@@ -28,6 +28,8 @@ angular.module('roomApp')
                                color: color})
         .success(function(data){
           $state.go("room", {'roomNumber': data});
+
+          socket.socket.emit('createRoom', data, color)
         })
         .error(function(data){
           console.log("error creating room");
@@ -40,6 +42,7 @@ angular.module('roomApp')
          $http.get("/api/room/" + roomNumber)
            .success(function(data){
              $state.go("room", {'roomNumber': roomNumber});
+             socket.socket.emit('join', roomNumber);
 
          }).error(function(data){
              ctrl.message = "room doesn't exist";
@@ -99,7 +102,16 @@ angular.module('roomApp')
     };
 
     
-    this.getRoomByGeo();   
+    this.getRoomByGeo();
+
+    socket.socket.on('newRoomCreated', function() {
+      console.log('new room created')
+      ctrl.getRoomByGeo();
+    });
+
+    socket.socket.on('startTimer', function() {
+      console.log('start timer')
+    })
 /////////////////////////////////////////////       
 
 

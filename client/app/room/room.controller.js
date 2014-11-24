@@ -22,7 +22,6 @@ angular.module('roomApp')
          $http.get("/api/room/" + roomNumber)
            .success(function(data){
             $scope.initialRoomData = data;
-            console.log(data);
             $scope.roomColor = data.color;
              
          }).error(function(data){
@@ -67,9 +66,11 @@ angular.module('roomApp')
                 console.log('returned data', data)
                 var restaurants = data.response.groups[0].items;
                 self.restaurants = restaurants;
-            })
-
-        
-      
+            }) 
     }
+
+    socket.socket.on('startTimer', function() {
+      console.log('start timer')
+    })
+
   });

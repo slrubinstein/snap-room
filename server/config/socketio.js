@@ -17,6 +17,23 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+  socket.on('createRoom', function(room, color) {
+    console.log('creating ' + color + ' room number ' + room);
+
+    socket.join(room);
+
+    socket.broadcast.emit('newRoomCreated');
+    socket.emit('startTimer')
+  });
+
+  socket.on('join', function(room) {
+    socket.join(room);
+  })
+
+
+
+
+
   // Insert sockets below
   require('../api/room/room.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
