@@ -14,7 +14,7 @@ var RoomSchema = new Schema({
   rawLat: Number,
   rawLon: Number,
   color: String,
-  createdAt: {type: Date, expires: 600, default: Date.now}
+  expiresAfterSeconds: {type: Number, default: 600}
 
 });
 
