@@ -46,7 +46,7 @@ exports.create = function(req, res) {
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*100);
   var createdAt = new Date();
-  var expiresAt = new Date(new Date().getTime() + 15000); //300000);
+  var expiresAt = new Date(new Date().getTime() + 120000); //300000);
   console.log(expiresAt)
   Room.create({roomNumber:roomNumber,
                lat: lat.toFixed(1), 

@@ -9,27 +9,30 @@
     <div class="col-sm-12 col-md-12 col-lg-12" 
          style="background-color: {{roomColor}};
                 height: 50px">
-    </div>
-
-    <div ng-show="secondsLeft && !room.winner"><p>Room Closes in: 
+      <div id="backButton">
+      	<a ui-sref="main"><span class="glyphicon glyphicon-chevron-left">Back</span></a>
+      </div>
+    	<div ng-show="secondsLeft && !room.winner"><p>Room Closes in: 
     	{{minutesLeft}}:{{secondsLeft}}</p></div>
-    
-
-    <div ng-show="room.winner" class="col-sm-12 col-md-12 col-lg-12">
+                
+	    	<div ng-show="room.winner" class="col-sm-12 col-md-12 col-lg-12">
     	    <h2 ng-show="room.winner.length > 1">Winners:</h2>
     	    <h2 ng-show="room.winner.length === 1">Winner:</h2>
             <ul class="list-group">
-				<li ng-repeat="winner in room.winner"
-						class="list-group-item">
+					<li ng-repeat="winner in room.winner"
+							class="list-group-item">
 
-					<span>{{winner}}</span>
+						<span>{{winner}}</span>
 
 
-					 <span class="badge">{{room.maxVotes}}</span>
+						 <span class="badge">{{room.maxVotes}}</span>
 
-				</li>
-			</ul>
+					</li>
+				</ul>
+	    </div>
     </div>
+
+    
 
 
     <div ng-hide="room.winner">
@@ -75,7 +78,11 @@
 		<button id="foursquareButton" class="btn btn-primary" ng-click="room.getFourSquare()">Find Local Restaurants From Foursquare</button>
 	    <div class="foursquareRests"> 
 			<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
-				<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}</button> {{restaurant.venue.location.address}}</p>
+				<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}</button> {{restaurant.venue.location.address}} 
+					<a target="_blank" href="{{restaurant.tips[0].canonicalUrl}}">
+						<span class="glyphicon glyphicon-info-sign"></span>
+					</a>
+				</p>
 			</div>	
 	    </div>
 	    <h1>Or</h1>
