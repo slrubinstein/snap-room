@@ -22,7 +22,7 @@ function onConnect(socket) {
   socket.on('createRoom', function(room, color) {
 
       socket.join(room);
-      socket.broadcast.emit('newRoomCreated');
+      socket.broadcast.emit('refreshRoomList');
   });
 
   socket.on('join', function(room) {
@@ -47,6 +47,9 @@ function onConnect(socket) {
         }    
         socket.broadcast.to(room).emit('winner', winner, maxVotes);
         socket.emit('winner', winner, maxVotes)
+
+        socket.broadcast.to(room).emit('refreshRoomList');
+        socket.emit('refreshRoomList');
 
       }  
     })

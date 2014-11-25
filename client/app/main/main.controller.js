@@ -100,7 +100,8 @@ angular.module('roomApp')
     
     this.getRoomByGeo();
 
-    socket.socket.on('newRoomCreated', function() {
+    socket.socket.on('refreshRoomList', function() {
+      console.log("hello");
       ctrl.getRoomByGeo();
     });
 
