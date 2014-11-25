@@ -91,11 +91,6 @@ angular.module('roomApp')
             }) 
     }
 
-
-    socket.socket.on('decrementTimer', function(timer) {
-      ctrl.timer = timer;
-    });
-
     socket.socket.on('winner', function(winner, maxVotes) {
       ctrl.winner = winner;
       ctrl.maxVotes = maxVotes;

@@ -22,19 +22,6 @@ angular.module('roomApp')
       $window.location.href = '/auth/' + provider;
     };
 
-    this.checkIfCreatedRoom = function() {
-      socket.socket.emit('checkIfCreator');
-    }
-
-    ctrl.hasCreatedRoom = false;
-
-    this.checkIfCreatedRoom();
-
-    socket.socket.on("creatorInfo", function(hasCreatedRoom){
-      ctrl.hasCreatedRoom = hasCreatedRoom;
-    })
-
-
     this.createRoom = function (color) {
       $http.post("/api/room", {lat: ctrl.lat, 
                                lon: ctrl.lon, 
@@ -43,7 +30,6 @@ angular.module('roomApp')
           $state.go("room", {'roomNumber': data.roomNumber});
           socket.socket.emit('createRoom', data.roomNumber, color)
           //timerFactory.timerListener();
-          ctrl.hasCreatedRoom = true;
         })
         .error(function(data){
           console.log("error creating room");

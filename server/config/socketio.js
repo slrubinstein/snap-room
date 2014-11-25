@@ -19,27 +19,14 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
-  socket.on('checkIfCreator', function(){
-     socket.emit("creatorInfo", socket.hasCreatedRoom);
-  });
-
   socket.on('createRoom', function(room, color) {
 
       socket.join(room);
-
-      socket.hasCreatedRoom = true;
-
       socket.broadcast.emit('newRoomCreated');
-      socket.emit('startTimer', room, 300)
   });
 
   socket.on('join', function(room) {
     socket.join(room);
-  })
-
-  socket.on('timerDecrement', function(room, timer) {
-    socket.broadcast.to(room).emit('decrementTimer', timer);
-    socket.emit('decrementTimer', timer)
   })
 
   socket.on('timeUp', function(room) {
