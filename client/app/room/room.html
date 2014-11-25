@@ -18,10 +18,10 @@
 			<li ng-repeat="choice in initialRoomData.choices"
 					class="list-group-item">
 					<span>
-						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up')">+</button>
+						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
 					</span>
 					<span>
-						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down')">-</button>
+						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
 					</span>
 								<span>{{choice.choice}}</span>
 
@@ -36,10 +36,10 @@
 					class="list-group-item">
 
 					<span>
-						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up')">+</button>
+						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
 					</span>
 					<span>
-						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down')">-</button>
+						<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
 					</span>
 				
 				<span>{{choice.choice}}</span>
@@ -55,7 +55,7 @@
 	<button id="foursquareButton" class="btn btn-primary" ng-click="room.getFourSquare()">Find Local Restaurants From Foursquare</button>
     <div class="foursquareRests"> 
 		<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
-			<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, null, $index, $event)">{{restaurant.venue.name}}</button>, {{restaurant.venue.location.address}}</p>
+			<p><button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}</button> {{restaurant.venue.location.address}}</p>
 		</div>	
     </div>
     <h1>Or</h1>

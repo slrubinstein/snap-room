@@ -20,14 +20,14 @@ angular.module('roomApp')
     $scope.roomColor;
 
     this.getRoom = function(roomNumber) {
-         $http.get("/api/room/" + roomNumber)
-           .success(function(data){
-            $scope.initialRoomData = data;
-            $scope.roomColor = data.color;
-             
-         }).error(function(data){
-             ctrl.message = "error";
-         });
+       $http.get("/api/room/" + roomNumber)
+         .success(function(data){
+          $scope.initialRoomData = data;
+          $scope.roomColor = data.color;
+           
+       }).error(function(data){
+           ctrl.message = "error";
+       });
     };
 
     this.getRoom(roomNumber);
@@ -44,11 +44,17 @@ angular.module('roomApp')
         });
     }
 
-    this.vote = function(choice, upOrDown, index, event) {
-      if (event) {
+    this.vote = function(choice, upOrDown, event, index) {
+
+      if (upOrDown) {
+        $(event.target).parent().parent().css("background-color", "red");
+      }
+
+      else {
         $(event.target).parent().addClass('animated fadeOutUp');
         ctrl.restaurants.splice(index,1);
-      }
+      }  
+
       $http.put("/api/room/" + roomNumber, 
         {choice : choice,
           upOrDown: upOrDown})
@@ -57,13 +63,14 @@ angular.module('roomApp')
         .error(function(data){
             console.log("error");
         });
-    }
+    };
 
     this.restaurants = [];
 
     this.getFourSquare = function() {
         $http.get('/api/room/' + roomNumber + '/vendor/foursquare')
             .success(function(data) {
+              console.log(data)
                 var restaurants = data.response.groups[0].items;
                 ctrl.restaurants = restaurants;
             }) 

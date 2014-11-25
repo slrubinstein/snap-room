@@ -44,7 +44,6 @@ angular.module('roomApp')
           // replace oldItem if it exists
           // otherwise just add item to the collection
           if (oldItem) {
-            console.log('oldItem', oldItem)
             array.splice(index, 1, item);
             event = 'updated';
           } else {
