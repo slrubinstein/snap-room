@@ -38,16 +38,20 @@ exports.create = function(req, res) {
   var lon = req.body.lon;
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*100);
+  var createdAt = Date.now();
+  var expiresAt = Date.now() + 300000;
   Room.create({roomNumber:roomNumber,
                lat: lat.toFixed(1), 
                lon: lon.toFixed(1),
                rawLat: lat,
                rawLon: lon, 
-               color: color
+               color: color,
+               createdAt: createdAt,
+               expiresAt: expiresAt
                }, function(err, room) {
      if(err) { return handleError(res, err); }
   //   return res.json(201, room);
-    return res.status(200).send(String(roomNumber));
+    return res.status(200).send({roomNumber: roomNumber, expiresAt: expiresAt});
   });
 };
 
