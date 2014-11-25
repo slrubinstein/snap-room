@@ -30,7 +30,7 @@ function onConnect(socket) {
       socket.hasCreatedRoom = true;
 
       socket.broadcast.emit('newRoomCreated');
-      socket.emit('startTimer', room, 15)
+      socket.emit('startTimer', room, 300)
   });
 
   socket.on('join', function(room) {
