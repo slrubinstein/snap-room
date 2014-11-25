@@ -38,8 +38,9 @@ exports.create = function(req, res) {
   var lon = req.body.lon;
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*100);
-  var createdAt = Date.now();
-  var expiresAt = Date.now() + 300000;
+  var createdAt = new Date();
+  var expiresAt = new Date(new Date().getTime() + 300000);
+  console.log(expiresAt)
   Room.create({roomNumber:roomNumber,
                lat: lat.toFixed(1), 
                lon: lon.toFixed(1),
@@ -51,7 +52,7 @@ exports.create = function(req, res) {
                }, function(err, room) {
      if(err) { return handleError(res, err); }
   //   return res.json(201, room);
-    return res.status(200).send({roomNumber: roomNumber, expiresAt: expiresAt});
+    return res.status(200).send({roomNumber: roomNumber});
   });
 };
 

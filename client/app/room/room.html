@@ -11,7 +11,8 @@
                 height: 50px">
     </div>
 
-    <div ng-hide="room.winner"><p>Room Closes in: {{room.timer | timeFormat}}</p></div>
+    <div ng-show="secondsLeft && !room.winner"><p>Room Closes in: 
+    	{{minutesLeft}}:{{secondsLeft}}</p></div>
     
 
     <div ng-show="room.winner" class="col-sm-12 col-md-12 col-lg-12">

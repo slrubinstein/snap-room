@@ -19,12 +19,21 @@ angular.module('roomApp')
     $scope.initialRoomData;
     $scope.roomColor;
 
+    this.runTimer = function(expiresAt) {
+      $scope.timeNow = new Date().getTime();
+      var minutesLeftDecimal = String(($scope.expiresAt.getTime() - $scope.timeNow) / 1000 / 60);
+      $scope.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
+      var rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
+      $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
+    };
+
     this.getRoom = function(roomNumber) {
        $http.get("/api/room/" + roomNumber)
          .success(function(data){
           $scope.initialRoomData = data;
           $scope.roomColor = data.color;
-           
+          $scope.expiresAt = new Date(Date.parse(data.expiresAt));
+          $interval(ctrl.runTimer, 1000); 
        }).error(function(data){
            ctrl.message = "error";
        });
@@ -75,9 +84,6 @@ angular.module('roomApp')
                 ctrl.restaurants = restaurants;
             }) 
     }
-
-
-    this.timer = timerFactory.timer;
 
 
     socket.socket.on('decrementTimer', function(timer) {
