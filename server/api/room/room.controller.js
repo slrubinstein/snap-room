@@ -25,9 +25,16 @@ exports.show = function(req, res) {
 
 // Get a single room by geolocation
 exports.showByGeo = function(req, res) {
-  Room.find({lat:req.params.lat}, function (err, rooms) {
+  Room.find({lat:req.params.lat})
+       .find({'expiresAt': {$gt : new Date().getTime()}})
+       .exec(function (err, rooms) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
+    if (rooms.length > 0) {
+      console.log(rooms[0].expiresAt);
+      console.log(new Date().getTime());
+      console.log(rooms[0].expiresAt - new Date().getTime());
+    }
     return res.status(200).send(rooms);
   });
 };
