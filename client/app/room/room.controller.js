@@ -47,7 +47,7 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, event, index) {
 
       if (upOrDown) {
-        $(event.target).parent().parent().css("background-color", "red");
+        $(event.target).parent().parent().css("background-color", $scope.roomColor);
       }
 
       else {
@@ -82,6 +82,11 @@ angular.module('roomApp')
 
     socket.socket.on('decrementTimer', function(timer) {
       ctrl.timer = timer;
+    });
+
+    socket.socket.on('winner', function(winner, maxVotes) {
+      ctrl.winner = winner;
+      ctrl.maxVotes = maxVotes;
     });
 
   });

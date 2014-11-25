@@ -16,7 +16,6 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-	console.log('doc', doc)
 	var roomNumber = doc.roomNumber
   socket.broadcast.to(roomNumber).emit('room:save', doc);
   socket.to(roomNumber).emit('room:save', doc);

@@ -30,7 +30,7 @@ function onConnect(socket) {
       socket.hasCreatedRoom = true;
 
       socket.broadcast.emit('newRoomCreated');
-      socket.emit('startTimer', room, 300)
+      socket.emit('startTimer', room, 15)
   });
 
   socket.on('join', function(room) {
@@ -57,9 +57,10 @@ function onConnect(socket) {
                   && room.choices[i].choice !== winner[0]) {
             winner.push(room.choices[i].choice);
           }
-        }
-        console.log("winner: ", winner);
-        console.log("maxVotes: ", maxVotes);
+        }    
+        socket.broadcast.to(room).emit('winner', winner, maxVotes);
+        socket.emit('winner', winner, maxVotes)
+
       }  
     })
 
