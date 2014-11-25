@@ -41,8 +41,8 @@ angular.module('roomApp')
                                color: color})
         .success(function(data){
           $state.go("room", {'roomNumber': data.roomNumber});
-          socket.socket.emit('createRoom', data, color)
-          timerFactory.timerListener();
+          socket.socket.emit('createRoom', data.roomNumber, color)
+          //timerFactory.timerListener();
           ctrl.hasCreatedRoom = true;
         })
         .error(function(data){

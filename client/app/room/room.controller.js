@@ -25,6 +25,12 @@ angular.module('roomApp')
       $scope.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
       var rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
       $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
+      if (Number($scope.secondsLeft) < 10) $scope.secondsLeft = "0" + $scope.secondsLeft; 
+
+      if(Number(minutesLeftDecimal) < 0) {
+        $interval.cancel($scope.countDown);
+        socket.socket.emit('timeUp', $scope.initialRoomData.roomNumber);
+      }
     };
 
     this.getRoom = function(roomNumber) {
@@ -33,7 +39,7 @@ angular.module('roomApp')
           $scope.initialRoomData = data;
           $scope.roomColor = data.color;
           $scope.expiresAt = new Date(Date.parse(data.expiresAt));
-          $interval(ctrl.runTimer, 1000); 
+          $scope.countDown = $interval(ctrl.runTimer, 1000); 
        }).error(function(data){
            ctrl.message = "error";
        });
