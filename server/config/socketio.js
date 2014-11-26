@@ -10,7 +10,7 @@ var config = require('./environment');
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
-   console.log(socket);
+
 }
 
 // When the user connects.. perform this

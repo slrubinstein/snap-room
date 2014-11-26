@@ -14,6 +14,8 @@
       </div>
     	<div ng-show="secondsLeft && !room.winner"><p>Room Closes in: 
     	{{minutesLeft}}:{{secondsLeft}}</p></div>
+
+    	Number of people in this room: {{numberPeople}}
                 
 	    	<div ng-show="room.winner" class="col-sm-12 col-md-12 col-lg-12">
     	    <h2 ng-show="room.winner.length > 1">Winners:</h2>
