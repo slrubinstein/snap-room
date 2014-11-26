@@ -41,7 +41,6 @@ angular.module('roomApp')
          $http.get("/api/room/" + roomNumber)
            .success(function(data){
              $state.go("room", {'roomNumber': roomNumber});
-             socket.socket.emit('join', roomNumber);
 
          }).error(function(data){
              ctrl.message = "room doesn't exist";

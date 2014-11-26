@@ -103,9 +103,10 @@ angular.module('roomApp')
       ctrl.winner = winner;
       ctrl.maxVotes = maxVotes;
     });
-
+    socket.socket.emit('join', roomNumber);
+    
     socket.socket.on('newPerson', function(numberPeople) {
-      console.log(numberPeople);
+      $scope.numberPeople = numberPeople;
     });
 
   });

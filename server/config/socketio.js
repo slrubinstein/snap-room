@@ -20,7 +20,6 @@ function onConnect(socket) {
   });
 
   socket.on('createRoom', function(room, color) {
-
       socket.join(room);
       socket.broadcast.emit('refreshRoomList');
   });
