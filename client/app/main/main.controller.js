@@ -104,6 +104,7 @@ angular.module('roomApp')
       ctrl.getRoomByGeo();
     });
 
+
 /////////////////////////////////////////////       
 
 

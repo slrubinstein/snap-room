@@ -10,6 +10,7 @@ var config = require('./environment');
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
+   
 }
 
 // When the user connects.. perform this
@@ -18,6 +19,8 @@ function onConnect(socket) {
   socket.on('info', function (data) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
+
+
 
   socket.on('createRoom', function(room, color) {
       socket.join(room);
@@ -30,6 +33,7 @@ function onConnect(socket) {
     socket.broadcast.to(room).emit('newPerson', Object.keys(roomObject).length);
     socket.emit('newPerson', Object.keys(roomObject).length);
   })
+
 
   socket.on('timeUp', function(room) {
     console.log('time is up')
@@ -91,6 +95,7 @@ module.exports = function (socketio) {
       onDisconnect(socket);
       console.info('[%s] DISCONNECTED', socket.address);
     });
+
 
     // Call onConnect.
     onConnect(socket);
