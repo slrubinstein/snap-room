@@ -26,9 +26,9 @@ function onConnect(socket) {
 
   socket.on('join', function(room) {
     socket.join(room);
-    var room = socket.nsp.adapter.rooms[room];
-    socket.broadcast.to(room).emit('newPerson', Object.keys(room).length);
-    socket.emit('newPerson', Object.keys(room).length);
+    var roomObject = socket.nsp.adapter.rooms[room];
+    socket.broadcast.to(room).emit('newPerson', Object.keys(roomObject).length);
+    socket.emit('newPerson', Object.keys(roomObject).length);
   })
 
   socket.on('timeUp', function(room) {

@@ -107,6 +107,8 @@ angular.module('roomApp')
     
     socket.socket.on('newPerson', function(numberPeople) {
       $scope.numberPeople = numberPeople;
+      console.log(numberPeople);
+      $scope.$apply();
     });
 
   });
