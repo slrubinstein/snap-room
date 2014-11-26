@@ -104,4 +104,8 @@ angular.module('roomApp')
       ctrl.maxVotes = maxVotes;
     });
 
+    socket.socket.on('newPerson', function(numberPeople) {
+      console.log(numberPeople);
+    });
+
   });
