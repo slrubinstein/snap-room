@@ -33,6 +33,14 @@ angular.module('roomApp')
       }
     };
 
+   this.returnArray = function(num) {
+          var arr = []; 
+          for (var i = 0; i < num; i++) {
+            arr.push(i);
+          }
+          return arr;
+    };
+
     this.getRoom = function(roomNumber) {
        $http.get("/api/room/" + roomNumber)
          .success(function(data){
