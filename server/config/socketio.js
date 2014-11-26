@@ -10,7 +10,17 @@ var config = require('./environment');
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
-
+ var roomsObject = socket.nsp.adapter.rooms;
+ //if user was only in one room when they disconnected:
+ for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
+   var roomKey = parseInt(Object.keys(roomsObject)[i]);
+   if (!isNaN(roomKey)) {
+     var roomNumber = Object.keys(roomsObject)[i];
+     var roomObject = socket.nsp.adapter.rooms[roomNumber];
+     socket.broadcast.to(roomNumber).emit('newPerson', Object.keys(roomObject).length);
+     socket.emit('newPerson', Object.keys(roomObject).length);
+   }
+ }
 }
 
 // When the user connects.. perform this
