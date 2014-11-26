@@ -5,7 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/room-dev'
+    uri: 'mongodb://localhost/room-dev2'
   },
 
   seedDB: true

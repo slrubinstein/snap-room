@@ -46,7 +46,7 @@ angular.module('roomApp')
          .success(function(data){
           $scope.initialRoomData = data;
           $scope.roomColor = data.color;
-          $scope.expiresAt = new Date(Date.parse(data.expiresAt));
+          $scope.expiresAt = new Date(Date.parse(data.ourExpTime));
           $scope.countDown = $interval(ctrl.runTimer, 1000); 
        }).error(function(data){
            ctrl.message = "error";
