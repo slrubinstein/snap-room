@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('MainCtrl', function ($state, $scope, $http, 
-          socket, $stateParams, $window, timerFactory) {
+          socket, $stateParams, $window, timerFactory, geolocation) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -17,6 +17,15 @@ angular.module('roomApp')
     this.lat;
     this.lon;
     this.geoLocated = false;
+    this.geoData = geolocation.getLocation(); // return geoData obj
+
+
+
+    this.geoData = geolocation.getLocation()
+      .then(function(data) {
+        console.log('geo data is', data)
+      })
+    
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
@@ -72,11 +81,11 @@ angular.module('roomApp')
     };
 
     this.getRoomByGeo = function() {
-
       navigator.geolocation.getCurrentPosition(function(position) {
         ctrl.geoLocated = true;
         ctrl.lat = position.coords.latitude;
         ctrl.lon = position.coords.longitude;
+        ////////
         $http.get("/api/room/" + ctrl.lat.toFixed(1) + "/" + ctrl.lon.toFixed(1))
          .success(function(data){
             ctrl.availableRooms = data;
@@ -98,7 +107,10 @@ angular.module('roomApp')
 
     
     this.getRoomByGeo();
+    
 
+
+    // console.log('position is', position)
     socket.socket.on('refreshRoomList', function() {
       console.log("hello");
       ctrl.getRoomByGeo();
@@ -108,19 +120,19 @@ angular.module('roomApp')
 /////////////////////////////////////////////       
 
 
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
-        return;
-      }
-      $http.post('/api/things', { name: $scope.newThing });
-      $scope.newThing = '';
-    };
+    // $scope.addThing = function() {
+    //   if($scope.newThing === '') {
+    //     return;
+    //   }
+    //   $http.post('/api/things', { name: $scope.newThing });
+    //   $scope.newThing = '';
+    // };
 
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/things/' + thing._id);
-    };
+    // $scope.deleteThing = function(thing) {
+    //   $http.delete('/api/things/' + thing._id);
+    // };
 
-    $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('thing');
-    });
+    // $scope.$on('$destroy', function () {
+    //   socket.unsyncUpdates('thing');
+    // });
   });
