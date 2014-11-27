@@ -99,7 +99,8 @@ angular.module('roomApp')
             }) 
     }
 
-    socket.socket.on('winner', function(winner, maxVotes) {
+    socket.socket.on('timeUp', function(winner, maxVotes) {
+      ctrl.timeUp = true;
       ctrl.winner = winner;
       ctrl.maxVotes = maxVotes;
     });
