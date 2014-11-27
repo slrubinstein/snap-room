@@ -48,11 +48,11 @@ function onConnect(socket) {
   socket.on('timeUp', function(room) {
     console.log('time is up')
     Room.findOne({roomNumber:room}, function(err, room) {
-      console.log("error: " , err);
-      console.log("room: ", room);
+      var winner;
+      var maxVotes;
       if (room.choices.length > 0) {
-        var winner = [room.choices[0].choice];
-        var maxVotes = room.choices[0].votes;
+        winner = [room.choices[0].choice];
+        maxVotes = room.choices[0].votes;
         for (var i = 0; i < room.choices.length; i++) {
           if (room.choices[i].votes > maxVotes) {
             winner[0] = room.choices[i].choice;
@@ -63,13 +63,12 @@ function onConnect(socket) {
             winner.push(room.choices[i].choice);
           }
         }    
-        socket.broadcast.to(room).emit('winner', winner, maxVotes);
-        socket.emit('winner', winner, maxVotes)
+      } 
+        socket.broadcast.to(room).emit('timeUp', winner, maxVotes);
+        socket.emit('timeUp', winner, maxVotes)
 
         socket.broadcast.to(room).emit('refreshRoomList');
-        socket.emit('refreshRoomList');
-
-      }  
+        socket.emit('refreshRoomList'); 
     })
 
   })

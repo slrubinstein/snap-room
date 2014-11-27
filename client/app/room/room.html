@@ -12,10 +12,15 @@
       <div id="backButton">
       	<a ui-sref="main"><span class="glyphicon glyphicon-chevron-left">Back</span></a>
       </div>
-    	<div ng-show="secondsLeft && !room.winner"><p>Room Closes in: 
-    	{{minutesLeft}}:{{secondsLeft}}</p></div>
+    	<div ng-show="secondsLeft && !room.timeUp"><p>Room Closes in: 
+    	{{minutesLeft}}:{{secondsLeft}}</p>
+       </div>
 
     	Number of people in this room: {{numberPeople}}
+
+    	    <h2 ng-show="room.timeUp && !room.winner">
+              No votes were cast
+    	    </h2> 
                 
 	    	<div ng-show="room.winner" class="col-sm-12 col-md-12 col-lg-12">
     	    <h2 ng-show="room.winner.length > 1">Winners:</h2>
@@ -37,7 +42,7 @@
     
 
 
-    <div ng-hide="room.winner">
+    <div ng-hide="room.timeUp">
 		<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
 	        <ul ng-if="roomData.length === 0" class="list-group">
 				<li ng-repeat="choice in initialRoomData.choices"
