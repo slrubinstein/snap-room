@@ -2,7 +2,8 @@
 
 angular.module('roomApp')
   .controller('MainCtrl', function ($state, $scope, $http, 
-          socket, $stateParams, $window, timerFactory, geolocation) {
+          socket, $stateParams, $window, timerFactory, geolocation,
+          populateRooms) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -17,23 +18,42 @@ angular.module('roomApp')
     this.lat;
     this.lon;
     this.geoLocated = false;
-    this.geoData = geolocation.getLocation(); // return geoData obj
+    this.geoData;
 
+    this.getRoomByGeo = function() {
+      // get geolocation
+      var getGeo = geolocation.getLocation()
+        .then(function(geoData) {
+          ctrl.geoData = geoData;
+          // use geolocation to find available rooms
+          var getRooms = populateRooms.get(geoData)
+            .then(function(rooms) {
+              ctrl.availableRooms = rooms;
+              // run assign colors
+              ctrl.assignColors(rooms);
+            })
+        })
+    }
 
+    this.assignColors = function(rooms) {
+      rooms.forEach(function(room){
+        ctrl.assignedColors[room.color] += 1;
+        room.colorAndNum = room.color;
+        if (ctrl.assignedColors[room.color] > 1) {
+          room.colorAndNum += ctrl.assignedColors[room.color];
+        }
+      });
+      ctrl.setRoomToCreateColor(0);
+    }
 
-    this.geoData = geolocation.getLocation()
-      .then(function(data) {
-        console.log('geo data is', data)
-      })
-    
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
 
     this.createRoom = function (color) {
-      $http.post("/api/room", {lat: ctrl.lat, 
-                               lon: ctrl.lon, 
+      $http.post("/api/room", {lat: ctrl.geoData.lat, 
+                               lon: ctrl.geoData.lon, 
                                color: color})
         .success(function(data){
           $state.go("room", {'roomNumber': data.roomNumber});
@@ -45,25 +65,10 @@ angular.module('roomApp')
         }); 
     };
 
-    this.getRoom = function(roomNumber) {
+    this.enterRoom = function(roomNumber) {
       if (roomNumber) {
-         $http.get("/api/room/" + roomNumber)
-           .success(function(data){
-             $state.go("room", {'roomNumber': roomNumber});
-
-         }).error(function(data){
-             ctrl.message = "room doesn't exist";
-         });
+         populateRooms.enter(roomNumber);
       }
-      // else {
-      //    $http.get("/api/room/" + roomIdForm.idInput.value)
-      //      .success(function(data){
-      //        $state.go("room", {'data': roomIdForm.idInput.value});
-
-      //    }).error(function(data){
-      //        ctrl.message = "room doesn't exist";
-      //    });
-      // }
     };
 
     this.assignedColors = {"blue": 0, "green": 0, "red": 0};
@@ -80,59 +85,37 @@ angular.module('roomApp')
       this.setRoomToCreateColor(num + 1);
     };
 
-    this.getRoomByGeo = function() {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        ctrl.geoLocated = true;
-        ctrl.lat = position.coords.latitude;
-        ctrl.lon = position.coords.longitude;
-        ////////
-        $http.get("/api/room/" + ctrl.lat.toFixed(1) + "/" + ctrl.lon.toFixed(1))
-         .success(function(data){
-            ctrl.availableRooms = data;
-            //$state.go("room", {'data': data});
-            ctrl.availableRooms.forEach(function(room){
-              ctrl.assignedColors[room.color] += 1;
-              room.colorAndNum = room.color;
-              if (ctrl.assignedColors[room.color] > 1) {
-                room.colorAndNum += ctrl.assignedColors[room.color];
-              }
-            });
-            ctrl.setRoomToCreateColor(0);
+    // this.getRoomByGeo = function() {
+    //   navigator.geolocation.getCurrentPosition(function(position) {
+    //     ctrl.geoLocated = true;
+    //     ctrl.lat = position.coords.latitude;
+    //     ctrl.lon = position.coords.longitude;
+    //     ////////
+    //     $http.get("/api/room/" + ctrl.lat.toFixed(1) + "/" + ctrl.lon.toFixed(1))
+    //      .success(function(data){
+    //         ctrl.availableRooms = data;
+    //         //$state.go("room", {'data': data});
+    //         ctrl.availableRooms.forEach(function(room){
+    //           ctrl.assignedColors[room.color] += 1;
+    //           room.colorAndNum = room.color;
+    //           if (ctrl.assignedColors[room.color] > 1) {
+    //             room.colorAndNum += ctrl.assignedColors[room.color];
+    //           }
+    //         });
+    //         ctrl.setRoomToCreateColor(0);
 
-       }).error(function(data){
-           ctrl.message = "room doesn't exist";
-       });
-      }); 
-    };
+    //    }).error(function(data){
+    //        ctrl.message = "room doesn't exist";
+    //    });
+    //   }); 
+    // };
 
     
     this.getRoomByGeo();
     
-
-
-    // console.log('position is', position)
     socket.socket.on('refreshRoomList', function() {
       console.log("hello");
       ctrl.getRoomByGeo();
     });
 
-
-/////////////////////////////////////////////       
-
-
-    // $scope.addThing = function() {
-    //   if($scope.newThing === '') {
-    //     return;
-    //   }
-    //   $http.post('/api/things', { name: $scope.newThing });
-    //   $scope.newThing = '';
-    // };
-
-    // $scope.deleteThing = function(thing) {
-    //   $http.delete('/api/things/' + thing._id);
-    // };
-
-    // $scope.$on('$destroy', function () {
-    //   socket.unsyncUpdates('thing');
-    // });
   });

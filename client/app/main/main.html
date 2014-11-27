@@ -4,12 +4,12 @@
     <div class="myContainer container">
       <h1 class="page-header animated zoomIn">Snaproom</h1>
 
-      <p ng-hide="main.geoLocated">Finding your location...</p>
+      <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
 
-      <button class="btn btn-primary" ng-show="main.geoLocated" ng-click="main.createRoom(main.roomToCreateColor)">Create Room</button><br/>
+      <button class="btn btn-primary" ng-show="main.geoData.geoLocated" ng-click="main.createRoom(main.roomToCreateColor)">Create Room</button><br/>
 
       <div id="buttonDiv" ng-repeat="room in main.availableRooms">
-        <button class="btn" ng-click="main.getRoom(room.roomNumber)" style="background-color: {{room.color}}">{{room.colorAndNum}} room</button>
+        <button class="btn" ng-click="main.enterRoom(room.roomNumber)" style="background-color: {{room.color}}">{{room.colorAndNum}} room</button>
      </div>
 
 <!--       <a class="btn btn-facebook" href="" ng-click="loginOauth('facebook')">
