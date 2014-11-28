@@ -52,17 +52,19 @@ angular.module('roomApp')
     };
 
     this.createRoom = function (color) {
-      $http.post("/api/room", {lat: ctrl.geoData.lat, 
-                               lon: ctrl.geoData.lon, 
-                               color: color})
-        .success(function(data){
-          $state.go("room", {'roomNumber': data.roomNumber});
-          socket.socket.emit('createRoom', data.roomNumber, color)
-          //timerFactory.timerListener();
-        })
-        .error(function(data){
-          console.log("error creating room");
-        }); 
+      console.log('ctrl geodata', ctrl.geoData)
+      populateRooms.create(ctrl.geoData, color);
+      // $http.post("/api/room", {lat: ctrl.geoData.lat, 
+      //                          lon: ctrl.geoData.lon, 
+      //                          color: color})
+      //   .success(function(data){
+      //     $state.go("room", {'roomNumber': data.roomNumber});
+      //     socket.socket.emit('createRoom', data.roomNumber, color)
+      //     //timerFactory.timerListener();
+      //   })
+      //   .error(function(data){
+      //     console.log("error creating room");
+      //   }); 
     };
 
     this.enterRoom = function(roomNumber) {
