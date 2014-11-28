@@ -1,0 +1,34 @@
+<div class="col-sm-12 col-md-12 col-lg-12" 
+     style="background-color: {{roomColor}};
+            height: 50px">
+
+  <div id="backButton">
+  	<a ui-sref="main">
+  		<span class="glyphicon glyphicon-chevron-left">Back</span>
+  	</a>
+  </div>
+
+	<div ng-show="secondsLeft && !room.timeUp">
+		<p>Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
+  </div>
+  
+	<p>Number of people in this room: {{numberPeople}}</p>
+
+  <h2 ng-show="room.timeUp && !room.winner">
+      No votes were cast
+  </h2>
+          
+	<div ng-show="room.winner" class="col-sm-12 col-md-12 col-lg-12">
+    <h2 ng-show="room.winner.length > 1">Winners:</h2>
+    <h2 ng-show="room.winner.length === 1">Winner:</h2>
+    <ul class="list-group">
+			<li ng-repeat="winner in room.winner"
+					class="list-group-item">
+
+				<span>{{winner}}</span>
+				<span class="badge">{{room.maxVotes}}</span>
+
+			</li>
+		</ul>
+	</div>
+</div>
