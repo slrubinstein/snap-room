@@ -1,5 +1,5 @@
 <div class="col-sm-12 col-md-12 col-lg-12" 
-     style="background-color: {{roomColor}};
+     style="background-color: {{room.colorScheme.trimColor}};
             height: 50px">
 
   <div id="backButton">
@@ -11,14 +11,17 @@
 	<div ng-show="secondsLeft && !room.timeUp">
 		<p>Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
   </div>
-  
+
 	<p>Number of people in this room: {{numberPeople}}</p>
 
-  <h2 ng-show="room.timeUp && !room.winner">
+  <h2 ng-show="room.timeUp && !room.winner"
+  		style="background-color: {{room.colorScheme.wallColor}}">
       No votes were cast
   </h2>
           
-	<div ng-show="room.winner" class="col-sm-12 col-md-12 col-lg-12">
+	<div ng-show="room.winner" 
+			 class="col-sm-12 col-md-12 col-lg-12"
+			 style="background-color: {{room.colorScheme.wallColor}}">
     <h2 ng-show="room.winner.length > 1">Winners:</h2>
     <h2 ng-show="room.winner.length === 1">Winner:</h2>
     <ul class="list-group">
