@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('populateRooms', function ($q, $http, $state) {
+  .factory('populateRooms', function ($q, $http, $state, socket) {
 
     return {
       get: function (loc) {
@@ -20,6 +20,20 @@ angular.module('roomApp')
          }).error(function(data){
             return "error";
          });
+      },
+      create: function(loc, color) {
+        $http.post("/api/room", {lat: loc.lat, 
+                               lon: loc.lon, 
+                               color: color})
+        .success(function(data){
+          console.log('new success call')
+          $state.go("room", {'roomNumber': data.roomNumber});
+          socket.socket.emit('createRoom', data.roomNumber, color)
+          //timerFactory.timerListener();
+        })
+        .error(function(data){
+          console.log("error creating room");
+        });  
       }
     }
   });
