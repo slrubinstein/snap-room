@@ -91,8 +91,7 @@ angular.module('roomApp')
     };
 
     socket.socket.on('timeUp', function(winner, maxVotes, expiredRoomNumber) {
-      console.log("roomNumbers: ", expiredRoomNumber, roomNumber);
-      if (expiredRoomNumber === roomNumber) {
+      if (Number(expiredRoomNumber) === Number(roomNumber)) {
         ctrl.timeUp = true;
         ctrl.winner = winner;
         ctrl.maxVotes = maxVotes;
