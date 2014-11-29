@@ -64,8 +64,8 @@ function onConnect(socket) {
           }
         }    
       } 
-        socket.broadcast.to(room).emit('timeUp', winner, maxVotes);
-        socket.emit('timeUp', winner, maxVotes)
+        socket.broadcast.to(room).emit('timeUp', winner, maxVotes, room.roomNumber);
+        socket.emit('timeUp', winner, maxVotes, room.roomNumber);
 
         socket.broadcast.to(room).emit('refreshRoomList');
         socket.emit('refreshRoomList'); 

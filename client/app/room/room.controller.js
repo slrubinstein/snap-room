@@ -82,10 +82,13 @@ angular.module('roomApp')
         });
     };
 
-    socket.socket.on('timeUp', function(winner, maxVotes) {
-      ctrl.timeUp = true;
-      ctrl.winner = winner;
-      ctrl.maxVotes = maxVotes;
+    socket.socket.on('timeUp', function(winner, maxVotes, expiredRoomNumber) {
+      console.log("roomNumbers: ", expiredRoomNumber, roomNumber);
+      if (expiredRoomNumber === roomNumber) {
+        ctrl.timeUp = true;
+        ctrl.winner = winner;
+        ctrl.maxVotes = maxVotes;
+      }
     });
     socket.socket.emit('join', roomNumber);
     
