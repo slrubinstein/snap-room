@@ -35,7 +35,21 @@ angular.module('roomApp')
         })
     }
 
+    this.roomToCreateColor;
+
+    this.setRoomToCreateColor = function(num) {
+      for (var color in this.assignedColors) {
+        var colorCount = this.assignedColors[color];
+        if (colorCount === num) {
+          ctrl.roomToCreateColor = color;
+        }
+      }
+      if (ctrl.roomToCreateColor) return;
+      this.setRoomToCreateColor(num + 1);
+    };
+
     this.assignColors = function(rooms) {
+      ctrl.assignedColors = {"blue": 0, "green": 0, "red": 0};
       rooms.forEach(function(room){
         ctrl.assignedColors[room.color] += 1;
         room.colorAndNum = room.color;
@@ -73,19 +87,7 @@ angular.module('roomApp')
       }
     };
 
-    this.assignedColors = {"blue": 0, "green": 0, "red": 0};
-    this.roomToCreateColor;
 
-    this.setRoomToCreateColor = function(num) {
-      for (var color in this.assignedColors) {
-        var colorCount = this.assignedColors[color];
-        if (colorCount === num) {
-          ctrl.roomToCreateColor = color;
-        }
-      }
-      if (ctrl.roomToCreateColor) return;
-      this.setRoomToCreateColor(num + 1);
-    };
 
     // this.getRoomByGeo = function() {
     //   navigator.geolocation.getCurrentPosition(function(position) {
@@ -116,8 +118,12 @@ angular.module('roomApp')
     this.getRoomByGeo();
     
     socket.socket.on('refreshRoomList', function() {
-      console.log("hello");
-      ctrl.getRoomByGeo();
-    });
+      var getRooms = populateRooms.get(ctrl.geoData)
+        .then(function(rooms) {
+          ctrl.availableRooms = rooms;
+          // run assign colors
+          ctrl.assignColors(rooms);
+        })
+  });
 
   });
