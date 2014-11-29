@@ -13,10 +13,12 @@ angular.module('roomApp')
           });
         return deferred.promise;
       },
-      enter: function(roomNumber) {
+      enter: function(roomNumber, color) {
         $http.get("/api/room/" + roomNumber)
           .success(function(data){
-            $state.go("room", {'roomNumber': roomNumber});
+
+            $state.go("room", {roomNumber: roomNumber,
+                               color: color});
          }).error(function(data){
             return "error";
          });
@@ -26,8 +28,8 @@ angular.module('roomApp')
                                lon: loc.lon, 
                                color: color})
         .success(function(data){
-          console.log('new success call')
-          $state.go("room", {'roomNumber': data.roomNumber});
+          $state.go("room", {roomNumber: data.roomNumber,
+                              color: color});
           socket.socket.emit('createRoom', data.roomNumber, color)
           //timerFactory.timerListener();
         })

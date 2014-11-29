@@ -2,7 +2,8 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomFactory) {
+                                    roomFactory, timerFactory, setColors) {
+
     $scope.message = 'Hello';
     var ctrl = this;
 
@@ -18,6 +19,12 @@ angular.module('roomApp')
 
     $scope.initialRoomData;
     $scope.roomColor;
+
+    console.log('params', $stateParams)
+
+
+        this.colorScheme = setColors.set(this.params.color)
+
 
     this.runTimer = function(expiresAt) {
       $scope.timeNow = new Date().getTime();

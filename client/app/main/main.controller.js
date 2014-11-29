@@ -52,7 +52,6 @@ angular.module('roomApp')
     };
 
     this.createRoom = function (color) {
-      console.log('ctrl geodata', ctrl.geoData)
       populateRooms.create(ctrl.geoData, color);
       // $http.post("/api/room", {lat: ctrl.geoData.lat, 
       //                          lon: ctrl.geoData.lon, 
@@ -67,9 +66,9 @@ angular.module('roomApp')
       //   }); 
     };
 
-    this.enterRoom = function(roomNumber) {
+    this.enterRoom = function(roomNumber, color) {
       if (roomNumber) {
-         populateRooms.enter(roomNumber);
+         populateRooms.enter(roomNumber, color);
       }
     };
 
