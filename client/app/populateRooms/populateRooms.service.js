@@ -13,11 +13,12 @@ angular.module('roomApp')
           });
         return deferred.promise;
       },
-      enter: function(roomNumber) {
+      enter: function(roomNumber, color) {
         $http.get("/api/room/" + roomNumber)
           .success(function(data){
 
-            $state.go("room", {'roomNumber': roomNumber});
+            $state.go("room", {roomNumber: roomNumber,
+                               color: color});
          }).error(function(data){
             return "error";
          });

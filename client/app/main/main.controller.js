@@ -66,9 +66,9 @@ angular.module('roomApp')
       //   }); 
     };
 
-    this.enterRoom = function(roomNumber) {
+    this.enterRoom = function(roomNumber, color) {
       if (roomNumber) {
-         populateRooms.enter(roomNumber);
+         populateRooms.enter(roomNumber, color);
       }
     };
 
