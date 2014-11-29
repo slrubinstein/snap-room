@@ -13,24 +13,28 @@ angular.module('roomApp')
           });
         return deferred.promise;
       },
-      enter: function(roomNumber, color) {
-        $http.get("/api/room/" + roomNumber)
+      enter: function(roomNumber, color, geoRoom) {
+        $http.get("/api/room/" + roomNumber + "/" + geoRoom)
           .success(function(data){
 
             $state.go("room", {roomNumber: roomNumber,
-                               color: color});
+                               color: color,
+                               geoRoom: geoRoom
+                              });
          }).error(function(data){
             return "error";
          });
       },
-      create: function(loc, color) {
+      create: function(loc, color, geoRoom) {
         $http.post("/api/room", {lat: loc.lat, 
                                lon: loc.lon, 
                                color: color})
         .success(function(data){
           $state.go("room", {roomNumber: data.roomNumber,
-                              color: color});
-          socket.socket.emit('createRoom', data.roomNumber, color)
+                              color: color,
+                              geoRoom: geoRoom
+                            });
+          socket.socket.emit('createRoom', data.roomNumber, color, geoRoom)
           //timerFactory.timerListener();
         })
         .error(function(data){

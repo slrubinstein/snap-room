@@ -30,11 +30,14 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+  socket.on('joinAnteroom', function(geoRoom) {
+    socket.join(geoRoom);
+  })
 
-
-  socket.on('createRoom', function(room, color) {
+  socket.on('createRoom', function(room, color, geoRoom) {
       socket.join(room);
-      socket.broadcast.emit('refreshRoomList');
+      console.log(geoRoom);
+      socket.broadcast.to(geoRoom).emit('refreshRoomList');
   });
 
   socket.on('join', function(room) {
@@ -45,7 +48,7 @@ function onConnect(socket) {
   })
 
 
-  socket.on('timeUp', function(room) {
+  socket.on('timeUp', function(room, geoRoom) {
     console.log('time is up')
     Room.findOne({roomNumber:room}, function(err, room) {
       var winner;
@@ -67,7 +70,8 @@ function onConnect(socket) {
         socket.broadcast.to(room).emit('timeUp', winner, maxVotes, room.roomNumber);
         socket.emit('timeUp', winner, maxVotes, room.roomNumber);
 
-        socket.broadcast.to(room).emit('refreshRoomList');
+        console.log("geoRoom: ", geoRoom);
+        socket.broadcast.to(geoRoom).emit('refreshRoomList');
         socket.emit('refreshRoomList'); 
     })
 

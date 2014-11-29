@@ -9,6 +9,7 @@ angular.module('roomApp')
 
     this.params = $stateParams;
     var roomNumber = $stateParams.roomNumber;
+    var geoRoom = $stateParams.geoRoom;
 
     $scope.roomData = [];
     //$scope.roomData = this.getRoom(roomNumber);
@@ -36,7 +37,7 @@ angular.module('roomApp')
 
       if(Number(minutesLeftDecimal) < 0) {
         $interval.cancel($scope.countDown);
-        socket.socket.emit('timeUp', $scope.initialRoomData.roomNumber);
+        socket.socket.emit('timeUp', $scope.initialRoomData.roomNumber, geoRoom);
       }
     };
 
