@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    timerFactory) {
+                                    roomFactory) {
     $scope.message = 'Hello';
     var ctrl = this;
 
@@ -42,33 +42,24 @@ angular.module('roomApp')
     };
 
     this.getRoom = function(roomNumber) {
-       $http.get("/api/room/" + roomNumber)
-         .success(function(data){
-          $scope.initialRoomData = data;
-          $scope.roomColor = data.color;
-          $scope.expiresAt = new Date(Date.parse(data.ourExpTime));
-          $scope.countDown = $interval(ctrl.runTimer, 1000); 
-       }).error(function(data){
-           ctrl.message = "error";
-       });
+       var promise = roomFactory.get(roomNumber)
+       .then(function(roomData) {
+          $scope.initialRoomData = roomData.initialRoomData;
+          $scope.roomColor = roomData.roomColor;
+          $scope.expiresAt = roomData.expiresAt;
+          $scope.countDown = $interval(ctrl.runTimer, 1000);
+       })
     };
 
     this.getRoom(roomNumber);
 
     this.submitInput = function() {
-      $http.put("/api/room/" + this.params.roomNumber, 
-      	{choice : chatForm.textInput.value})
-        .success(function(data){
-            // console.log(data);
-            ctrl.restName = '';
-        })
-        .error(function(data){
-            console.log("error");
-        });
+      roomFactory.submitInput(roomNumber);
+      ctrl.restName = '';
     }
 
     this.vote = function(choice, upOrDown, event, index) {
-
+      
       if (upOrDown) {
         $(event.target).parent().parent().css("background-color", $scope.roomColor);
       }
@@ -78,26 +69,18 @@ angular.module('roomApp')
         ctrl.restaurants.splice(index,1);
       }  
 
-      $http.put("/api/room/" + roomNumber, 
-        {choice : choice,
-          upOrDown: upOrDown})
-        .success(function(data){
-        })
-        .error(function(data){
-            console.log("error");
-        });
+      roomFactory.submitVote(roomNumber, choice, upOrDown);
+
     };
 
     this.restaurants = [];
 
     this.getFourSquare = function() {
-        $http.get('/api/room/' + roomNumber + '/vendor/foursquare')
-            .success(function(data) {
-              console.log(data)
-                var restaurants = data.response.groups[0].items;
-                ctrl.restaurants = restaurants;
-            }) 
-    }
+      var promise = roomFactory.getFourSquare(roomNumber)
+        .then(function(restaurants) {
+          ctrl.restaurants = restaurants;
+        });
+    };
 
     socket.socket.on('timeUp', function(winner, maxVotes) {
       ctrl.timeUp = true;
