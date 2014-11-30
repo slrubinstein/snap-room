@@ -3,14 +3,14 @@
 angular.module('roomApp')
   .controller('MainCtrl', function ($state, $scope, $http, 
           socket, $stateParams, $window, timerFactory, geolocation,
-          populateRooms) {
+          populateRooms, Auth, $location) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
       socket.syncUpdates('thing', $scope.awesomeThings);
     });
-////////////////////////////////////
+
     
     this.message;
     var ctrl = this;
@@ -43,7 +43,6 @@ angular.module('roomApp')
             firstThreeLonNumbers = lonString.slice(0,2) + lonString.slice(3,4);
           }
           ctrl.geoRoom = "geoRoom" + firstThreeLatNumbers + firstThreeLonNumbers; 
-          console.log(ctrl.geoRoom);
           // use geolocation to find available rooms
           socket.socket.emit("joinAnteroom", ctrl.geoRoom);
           var getRooms = populateRooms.get(geoData)
@@ -80,24 +79,8 @@ angular.module('roomApp')
       ctrl.setRoomToCreateColor(0);
     }
 
-
-    $scope.loginOauth = function(provider) {
-      $window.location.href = '/auth/' + provider;
-    };
-
     this.createRoom = function (color) {
       populateRooms.create(ctrl.geoData, color, ctrl.geoRoom);
-      // $http.post("/api/room", {lat: ctrl.geoData.lat, 
-      //                          lon: ctrl.geoData.lon, 
-      //                          color: color})
-      //   .success(function(data){
-      //     $state.go("room", {'roomNumber': data.roomNumber});
-      //     socket.socket.emit('createRoom', data.roomNumber, color)
-      //     //timerFactory.timerListener();
-      //   })
-      //   .error(function(data){
-      //     console.log("error creating room");
-      //   }); 
     };
 
     this.enterRoom = function(roomNumber, color) {
@@ -105,33 +88,6 @@ angular.module('roomApp')
          populateRooms.enter(roomNumber, color, ctrl.geoRoom);
       }
     };
-
-
-
-    // this.getRoomByGeo = function() {
-    //   navigator.geolocation.getCurrentPosition(function(position) {
-    //     ctrl.geoLocated = true;
-    //     ctrl.lat = position.coords.latitude;
-    //     ctrl.lon = position.coords.longitude;
-    //     ////////
-    //     $http.get("/api/room/" + ctrl.lat.toFixed(1) + "/" + ctrl.lon.toFixed(1))
-    //      .success(function(data){
-    //         ctrl.availableRooms = data;
-    //         //$state.go("room", {'data': data});
-    //         ctrl.availableRooms.forEach(function(room){
-    //           ctrl.assignedColors[room.color] += 1;
-    //           room.colorAndNum = room.color;
-    //           if (ctrl.assignedColors[room.color] > 1) {
-    //             room.colorAndNum += ctrl.assignedColors[room.color];
-    //           }
-    //         });
-    //         ctrl.setRoomToCreateColor(0);
-
-    //    }).error(function(data){
-    //        ctrl.message = "room doesn't exist";
-    //    });
-    //   }); 
-    // };
 
     
     this.getRoomByGeo();
@@ -144,6 +100,28 @@ angular.module('roomApp')
           // run assign colors
           ctrl.assignColors(rooms);
         })
-  });
+    });
+
+
+    // User authentication
+    this.isLoggedIn = Auth.isLoggedIn();
+    this.user = Auth.getCurrentUser();
+
+    $scope.loginOauth = function(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
+
+    $scope.logout = function() {
+      Auth.logout();
+      ctrl.user = Auth.getCurrentUser();
+      ctrl.isLoggedIn = Auth.isLoggedIn();
+      $location.path('/');
+    }
+
+    // dev temporary button
+    $scope.logCurrentUser = function() {
+      console.log('logged in as', ctrl.user)  
+    }
+
 
   });

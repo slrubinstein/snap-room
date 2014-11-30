@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomFactory, timerFactory, setColors) {
+                                    roomFactory, timerFactory, setColors, Auth) {
 
     $scope.message = 'Hello';
     var ctrl = this;
@@ -21,10 +21,8 @@ angular.module('roomApp')
     $scope.initialRoomData;
     $scope.roomColor;
 
-    console.log('params', $stateParams)
 
-
-        this.colorScheme = setColors.set(this.params.color)
+    this.colorScheme = setColors.set(this.params.color)
 
 
     this.runTimer = function(expiresAt) {
@@ -104,6 +102,10 @@ angular.module('roomApp')
       console.log(numberPeople);
       $scope.$apply();
     });
+
+    //facebook login stuff
+    var user = Auth.getCurrentUser();
+    // console.log('user', user.facebook.first_name)
 
 
   });

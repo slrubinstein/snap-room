@@ -12,9 +12,19 @@
         <button class="btn" ng-click="main.enterRoom(room.roomNumber, room.color)" style="background-color: {{room.color}}">{{room.colorAndNum}} room</button>
      </div>
 
-<!--       <a class="btn btn-facebook" href="" ng-click="loginOauth('facebook')">
+     <div>
+      <p ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
+      <p ng-hide="main.isLoggedIn">Not currently logged in</p>
+     </div>
+
+      <a class="btn btn-facebook" ng-click="loginOauth('facebook')">
         <i class="fa fa-facebook"></i> Connect with Facebook
-      </a> -->
+      </a>
+      <br>
+      <a class="btn btn-default" ng-click="logout()">Log out</a>
+      <br>
+      <!-- dev temp button -->
+      <a class="btn btn-default" ng-click="logCurrentUser()">log current user</a>
 
     </div>
 </div>
