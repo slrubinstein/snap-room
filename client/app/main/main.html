@@ -8,11 +8,29 @@
 
       <button class="btn btn-primary" ng-show="main.geoData.geoLocated" ng-click="main.createRoom(main.roomToCreateColor)">Create Room</button><br/>
 
-      <div id="buttonDiv" ng-repeat="room in main.availableRooms">
-        <button class="btn" ng-click="main.enterRoom(room.roomNumber, room.color)" style="background-color: {{room.color}}">{{room.colorAndNum}} room</button>
-     </div>
+      <button class="btn btn-primary" 
+              ng-show="main.geoData.geoLocated && 
+                       main.isLoggedIn" 
+              ng-click="main.createFacebookRoom(main.roomToCreateColor)">Create Facebook Only Room</button><br/>
 
+      <div id="buttonDiv" 
+           ng-repeat="availRoom in main.availableRooms">
+        <button class="btn" 
+                ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" style="background-color: {{availRoom.color}}">{{availRoom.colorAndNum}} room
+
+          <!-- show if locked & not logged in -->
+          <span ng-show="availRoom.lock && !main.isLoggedIn"
+                class="glyphicon glyphicon-lock"></span>
+
+          <!-- show if locked & logged in -->
+          <span ng-show="availRoom.lock && main.isLoggedIn"
+                class="glyphicon glyphicon-thumbs-up"></span>
+
+        </button> 
+        <p>lock: {{availRoom.lock}}</p>
+     </div>
      <div>
+<p>Logged in? {{main.isLoggedIn}}</p>
       <p ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
       <p ng-hide="main.isLoggedIn">Not currently logged in</p>
      </div>

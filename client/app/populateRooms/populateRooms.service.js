@@ -25,10 +25,19 @@ angular.module('roomApp')
             return "error";
          });
       },
-      create: function(loc, color, geoRoom) {
-        $http.post("/api/room", {lat: loc.lat, 
-                               lon: loc.lon, 
-                               color: color})
+      create: function(options) {
+
+        var lat = options.lat,
+            lon = options.lon,
+            color = options.color,
+            lock = options.lock || null,
+            geoRoom = options.geoRoom
+
+        $http.post("/api/room", {lat: lat, 
+                                 lon: lon, 
+                                 color: color,
+                                 lock: lock,
+                                 geoRoom: geoRoom})
         .success(function(data){
           $state.go("room", {roomNumber: data.roomNumber,
                               color: color,

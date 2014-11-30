@@ -80,7 +80,10 @@ angular.module('roomApp')
     }
 
     this.createRoom = function (color) {
-      populateRooms.create(ctrl.geoData, color, ctrl.geoRoom);
+      populateRooms.create({lat: ctrl.geoData.lat,
+                            lon: ctrl.geoData.lon, 
+                            color: color, 
+                            geoRoom: ctrl.geoRoom});
     };
 
     this.enterRoom = function(roomNumber, color) {
@@ -103,7 +106,7 @@ angular.module('roomApp')
     });
 
 
-    // User authentication
+    // facebook stuff
     this.isLoggedIn = Auth.isLoggedIn();
     this.user = Auth.getCurrentUser();
 
@@ -118,8 +121,18 @@ angular.module('roomApp')
       $location.path('/');
     }
 
+    this.createFacebookRoom = function (color) {
+      populateRooms.create({lat: ctrl.geoData.lat,
+                            lon: ctrl.geoData.lon, 
+                            color: color, 
+                            geoRoom: ctrl.geoRoom,
+                            lock: 'facebook'});
+    };
+
+
     // dev temporary button
     $scope.logCurrentUser = function() {
+      console.log('logged in?', ctrl.isLoggedIn)
       console.log('logged in as', ctrl.user)  
     }
 
