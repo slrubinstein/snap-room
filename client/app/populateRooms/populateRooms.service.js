@@ -13,17 +13,28 @@ angular.module('roomApp')
           });
         return deferred.promise;
       },
-      enter: function(roomNumber, color, geoRoom) {
+      enter: function(roomNumber, color, geoRoom, isLoggedIn) {
         $http.get("/api/room/" + roomNumber + "/" + geoRoom)
-          .success(function(data){
-
-            $state.go("room", {roomNumber: roomNumber,
-                               color: color,
-                               geoRoom: geoRoom
-                              });
-         }).error(function(data){
+          .success(function(room){
+            console.log('room', room)
+            console.log('logged', isLoggedIn)
+            console.log('locked', room.lock)
+            // if(room.lock) {
+              console.log('room lock', !room.lock)
+              $state.go("room", {roomNumber: roomNumber,
+                                 color: color,
+                                 geoRoom: geoRoom
+                                });
+            // }
+            // else if(room.lock && isLoggedIn) {
+              // $state.go("room", {roomNumber: roomNumber,
+              //                    color: color,
+              //                    geoRoom: geoRoom
+              //                   });
+            // }
+          }).error(function(room){
             return "error";
-         });
+          });
       },
       create: function(options) {
 

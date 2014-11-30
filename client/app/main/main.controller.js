@@ -88,7 +88,7 @@ angular.module('roomApp')
 
     this.enterRoom = function(roomNumber, color) {
       if (roomNumber) {
-         populateRooms.enter(roomNumber, color, ctrl.geoRoom);
+        populateRooms.enter(roomNumber, color, ctrl.geoRoom, Auth.isLoggedIn());
       }
     };
 
