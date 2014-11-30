@@ -104,7 +104,9 @@ angular.module('roomApp')
     });
 
     //facebook login stuff
-    var user = Auth.getCurrentUser();
+    this.user = Auth.getCurrentUser();
+    this.isLoggedIn = Auth.isLoggedIn();
+    this.user = Auth.getCurrentUser();
     // console.log('user', user.facebook.first_name)
 
 

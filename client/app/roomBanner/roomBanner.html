@@ -1,6 +1,6 @@
 <div class="col-sm-12 col-md-12 col-lg-12" 
      style="background-color: {{room.colorScheme.trimColor}};
-            height: 50px">
+            height: 80px">
 
   <div id="backButton">
   	<a ui-sref="main">
@@ -12,7 +12,9 @@
 		<p>Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
   </div>
 
-	<p>Number of people in this room: {{numberPeople}}</p>
+    <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
+
+    <p>Number of people in this room: {{numberPeople}}</p>
 
   <h2 ng-show="room.timeUp && !room.winner"
   		style="background-color: {{room.colorScheme.wallColor}}">
