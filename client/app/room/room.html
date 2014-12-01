@@ -2,7 +2,7 @@
 
 	<room-banner></room-banner>   
 
-    <div ng-hide="room.timeUp"
+    <div ng-hide="room.timeUp && roomType==='lunch'"
     		 style="background-color: {{room.colorScheme.wallColor}}">
 			<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
 
@@ -30,13 +30,12 @@
 
 				<div ng-if="roomType==='chat'">
 					<ul class="list-group">
-						<li ng-repeat="message in roomData.messages">
-							<p>{{message.message}} {{message.name}}</p>
+						<li ng-repeat="message in roomData.messages"
+								class="list-group-item">
+							<span>{{message.name}}:</span> <span>{{message.message}}</span> 
 						</li>
 					</ul>
 				</div>
-
-
 			</div>
 
 		<four-square ng-if="roomType==='lunch'"></four-square>

@@ -16,9 +16,14 @@
 
     <p>Number of people in this room: {{numberPeople}}</p>
 
-  <h2 ng-show="room.timeUp && !room.winner"
+  <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'"
   		style="background-color: {{room.colorScheme.wallColor}}">
       No votes were cast
+  </h2>
+
+  <h2 ng-show="room.timeUp && roomType==='chat'"
+      style="background-color: {{room.colorScheme.wallColor}}">
+      The chatroom is closed
   </h2>
           
 	<div ng-show="room.winner" 

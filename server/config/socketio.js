@@ -51,24 +51,32 @@ function onConnect(socket) {
   socket.on('timeUp', function(room, geoRoom) {
     console.log('time is up')
     Room.findOne({roomNumber:room}, function(err, room) {
-      var winner;
-      var maxVotes;
-      if (room.choices.length > 0) {
-        winner = [room.choices[0].choice];
-        maxVotes = room.choices[0].votes;
-        for (var i = 0; i < room.choices.length; i++) {
-          if (room.choices[i].votes > maxVotes) {
-            winner[0] = room.choices[i].choice;
-            maxVotes = room.choices[i].votes;
-          }
-          else if (room.choices[i].votes === maxVotes
-                  && room.choices[i].choice !== winner[0]) {
-            winner.push(room.choices[i].choice);
-          }
-        }    
-      } 
+
+      if (room.type === 'lunch') {
+        var winner;
+        var maxVotes;
+        if (room.choices.length > 0) {
+          winner = [room.choices[0].choice];
+          maxVotes = room.choices[0].votes;
+          for (var i = 0; i < room.choices.length; i++) {
+            if (room.choices[i].votes > maxVotes) {
+              winner[0] = room.choices[i].choice;
+              maxVotes = room.choices[i].votes;
+            }
+            else if (room.choices[i].votes === maxVotes
+                    && room.choices[i].choice !== winner[0]) {
+              winner.push(room.choices[i].choice);
+            }
+          }    
+        }  
         socket.broadcast.to(room).emit('timeUp', winner, maxVotes, room.roomNumber);
         socket.emit('timeUp', winner, maxVotes, room.roomNumber);
+      }
+      else if (room.type === 'chat') {
+        socket.broadcast.to(room).emit('timeUpChat', room.roomNumber);
+        socket.emit('timeUpChat', room.roomNumber);
+      }
+
 
         console.log("geoRoom: ", geoRoom);
         socket.broadcast.to(geoRoom).emit('refreshRoomList');

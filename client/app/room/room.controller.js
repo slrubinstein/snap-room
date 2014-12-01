@@ -106,6 +106,13 @@ angular.module('roomApp')
         ctrl.maxVotes = maxVotes;
       }
     });
+
+    socket.socket.on('timeUpChat', function(expiredRoomNumber) {
+      if (Number(expiredRoomNumber) === Number(roomNumber)) {
+        ctrl.timeUp = true;
+      }
+    });
+
     socket.socket.emit('join', roomNumber);
     
     socket.socket.on('newPerson', function(numberPeople) {
