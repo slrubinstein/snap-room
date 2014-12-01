@@ -17,6 +17,7 @@ angular.module('roomApp')
           roomData.initialRoomData = data;
           roomData.roomColor = data.color;
           roomData.expiresAt = new Date(Date.parse(data.ourExpTime));
+          roomData.lockedRoom = data.lock;
           deferred.resolve(roomData); 
         }).error(function(data){
            $location.path("/");
@@ -36,9 +37,10 @@ angular.module('roomApp')
         });
      },
 
-      submitVote : function(roomNumber, choice, upOrDown) {
+      submitVote : function(roomNumber, choice, upOrDown, name) {
         $http.put("/api/room/" + roomNumber, 
           {choice : choice,
+            name: name,
             upOrDown: upOrDown})
           .success(function(data){
           })

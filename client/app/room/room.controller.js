@@ -54,6 +54,7 @@ angular.module('roomApp')
           $scope.roomColor = roomData.roomColor;
           $scope.expiresAt = roomData.expiresAt;
           $scope.countDown = $interval(ctrl.runTimer, 1000);
+          $scope.lockedRoom = roomData.lockedRoom;
        })
     };
 
@@ -73,9 +74,15 @@ angular.module('roomApp')
       else {
         $(event.target).parent().addClass('animated fadeOutUp');
         ctrl.restaurants.splice(index,1);
-      }  
+      } 
 
-      roomFactory.submitVote(roomNumber, choice, upOrDown);
+      var name; 
+      if (ctrl.user) {
+        if (ctrl.user.facebook) {
+          name = ctrl.user.facebook.first_name;
+        }
+      }
+      roomFactory.submitVote(roomNumber, choice, upOrDown, name);
 
     };
 

@@ -7,7 +7,7 @@ var RoomSchema = new Schema({
   name: String,
   info: String,
   active: Boolean,
-  choices: [{choice: String, votes: Number}],
+  choices: [{choice: String, votes: Number, voters: [String]}],
   roomNumber: Number,
   lat: Number,
   lon: Number,

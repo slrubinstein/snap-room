@@ -83,6 +83,9 @@ exports.update = function(req, res) {
           choice.votes--;
           newChoice = false;
         }
+        if (req.body.name) {
+          choice.voters.push(req.body.name);
+        }
       }
     });
     if (newChoice) {
