@@ -116,6 +116,8 @@ angular.module('roomApp')
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
+      ctrl.user = Auth.getCurrentUser();
+      ctrl.isLoggedIn = Auth.isLoggedIn();
     };
 
     $scope.logout = function() {
