@@ -3,7 +3,7 @@
 angular.module('roomApp')
   .controller('MainCtrl', function ($state, $scope, $http, 
           socket, $stateParams, $window, timerFactory, geolocation,
-          populateRooms, Auth, $location) {
+          populateRooms, Auth, $location, $cookieStore, User) {
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -109,10 +109,19 @@ angular.module('roomApp')
         })
     });
 
+    
+    this.user = {};
+    this.isLoggedIn = false;
+    Auth.isLoggedInAsync(setUser);
+    
+    function setUser(validUser) {
+       if (validUser) {
+        ctrl.isLoggedIn = true;
+        ctrl.user = User.get();
+       } 
+    };
 
-    // facebook stuff
-    this.isLoggedIn = Auth.isLoggedIn();
-    this.user = Auth.getCurrentUser();
+
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
