@@ -5,24 +5,9 @@
     <div ng-hide="room.timeUp"
     		 style="background-color: {{room.colorScheme.wallColor}}">
 			<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
-	      <ul ng-if="roomData.length === 0" class="list-group">
-					<li ng-repeat="choice in initialRoomData.choices"
-						class="list-group-item">
-						<span>
-							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
-						</span>
-						<span>
-							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
-						</span>
-						<span>{{choice.choice}}</span>
-
-						<span class="badge">{{choice.votes}}</span>
-
-					</li>
-				</ul>
 
 				<ul class="list-group">
-					<li ng-repeat="choice in roomData[0].choices"
+					<li ng-repeat="choice in roomData.choices"
 							class="list-group-item">
 
 						<span>

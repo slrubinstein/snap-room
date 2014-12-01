@@ -11,16 +11,11 @@ angular.module('roomApp')
     var roomNumber = $stateParams.roomNumber;
     var geoRoom = $stateParams.geoRoom;
 
-    $scope.roomData = [];
-    //$scope.roomData = this.getRoom(roomNumber);
+    $scope.roomData;
 
     this.restName = '';
 
-    socket.syncUpdates('room', $scope.roomData, roomNumber);    
-
-    $scope.initialRoomData;
     $scope.roomColor;
-
 
     this.colorScheme = setColors.set(this.params.color)
 
@@ -35,7 +30,7 @@ angular.module('roomApp')
 
       if(Number(minutesLeftDecimal) < 0) {
         $interval.cancel($scope.countDown);
-        socket.socket.emit('timeUp', $scope.initialRoomData.roomNumber, geoRoom);
+        socket.socket.emit('timeUp', $scope.roomData.roomNumber, geoRoom);
       }
     };
 
@@ -50,7 +45,7 @@ angular.module('roomApp')
     this.getRoom = function(roomNumber) {
        var promise = roomFactory.get(roomNumber)
        .then(function(roomData) {
-          $scope.initialRoomData = roomData.initialRoomData;
+          $scope.roomData = roomData.initialRoomData;
           $scope.roomColor = roomData.roomColor;
           $scope.expiresAt = roomData.expiresAt;
           $scope.countDown = $interval(ctrl.runTimer, 1000);
@@ -106,7 +101,12 @@ angular.module('roomApp')
     
     socket.socket.on('newPerson', function(numberPeople) {
       $scope.numberPeople = numberPeople;
-      console.log(numberPeople);
+      $scope.$apply();
+    });
+
+    socket.socket.on('updateVotes', function(roomData) {
+      console.log(roomData);
+      $scope.roomData = roomData;
       $scope.$apply();
     });
 
