@@ -123,4 +123,5 @@ angular.module('roomApp')
     // console.log('user first name', ctrl.user.facebook.first_name)
 
 
+
   });

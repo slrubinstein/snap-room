@@ -79,11 +79,14 @@ angular.module('roomApp')
       ctrl.setRoomToCreateColor(0);
     }
 
-    this.createRoom = function (color) {
+    this.createRoom = function (color, type) {
+      var lock = ctrl.fbook ? 'facebook': null;
       populateRooms.create({lat: ctrl.geoData.lat,
                             lon: ctrl.geoData.lon, 
                             color: color, 
-                            geoRoom: ctrl.geoRoom});
+                            geoRoom: ctrl.geoRoom,
+                            type: type,
+                            lock: lock});
     };
 
     this.enterRoom = function(roomNumber, color) {
@@ -143,5 +146,22 @@ angular.module('roomApp')
                             geoRoom: ctrl.geoRoom,
                             lock: 'facebook'});
     };
+
+
+    // create menu functions
+    this.menuOpen = false;
+    this.fbook = false;
+    this.openMenu = function() {
+      ctrl.menuOpen = true;
+    }
+
+
+
+
+
+
+
+
+
 
   });

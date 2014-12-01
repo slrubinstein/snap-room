@@ -16,7 +16,8 @@ var RoomSchema = new Schema({
   color: String,
   createdAt: {type: Date},
   ourExpTime: {type: Date},
-  lock: String
+  lock: String,
+  type: String
 });
 
 module.exports = mongoose.model('Room', RoomSchema);

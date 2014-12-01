@@ -6,12 +6,34 @@
 
       <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
 
-      <button class="btn btn-primary" ng-show="main.geoData.geoLocated" ng-click="main.createRoom(main.roomToCreateColor)">Create Room</button><br/>
-
       <button class="btn btn-primary" 
-              ng-show="main.geoData.geoLocated && 
-                       main.isLoggedIn" 
-              ng-click="main.createFacebookRoom(main.roomToCreateColor)">Create Facebook Only Room</button><br/>
+              ng-show="main.geoData.geoLocated && !main.menuOpen" 
+              ng-click="main.openMenu()">Create Room</button><br/>
+
+
+      <div ng-show="main.menuOpen">
+        <form name="roomOptions">
+          
+            <div class="checkbox">
+              <label ng-show="main.isLoggedIn">
+                Facebook users only <input ng-model="main.fbook" type="checkbox">
+              </label>
+              <p ng-hide='main.isLoggedIn'>Log in to Facebook to create private rooms.</p>
+            </div>
+            <div>
+              Timer options
+            </div>
+
+            <div>
+              <p>Type of room:</p>
+              <button class="btn btn-default"
+                      ng-click="main.createRoom(main.roomToCreateColor, 'lunch')">Lunch</button>
+              <button class="btn btn-default"
+                      ng-click="main.createRoom(main.roomToCreateColor, 'chat')">Chat</button>
+            </div>
+
+        </form>
+      </div>
 
       <div id="buttonDiv" 
            ng-repeat="availRoom in main.availableRooms">
