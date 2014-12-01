@@ -2,11 +2,11 @@
 
 	<room-banner></room-banner>   
 
-    <div ng-hide="room.timeUp" 
+    <div ng-hide="room.timeUp"
     		 style="background-color: {{room.colorScheme.wallColor}}">
-		<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
-	        <ul ng-if="roomData.length === 0" class="list-group">
-				<li ng-repeat="choice in initialRoomData.choices"
+			<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
+	      <ul ng-if="roomData.length === 0" class="list-group">
+					<li ng-repeat="choice in initialRoomData.choices"
 						class="list-group-item">
 						<span>
 							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
@@ -14,17 +14,16 @@
 						<span>
 							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
 						</span>
-									<span>{{choice.choice}}</span>
+						<span>{{choice.choice}}</span>
 
+						<span class="badge">{{choice.votes}}</span>
 
-					 <span class="badge">{{choice.votes}}</span>
+					</li>
+				</ul>
 
-				</li>
-			</ul>
-
-			<ul class="list-group">
-				<li ng-repeat="choice in roomData[0].choices"
-						class="list-group-item">
+				<ul class="list-group">
+					<li ng-repeat="choice in roomData[0].choices"
+							class="list-group-item">
 
 						<span>
 							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
@@ -33,30 +32,23 @@
 							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
 						</span>
 					
-					<span>{{choice.choice}}</span>
+						<span>{{choice.choice}}</span>
 
+						<span class="badge">{{choice.votes}}</span>
 
-					 <span class="badge">{{choice.votes}}</span>
-
-				</li>
-			</ul>
-		</div>
+					</li>
+				</ul>
+			</div>
 
 		<four-square></four-square>
 		
-	    <h1>Or</h1>
+	  <h1>Or</h1>
 
 		<form id="restForm" name="chatForm" ng-submit="room.submitInput()" novalidate>
-	        <label for="restInput">Enter the name of a restaurant:</label> <br/>
+      <label for="restInput">Enter the name of a restaurant:</label> <br/>
 			<input id="restInput" name="textInput" type="text" ng-model="room.restName"><br/>
 			<input ng-show="room.restName" class="btn btn-primary" type="submit">
 		</form>
-    </div> 
-</div>
-
-
-
-
-
+  </div> 
 </div>
 
