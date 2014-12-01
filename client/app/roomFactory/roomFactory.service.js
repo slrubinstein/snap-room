@@ -18,6 +18,7 @@ angular.module('roomApp')
           roomData.roomColor = data.color;
           roomData.expiresAt = new Date(Date.parse(data.ourExpTime));
           roomData.lockedRoom = data.lock;
+          roomData.type = data.type;
           deferred.resolve(roomData); 
         }).error(function(data){
            $location.path("/");
@@ -26,7 +27,8 @@ angular.module('roomApp')
         return deferred.promise;
       },
 
-     submitInput : function(roomNumber, name) {
+     submitInput : function(roomNumber, name, type) {
+      if (type === 'lunch') {
         $http.put("/api/room/" + roomNumber, 
           {choice : chatForm.textInput.value,
             name : name})
@@ -36,6 +38,18 @@ angular.module('roomApp')
         .error(function(data){
             console.log("error");
         });
+      }
+      else if (type === 'chat') {
+        $http.put('api/chat/' + roomNumber,
+          {message: chatForm.textInput.value,
+            name: name})
+        .success(function(data) {
+          // console.log(data)
+        })
+        .error(function(data) {
+          console.log('error');
+        });
+      }
      },
 
       submitVote : function(roomNumber, choice, upOrDown, name) {

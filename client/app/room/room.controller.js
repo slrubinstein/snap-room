@@ -12,6 +12,7 @@ angular.module('roomApp')
     var geoRoom = $stateParams.geoRoom;
 
     $scope.roomData;
+    $scope.roomType;
 
     this.restName = '';
 
@@ -50,19 +51,21 @@ angular.module('roomApp')
           $scope.expiresAt = roomData.expiresAt;
           $scope.countDown = $interval(ctrl.runTimer, 1000);
           $scope.lockedRoom = roomData.lockedRoom;
+          $scope.roomType = roomData.type;
        })
     };
 
     this.getRoom(roomNumber);
 
     this.submitInput = function() {
+      var type = $scope.roomType;
       var name; 
       if (ctrl.user) {
         if (ctrl.user.facebook) {
           name = ctrl.user.facebook.first_name;
         }
       }
-      roomFactory.submitInput(roomNumber, name);
+      roomFactory.submitInput(roomNumber, name, type);
       ctrl.restName = '';
     }
 
@@ -111,7 +114,6 @@ angular.module('roomApp')
     });
 
     socket.socket.on('updateVotes', function(roomData) {
-      console.log(roomData);
       $scope.roomData = roomData;
       $scope.$apply();
     });

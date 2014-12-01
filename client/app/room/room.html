@@ -6,36 +6,54 @@
     		 style="background-color: {{room.colorScheme.wallColor}}">
 			<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
 
-				<ul class="list-group">
-					<li ng-repeat="choice in roomData.choices"
-							class="list-group-item">
+				<div ng-if="roomType==='lunch'">
+					<ul class="list-group">
+						<li ng-repeat="choice in roomData.choices"
+								class="list-group-item">
 
-						<span>
-							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
-						</span>
-						<span>
-							<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
-						</span>
-					
-						<span>{{choice.choice}}</span>
+							<span>
+								<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
+							</span>
+							<span>
+								<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
+							</span>
+						
+							<span>{{choice.choice}}</span>
 
-						<span ng-show="choice.voters.length > 0">{{choice.voters}}</span>
+							<span ng-show="choice.voters.length > 0">{{choice.voters}}</span>
 
-						<span class="badge">{{choice.votes}}</span>
+							<span class="badge">{{choice.votes}}</span>
 
-					</li>
-				</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div ng-if="roomType==='chat'">
+					<ul class="list-group">
+						<li ng-repeat="message in roomData.messages">
+							<p>{{message.message}} {{message.name}}</p>
+						</li>
+					</ul>
+				</div>
+
+
 			</div>
 
-		<four-square></four-square>
+		<four-square ng-if="roomType==='lunch'"></four-square>
 		
-	  <h1>Or</h1>
+		  <h1 ng-if="roomType==='lunch'">Or</h1>
 
-		<form id="restForm" name="chatForm" ng-submit="room.submitInput()" novalidate>
-      <label for="restInput">Enter the name of a restaurant:</label> <br/>
-			<input id="restInput" name="textInput" type="text" ng-model="room.restName"><br/>
-			<input ng-show="room.restName" class="btn btn-primary" type="submit">
-		</form>
+			<form id="restForm" name="chatForm" ng-submit="room.submitInput()" novalidate>
+	      <label for="restInput"
+	      			 ng-if="roomType==='lunch'">Enter the name of a restaurant:</label>
+	      <label for="restInput"
+	      			 ng-if="roomType==='chat'">Enter a message:</label>
+	       <br/>
+				<input id="restInput" name="textInput" type="text" ng-model="room.restName"><br/>
+				<input ng-show="room.restName" class="btn btn-primary" type="submit">
+			</form>
+
+
   </div> 
 </div>
 
