@@ -28,8 +28,6 @@ exports.showByGeo = function(req, res) {
   Room.find({lat:req.params.lat})
        .find({'ourExpTime': {$gt : new Date().getTime()}})
        .exec(function (err, rooms) {
-        console.log('rooms', rooms)
-        console.log('not rooms', !rooms)
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
     if (rooms.length > 0) {
@@ -37,9 +35,7 @@ exports.showByGeo = function(req, res) {
       // console.log(new Date().getTime());
       // console.log(rooms[0].expiresAt - new Date().getTime());
     }
-    console.log('current time', new Date().getTime())
 
-    console.log('ROOMs', rooms)
     return res.json(200, rooms);
   });
 };

@@ -22,21 +22,27 @@ angular.module('roomApp')
             geoRoom = options.geoRoom,
             isLoggedIn = options.isLoggedIn;
 
-        var go = $state.go("room", {roomNumber: roomNumber,
+        var stateGo = function() {
+          $state.go("room", {roomNumber: roomNumber,
                                  color: color,
                                  geoRoom: geoRoom
                                 });
+        }
 
-        $http.get("/api/room/" + lat.toFixed(1) + "/" + lon.toFixed(1))
+        $http.get("/api/room/" + roomNumber)
           .success(function(room){
-            console.log('room', room)
-            console.log('logged', isLoggedIn)
-            console.log('locked', room.lock)
             if(room.lock === null) {
-              go();
+              console.log('room lock', room.lock)
+              stateGo();
             }
             else if(room.lock !== null && isLoggedIn) {
-              go();
+              $state.go("room", {roomNumber: roomNumber,
+                                 color: color,
+                                 geoRoom: geoRoom
+                                });
+            }
+            else {
+              console.log('You must log in to enter this room.')
             }
           }).error(function(room){
             return "error";

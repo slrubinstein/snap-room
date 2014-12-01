@@ -47,7 +47,6 @@ angular.module('roomApp')
             colorScheme.accentColor = greenRoom.accent;
             break;
         }
-        console.log('checking color scheme obj', colorScheme)
 
         return colorScheme;
       }

@@ -133,12 +133,4 @@ angular.module('roomApp')
                             lock: 'facebook'});
     };
 
-
-    // dev temporary button
-    $scope.logCurrentUser = function() {
-      console.log('logged in?', ctrl.isLoggedIn)
-      console.log('logged in as', ctrl.user)  
-    }
-
-
   });
