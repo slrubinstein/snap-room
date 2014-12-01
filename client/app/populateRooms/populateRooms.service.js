@@ -32,14 +32,10 @@ angular.module('roomApp')
         $http.get("/api/room/" + roomNumber)
           .success(function(room){
             if(room.lock === null) {
-              console.log('room lock', room.lock)
               stateGo();
             }
             else if(room.lock !== null && isLoggedIn) {
-              $state.go("room", {roomNumber: roomNumber,
-                                 color: color,
-                                 geoRoom: geoRoom
-                                });
+              stateGo();
             }
             else {
               console.log('You must log in to enter this room.')
@@ -54,7 +50,7 @@ angular.module('roomApp')
             lon = options.lon,
             color = options.color,
             lock = options.lock || null,
-            geoRoom = options.geoRoom
+            geoRoom = options.geoRoom;
 
         $http.post("/api/room", {lat: lat, 
                                  lon: lon, 
