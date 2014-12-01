@@ -26,9 +26,10 @@ angular.module('roomApp')
         return deferred.promise;
       },
 
-     submitInput : function(roomNumber) {
+     submitInput : function(roomNumber, name) {
         $http.put("/api/room/" + roomNumber, 
-          {choice : chatForm.textInput.value})
+          {choice : chatForm.textInput.value,
+            name : name})
         .success(function(data){
             // console.log(data);
         })

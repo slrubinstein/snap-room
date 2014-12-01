@@ -56,7 +56,13 @@ angular.module('roomApp')
     this.getRoom(roomNumber);
 
     this.submitInput = function() {
-      roomFactory.submitInput(roomNumber);
+      var name; 
+      if (ctrl.user) {
+        if (ctrl.user.facebook) {
+          name = ctrl.user.facebook.first_name;
+        }
+      }
+      roomFactory.submitInput(roomNumber, name);
       ctrl.restName = '';
     }
 

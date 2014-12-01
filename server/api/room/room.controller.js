@@ -89,7 +89,12 @@ exports.update = function(req, res) {
       }
     });
     if (newChoice) {
-      room.choices.push({choice: req.body.choice, votes: 1});
+      if (req.body.name) {
+        room.choices.push({choice: req.body.choice, votes: 1, voters:[req.body.name]});
+      }
+      else {
+        room.choices.push({choice: req.body.choice, votes: 1});
+      }  
     }
     //_.merge(room, req.body);
     room.save(function (err) {

@@ -19,7 +19,7 @@
 					
 						<span>{{choice.choice}}</span>
 
-						<span>{{choice.voters}}</span>
+						<span ng-show="choice.voters.length > 0">{{choice.voters}}</span>
 
 						<span class="badge">{{choice.votes}}</span>
 
