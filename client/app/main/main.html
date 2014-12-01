@@ -28,15 +28,19 @@
 
         </button> 
 
-      <p ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
-      <p ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
      </div>
 
-      <a class="btn btn-facebook" ng-click="loginOauth('facebook')">
+      <p ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
+      <p ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
+      <a ng-hide="main.isLoggedIn"
+         class="btn btn-facebook" 
+         ng-click="loginOauth('facebook')">
         <i class="fa fa-facebook"></i> Login with Facebook
       </a>
       <br>
-      <a class="btn btn-default" ng-click="logout()">Log out</a>
+      <a ng-show="main.isLoggedIn"
+         class="btn btn-default" 
+         ng-click="logout()">Log out</a>
 
 
     </div>
