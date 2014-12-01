@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
   Room.findOne({roomNumber:req.params.id}, function (err, room) {
     if(err) { return handleError(res, err); }
-    if(!room) { return res.redirect('/'); }
+    if(!room) { return res.status(404).send("room doesn't exist");}
     return res.status(200).send(room);
   });
 };

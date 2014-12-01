@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('roomFactory', function ($q, $http) {
+  .factory('roomFactory', function ($q, $http, $location) {
     // Service logic
     // ...
 
@@ -19,7 +19,7 @@ angular.module('roomApp')
           roomData.expiresAt = new Date(Date.parse(data.ourExpTime));
           deferred.resolve(roomData); 
         }).error(function(data){
-           //deferred.reject(data)?
+           $location.path("/");
         });
 
         return deferred.promise;
