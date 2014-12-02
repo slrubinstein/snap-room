@@ -122,6 +122,16 @@ angular.module('roomApp')
         });
     };
 
+
+    this.seeVotes = function(event) {
+      console.log($(event.target).closest('.list-group-item').next())
+      $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
+    }
+
+
+
+    // socket events
+
     socket.socket.on('timeUp', function(winner, maxVotes, expiredRoomNumber) {
       if (Number(expiredRoomNumber) === Number(roomNumber)) {
         ctrl.timeUp = true;
