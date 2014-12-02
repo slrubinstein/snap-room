@@ -139,13 +139,6 @@ angular.module('roomApp')
       $location.path('/');
     }
 
-    this.createFacebookRoom = function (color) {
-      populateRooms.create({lat: ctrl.geoData.lat,
-                            lon: ctrl.geoData.lon, 
-                            color: color, 
-                            geoRoom: ctrl.geoRoom,
-                            lock: 'facebook'});
-    };
 
 
     // create menu functions
