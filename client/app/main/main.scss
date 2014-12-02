@@ -35,7 +35,7 @@
 }
 
 .page-header{
-  color: green;
+  color: #23A8A2;
 }
 
 .center-block{
@@ -67,6 +67,17 @@
   height: 30px;
 }
 
-#create-room-button:hover {
-  cursor: pointer;
+.panel-heading {
+  background-color: #2E4F95;
+  color: white;
+  &:hover {
+    cursor: pointer;
+  }
+  
 }
+
+
+
+
+
+

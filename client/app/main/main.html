@@ -16,8 +16,9 @@
     <div id="buttonDiv" 
          ng-repeat="availRoom in main.availableRooms">
       <button class="btn" 
-              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" style="background-color: {{availRoom.color}}">
-        
+              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" ng-class="{redWall: availRoom.color==='red', blueWall: availRoom.color==='blue', greenWall: availRoom.color==='green'}">
+
+
         <span>{{availRoom.roomName}}</span>
 
         <span ng-show="!availRoom.roomName">{{availRoom.colorAndNum}} room</span>
