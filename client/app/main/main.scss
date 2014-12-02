@@ -70,13 +70,11 @@
 .panel-heading {
   background-color: #2E4F95;
   color: white;
-  &:hover {
-    cursor: pointer;
-  }
-  
 }
 
-
+#create-room-button:hover {
+  cursor: pointer;
+}
 
 
 
