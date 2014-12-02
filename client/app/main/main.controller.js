@@ -26,23 +26,8 @@ angular.module('roomApp')
       var getGeo = geolocation.getLocation()
         .then(function(geoData) {
           ctrl.geoData = geoData;
-          var latString = String(geoData.lat);
-          var lonString = String(geoData.lon);
-          var firstThreeLatNumbers;
-          var firstThreeLonNumbers;
-          if (latString[0] === "-") {
-            firstThreeLatNumbers = latString.slice(1,3) + latString.slice(4,5);
-          }
-          else {
-            firstThreeLatNumbers = latString.slice(0,2) + latString.slice(3,4);
-          }
-          if (lonString[0] === "-") {
-            firstThreeLonNumbers = lonString.slice(1,3) + lonString.slice(4,5);
-          }
-          else {
-            firstThreeLonNumbers = lonString.slice(0,2) + lonString.slice(3,4);
-          }
-          ctrl.geoRoom = "geoRoom" + firstThreeLatNumbers + firstThreeLonNumbers; 
+          ctrl.geoRoom = geolocation.makeGeoRoom(geoData)
+          console.log('geo room', ctrl.geoRoom)
           // use geolocation to find available rooms
           socket.socket.emit("joinAnteroom", ctrl.geoRoom);
           var getRooms = populateRooms.get(geoData)
@@ -139,13 +124,6 @@ angular.module('roomApp')
       $location.path('/');
     }
 
-    this.createFacebookRoom = function (color) {
-      populateRooms.create({lat: ctrl.geoData.lat,
-                            lon: ctrl.geoData.lon, 
-                            color: color, 
-                            geoRoom: ctrl.geoRoom,
-                            lock: 'facebook'});
-    };
 
 
     // create menu functions
@@ -155,13 +133,8 @@ angular.module('roomApp')
       ctrl.menuOpen = true;
     }
 
-
-
-
-
-
-
-
+    this.timerOptions = ['1:00', '2:00', '5:00', '10:00']
+    this.timerLength = '2:00'
 
 
   });

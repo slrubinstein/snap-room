@@ -1,69 +1,46 @@
 
 
 <div ng-controller="MainCtrl as main">
-    <div class="myContainer container">
-      <h1 class="page-header animated zoomIn">Snaproom</h1>
+  <div class="myContainer container">
+    <h1 class="page-header animated zoomIn">Snaproom</h1>
 
-      <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
+    <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
 
-      <button class="btn btn-primary" 
-              ng-show="main.geoData.geoLocated && !main.menuOpen" 
-              ng-click="main.openMenu()">Create Room</button><br/>
+    <button class="btn btn-primary" 
+            ng-show="main.geoData.geoLocated && !main.menuOpen" 
+            ng-click="main.openMenu()">Create Room</button><br/>
 
+    <create-room-options-panel ng-show="main.menuOpen"></create-room-options-panel>
 
-      <div ng-show="main.menuOpen">
-        <form name="roomOptions">
-          
-            <div class="checkbox">
-              <label ng-show="main.isLoggedIn">
-                Facebook users only <input ng-model="main.fbook" type="checkbox">
-              </label>
-              <p ng-hide='main.isLoggedIn'>Log in to Facebook to create private rooms.</p>
-            </div>
-            <div>
-              Timer options
-            </div>
+    <div id="buttonDiv" 
+         ng-repeat="availRoom in main.availableRooms">
+      <button class="btn" 
+              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" style="background-color: {{availRoom.color}}">{{availRoom.colorAndNum}} room
 
-            <div>
-              <p>Type of room:</p>
-              <button class="btn btn-default"
-                      ng-click="main.createRoom(main.roomToCreateColor, 'lunch')">Lunch</button>
-              <button class="btn btn-default"
-                      ng-click="main.createRoom(main.roomToCreateColor, 'chat')">Chat</button>
-            </div>
+        <!-- show if locked & not logged in -->
+        <span ng-show="availRoom.lock && !main.isLoggedIn"
+              class="glyphicon glyphicon-lock"></span>
 
-        </form>
-      </div>
+        <!-- show if locked & logged in -->
+        <span ng-show="availRoom.lock && main.isLoggedIn"
+              class="glyphicon glyphicon-thumbs-up"></span>
 
-      <div id="buttonDiv" 
-           ng-repeat="availRoom in main.availableRooms">
-        <button class="btn" 
-                ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" style="background-color: {{availRoom.color}}">{{availRoom.colorAndNum}} room
+      </button> 
 
-          <!-- show if locked & not logged in -->
-          <span ng-show="availRoom.lock && !main.isLoggedIn"
-                class="glyphicon glyphicon-lock"></span>
+   </div>
 
-          <!-- show if locked & logged in -->
-          <span ng-show="availRoom.lock && main.isLoggedIn"
-                class="glyphicon glyphicon-thumbs-up"></span>
-
-        </button> 
-
-     </div>
-
-      <p ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
-      <p ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
-      <a ng-hide="main.isLoggedIn"
-         class="btn btn-facebook" 
-         ng-click="loginOauth('facebook')">
-        <i class="fa fa-facebook"></i> Login with Facebook
-      </a>
-      <br>
-      <a ng-show="main.isLoggedIn"
-         class="btn btn-default" 
-         ng-click="logout()">Log out</a>
+    <p ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
+    <p ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
+    <a ng-hide="main.isLoggedIn"
+       class="btn btn-facebook" 
+       ng-click="loginOauth('facebook')">
+      <i class="fa fa-facebook"></i> Login with Facebook
+    </a>
+    <br>
+    <a ng-show="main.isLoggedIn"
+       class="btn btn-default" 
+       ng-click="logout()">Log out</a>
 
 
-    </div>
+  </div>
 </div>
