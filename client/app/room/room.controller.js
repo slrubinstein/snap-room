@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomFactory, timerFactory, setColors, Auth) {
+                                    roomFactory, timerFactory, Auth) {
 
     $scope.message = 'Hello';
     var ctrl = this;
@@ -53,6 +53,7 @@ angular.module('roomApp')
           $scope.countDown = $interval(ctrl.runTimer, 1000);
           $scope.lockedRoom = roomData.lockedRoom;
           $scope.roomType = roomData.type;
+          $scope.roomName = roomData.roomName;
        })
     };
 
@@ -60,13 +61,14 @@ angular.module('roomApp')
 
     this.submitInput = function() {
       var type = $scope.roomType;
-      var name; 
+      var name, picture; 
       if (ctrl.user) {
         if (ctrl.user.facebook) {
           name = ctrl.user.facebook.first_name;
+          picture = ctrl.user.facebook.picture; 
         }
       }
-      roomFactory.submitInput(roomNumber, name, type);
+      roomFactory.submitInput(roomNumber, name, picture, type);
       ctrl.restName = '';
     }
 

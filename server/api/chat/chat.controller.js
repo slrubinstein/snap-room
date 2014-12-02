@@ -35,13 +35,17 @@ exports.update = function(req, res) {
 
   var message = req.body.message;
   var name = req.body.name;
+  var picture = req.body.picture;
+
+  console.log("req.body:", req.body);
+  console.log("picture:", picture);
 
   Room.findOne({roomNumber:req.params.id}, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
     // var updated = _.merge(chat, req.body);
     if (name) {
-      room.messages.push({message: message, name: name});
+      room.messages.push({message: message, name: name, picture: picture});
     }
     else {
       room.messages.push({message: message})

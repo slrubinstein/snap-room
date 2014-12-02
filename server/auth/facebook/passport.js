@@ -15,6 +15,7 @@ exports.setup = function (User, config) {
         if (err) {
           return done(err);
         }
+      
         if (!user) {
           user = new User({
             name: profile.displayName,
@@ -24,6 +25,7 @@ exports.setup = function (User, config) {
             provider: 'facebook',
             facebook: profile._json
           });
+          user.facebook.picture = profile.picture;
           user.save(function(err) {
             if (err) done(err);
             return done(err, user);

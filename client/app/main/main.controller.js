@@ -64,14 +64,18 @@ angular.module('roomApp')
       ctrl.setRoomToCreateColor(0);
     }
 
+    this.nameInput;
+
     this.createRoom = function (color, type) {
       var lock = ctrl.fbook ? 'facebook': null;
+      var roomName = ctrl.nameInput || null;
       populateRooms.create({lat: ctrl.geoData.lat,
                             lon: ctrl.geoData.lon, 
                             color: color, 
                             geoRoom: ctrl.geoRoom,
                             type: type,
-                            lock: lock});
+                            lock: lock,
+                            roomName: roomName});
     };
 
     this.enterRoom = function(roomNumber, color) {
@@ -106,7 +110,8 @@ angular.module('roomApp')
        if (validUser) {
         ctrl.isLoggedIn = true;
         ctrl.user = User.get();
-       } 
+       }
+       console.log(ctrl.user); 
     };
 
 

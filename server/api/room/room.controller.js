@@ -50,6 +50,7 @@ exports.create = function(req, res) {
   var ourExpTime = new Date(new Date().getTime() + 120000); //300000);
   var lock = req.body.lock;
   var type = req.body.type;
+  var roomName = req.body.roomName;
   //console.log(ourExpTime)
   Room.create({roomNumber:roomNumber,
                lat: lat.toFixed(1), 
@@ -60,7 +61,8 @@ exports.create = function(req, res) {
                createdAt: createdAt,
                ourExpTime: ourExpTime,
                lock: lock,
-               type: type
+               type: type,
+               roomName: roomName,
                }, function(err, room) {
      if(err) { return handleError(res, err); }
   //   return res.json(201, room);

@@ -18,7 +18,8 @@ var RoomSchema = new Schema({
   ourExpTime: {type: Date},
   lock: String,
   type: String,
-  messages: [{message: String, name: String}]
+  roomName: String,
+  messages: [{message: String, name: String, picture: String}]
 });
 
 module.exports = mongoose.model('Room', RoomSchema);
