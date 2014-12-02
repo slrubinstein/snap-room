@@ -18,6 +18,7 @@ var RoomSchema = new Schema({
   ourExpTime: {type: Date},
   lock: String,
   type: String,
+  roomName: String,
   messages: [{message: String, name: String}]
 });
 

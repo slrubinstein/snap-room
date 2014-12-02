@@ -51,14 +51,16 @@ angular.module('roomApp')
             color = options.color,
             lock = options.lock || null,
             geoRoom = options.geoRoom,
-            type = options.type;
+            type = options.type,
+            roomName = options.roomName;
 
         $http.post("/api/room", {lat: lat, 
                                  lon: lon, 
                                  color: color,
                                  lock: lock,
                                  geoRoom: geoRoom,
-                                 type: type})
+                                 type: type,
+                                 roomName: roomName})
         .success(function(data){
           $state.go("room", {roomNumber: data.roomNumber,
                               color: color,

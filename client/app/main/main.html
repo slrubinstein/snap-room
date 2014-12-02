@@ -15,7 +15,11 @@
     <div id="buttonDiv" 
          ng-repeat="availRoom in main.availableRooms">
       <button class="btn" 
-              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" style="background-color: {{availRoom.color}}">{{availRoom.colorAndNum}} room
+              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" style="background-color: {{availRoom.color}}">
+        
+        <span>{{availRoom.roomName}}</span>
+
+        <span ng-show="!availRoom.roomName">{{availRoom.colorAndNum}} room</span>
 
         <!-- show if locked & not logged in -->
         <span ng-show="availRoom.lock && !main.isLoggedIn"

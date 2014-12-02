@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomFactory, timerFactory, setColors, Auth) {
+                                    roomFactory, timerFactory, Auth) {
 
     $scope.message = 'Hello';
     var ctrl = this;
@@ -53,6 +53,7 @@ angular.module('roomApp')
           $scope.countDown = $interval(ctrl.runTimer, 1000);
           $scope.lockedRoom = roomData.lockedRoom;
           $scope.roomType = roomData.type;
+          $scope.roomName = roomData.roomName;
        })
     };
 

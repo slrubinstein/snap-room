@@ -19,6 +19,7 @@ angular.module('roomApp')
           roomData.expiresAt = new Date(Date.parse(data.ourExpTime));
           roomData.lockedRoom = data.lock;
           roomData.type = data.type;
+          roomData.roomName = data.roomName;
           deferred.resolve(roomData); 
         }).error(function(data){
            $location.path("/");
