@@ -10,9 +10,9 @@ angular.module('roomApp')
       }
 
     var redRoom = {
-      wall: '#FFAAAA',
-      trim: '#AA3939',
-      accent: '#550000'
+      wall: '#D46A6A',
+      trim: '#801515',
+      accent: '#FFAAAA'
     }
 
     var blueRoom = {

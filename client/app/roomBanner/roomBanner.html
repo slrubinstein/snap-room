@@ -9,21 +9,16 @@
   </div>
 
 	<div ng-show="secondsLeft && !room.timeUp">
-		<p>Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
+		<p style="color: {{room.colorScheme.wallColor}}">Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
   </div>
 
     <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
 
     <p>Number of people in this room: {{numberPeople}}</p>
 
-  <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'"
+  <h2 ng-show="room.timeUp && !room.winner"
   		style="background-color: {{room.colorScheme.wallColor}}">
       No votes were cast
-  </h2>
-
-  <h2 ng-show="room.timeUp && roomType==='chat'"
-      style="background-color: {{room.colorScheme.wallColor}}">
-      The chatroom is closed
   </h2>
           
 	<div ng-show="room.winner" 
