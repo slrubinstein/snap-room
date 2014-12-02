@@ -127,7 +127,6 @@ angular.module('roomApp')
 
 
     this.seeVotes = function(event) {
-      console.log($(event.target).closest('.list-group-item').next())
       $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
     }
 
@@ -176,7 +175,6 @@ angular.module('roomApp')
     this.user = Auth.getCurrentUser();
     this.isLoggedIn = Auth.isLoggedIn();
 
-    // console.log('user first name', ctrl.user.facebook.first_name)
 
 
 

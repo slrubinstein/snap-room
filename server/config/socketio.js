@@ -36,7 +36,6 @@ function onConnect(socket) {
 
   socket.on('createRoom', function(room, color, geoRoom) {
       socket.join(room);
-      console.log(geoRoom);
       socket.broadcast.to(geoRoom).emit('refreshRoomList');
   });
 
@@ -49,7 +48,6 @@ function onConnect(socket) {
 
 
   socket.on('timeUp', function(room, geoRoom) {
-    console.log('time is up')
     Room.findOne({roomNumber:room}, function(err, room) {
 
       if (room.type === 'lunch') {
@@ -78,7 +76,6 @@ function onConnect(socket) {
       }
 
 
-        console.log("geoRoom: ", geoRoom);
         socket.broadcast.to(geoRoom).emit('refreshRoomList');
         socket.emit('refreshRoomList'); 
     })

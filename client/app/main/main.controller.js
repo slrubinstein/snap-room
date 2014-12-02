@@ -27,7 +27,6 @@ angular.module('roomApp')
         .then(function(geoData) {
           ctrl.geoData = geoData;
           ctrl.geoRoom = geolocation.makeGeoRoom(geoData)
-          console.log('geo room', ctrl.geoRoom)
           // use geolocation to find available rooms
           socket.socket.emit("joinAnteroom", ctrl.geoRoom);
           var getRooms = populateRooms.get(geoData)
@@ -92,7 +91,6 @@ angular.module('roomApp')
     this.getRoomByGeo();
     
     socket.socket.on('refreshRoomList', function() {
-      console.log("refreshRoomList");
       var getRooms = populateRooms.get(ctrl.geoData)
         .then(function(rooms) {
           ctrl.availableRooms = rooms;
@@ -111,7 +109,6 @@ angular.module('roomApp')
         ctrl.isLoggedIn = true;
         ctrl.user = User.get();
        }
-       console.log(ctrl.user); 
     };
 
 

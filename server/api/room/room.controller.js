@@ -31,9 +31,6 @@ exports.showByGeo = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
     if (rooms.length > 0) {
-      // console.log(rooms[0].expiresAt);
-      // console.log(new Date().getTime());
-      // console.log(rooms[0].expiresAt - new Date().getTime());
     }
 
     return res.json(200, rooms);
@@ -51,7 +48,6 @@ exports.create = function(req, res) {
   var lock = req.body.lock;
   var type = req.body.type;
   var roomName = req.body.roomName;
-  //console.log(ourExpTime)
   Room.create({roomNumber:roomNumber,
                lat: lat.toFixed(1), 
                lon: lon.toFixed(1),
