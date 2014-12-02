@@ -95,6 +95,27 @@
   color: white;
 }
 
+.narrowColumn {
+  width: 12%;
+  float: left;
+  padding: 1%;
+
+  &.leftColumn{
+    text-align: left;
+  }
+
+  &.rightColumn{
+    text-align: right;
+  }
+}
+
+.centerColumn {
+  width: 76%;
+  float: left;
+}
+
+
+
 
 
 

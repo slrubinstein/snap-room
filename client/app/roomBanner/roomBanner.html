@@ -1,40 +1,52 @@
-<div class="col-sm-12 col-md-12 col-lg-12" 
+
+
+<div
      ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}">
 
-  <div id="back-button">
-  		<span ng-click="room.backToMain" ng-class="{redTrim: roomColor==='red', blueAccent: roomColor==='blue', greenTrimAccent: roomColor==='green'}" ui-sref="main">&#60;&#60;Back</span>
-  </div>
+    <div id="back-button"
+         class="narrowColumn leftColumn">
+    		<span ng-click="room.backToMain" ng-class="{redTrim: roomColor==='red', blueAccent: roomColor==='blue', greenTrimAccent: roomColor==='green'}" ui-sref="main">&#60;&#60;Back</span>
+    </div>
 
-  <h1 ng-show="roomName">{{roomName}}</h1>
+    <div class="centerColumn">
+      <h1 ng-show="roomName">{{roomName}}</h1>
 
-	<div ng-show="secondsLeft && !room.timeUp">
-		<p >Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
-  </div>
+    	<div ng-show="secondsLeft && !room.timeUp">
+    		<p >Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
+      </div>
 
-    <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
+        <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
 
-    <p>Number of people in this room: {{numberPeople}}</p>
+        <p>Number of people in this room: {{numberPeople}}</p>
 
-  <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'">
-      No votes were cast
-  </h2>
+      <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'">
+          No votes were cast
+      </h2>
 
-  <h2 ng-show="room.timeUp && !room.winner && roomType==='chat'">
-      Time expired
-  </h2>
-          
-	<div ng-show="room.winner" 
-			 class="col-sm-12 col-md-12 col-lg-12">
-    <h2 ng-show="room.winner.length > 1">Winners:</h2>
-    <h2 ng-show="room.winner.length === 1">Winner:</h2>
-    <ul class="list-group">
-			<li ng-repeat="winner in room.winner"
-					class="list-group-item">
+      <h2 ng-show="room.timeUp && !room.winner && roomType==='chat'">
+          Time expired
+      </h2>
+              
+    	<div ng-show="room.winner" 
+    			 class="col-sm-12 col-md-12 col-lg-12">
+        <h2 ng-show="room.winner.length > 1">Winners:</h2>
+        <h2 ng-show="room.winner.length === 1">Winner:</h2>
+        <ul class="list-group">
+    			<li ng-repeat="winner in room.winner"
+    					class="list-group-item">
 
-				<span>{{winner}}</span>
-				<span class="badge">{{room.maxVotes}}</span>
+    				<span>{{winner}}</span>
+    				<span class="badge">{{room.maxVotes}}</span>
 
-			</li>
-		</ul>
-	</div>
+    			</li>
+    		</ul>
+    	</div>
+    </div>
+
+    <div class="narrowColumn rightColumn">
+      TEST
+    </div>
+
+    <div class="clearfix"></div>
 </div>
+

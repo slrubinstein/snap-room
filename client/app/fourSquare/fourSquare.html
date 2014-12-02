@@ -4,7 +4,7 @@
 				ng-click="room.getFourSquare()">Find Local Restaurants From Foursquare</button>
 
 <div class="foursquareRests"
-		ng-class="redAccent: roomColor==='red', blueAccent: roomColor==='blue', greenAccent: roomColor==='green'}"> 
+		ng-class="{redAccent: roomColor==='red', blueAccent: roomColor==='blue', greenAccent: roomColor==='green'}"> 
 	<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
 		<p>
 			<button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}
