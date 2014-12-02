@@ -77,7 +77,19 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, event, index) {
       
       if (upOrDown) {
-        $(event.target).parent().parent().css("background-color", $scope.roomColor);
+        var colorClass;
+        switch($scope.roomColor) {
+          case 'red':
+            colorClass = 'redTrim';
+            break;
+          case 'blue':
+            colorClass = 'blueTrim';
+            break;
+          case 'green':
+            colorClass = 'greenTrim';
+            break;
+        }
+        $(event.target).parent().parent().addClass(colorClass);
       }
 
       else {
