@@ -7,7 +7,7 @@
   	</a>
   </div>
 
-  <h1>{{roomName}}</h1>
+  <h1 ng-show="roomName">{{roomName}}</h1>
 
 	<div ng-show="secondsLeft && !room.timeUp">
 		<p >Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
