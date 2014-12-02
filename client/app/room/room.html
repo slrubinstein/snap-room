@@ -46,11 +46,13 @@
 			<form id="restForm" name="chatForm" ng-submit="room.submitInput()" novalidate>
 	      <label for="restInput"
 	      			 ng-if="roomType==='lunch'">Enter the name of a restaurant:</label>
-	      <label for="restInput"
+	      <div ng-hide="room.timeUp && roomType==='chat'">			 
+	        <label for="restInput"
 	      			 ng-if="roomType==='chat'">Enter a message:</label>
-	       <br/>
+	        <br/>
 				<input id="restInput" name="textInput" type="text" ng-model="room.restName"><br/>
 				<input ng-show="room.restName" class="btn btn-primary" type="submit">
+		  </div>
 			</form>
 
 

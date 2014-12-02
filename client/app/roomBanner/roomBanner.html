@@ -17,8 +17,12 @@
 
     <p>Number of people in this room: {{numberPeople}}</p>
 
-  <h2 ng-show="room.timeUp && !room.winner">
+  <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'">
       No votes were cast
+  </h2>
+
+  <h2 ng-show="room.timeUp && !room.winner && roomType==='chat'">
+      Time expired
   </h2>
           
 	<div ng-show="room.winner" 
