@@ -157,6 +157,7 @@ angular.module('roomApp')
     });
     
     socket.socket.on('updateVotes', function(roomData) {
+
       if ($scope.roomData.choices.length !== roomData.choices.length) {
         $scope.roomData.choices.push(roomData.choices[roomData.choices.length-1]);
         $scope.$apply();
@@ -165,6 +166,7 @@ angular.module('roomApp')
         roomData.choices.forEach(function(el, index) {
           if (el.votes !== $scope.roomData.choices[index].votes) {
              $scope.roomData.choices[index].votes = el.votes;
+             $scope.roomData.choices[index].voters = el.voters;
           }
         });
       }
