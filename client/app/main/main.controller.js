@@ -110,7 +110,8 @@ angular.module('roomApp')
        if (validUser) {
         ctrl.isLoggedIn = true;
         ctrl.user = User.get();
-       } 
+       }
+       console.log(ctrl.user); 
     };
 
 
