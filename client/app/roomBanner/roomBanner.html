@@ -5,7 +5,7 @@
 
     <div id="back-button"
          class="narrowColumn leftColumn">
-    		<span ng-click="room.backToMain" ng-class="{redTrim: roomColor==='red', blueAccent: roomColor==='blue', greenTrimAccent: roomColor==='green'}" ui-sref="main">&#60;&#60;Back</span>
+    		<span class="glyphicon glyphicon-arrow-left" ng-click="room.backToMain" ng-class="{redTrim: roomColor==='red', blueAccent: roomColor==='blue', greenTrimAccent: roomColor==='green'}" ui-sref="main"></span>
     </div>
 
     <div class="centerColumn">
@@ -16,8 +16,6 @@
       </div>
 
         <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
-
-        <p>Number of people in this room: {{numberPeople}}</p>
 
       <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'">
           No votes were cast
@@ -44,7 +42,8 @@
     </div>
 
     <div class="narrowColumn rightColumn">
-      TEST
+     <span>2{{numberPeople}}</span>
+      <span class="glyphicon glyphicon-user"></span>
     </div>
 
     <div class="clearfix"></div>

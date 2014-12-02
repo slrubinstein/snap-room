@@ -96,7 +96,7 @@
 }
 
 .narrowColumn {
-  width: 12%;
+  width: 20%;
   float: left;
   padding: 1%;
 
@@ -106,11 +106,12 @@
 
   &.rightColumn{
     text-align: right;
+    font-size: 2em;
   }
 }
 
 .centerColumn {
-  width: 76%;
+  width: 60%;
   float: left;
 }
 
