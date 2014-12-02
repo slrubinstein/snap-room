@@ -9,6 +9,7 @@ h1 {
 
 .redTrim {
   background-color: #801515;
+  color: #FFAAAA;
 }
 
 .redTrimFont {
@@ -16,7 +17,7 @@ h1 {
 }
 
 .redAccent {
-  color: #FFAAAA;
+  color: #000;
 }
 
 .blueWall {
@@ -33,8 +34,12 @@ h1 {
 }
 
 .blueAccent {
-  color: #010204;
+  color: #fff;
 }
+/*
+.whiteAccent {
+  color: white;
+}*/
 
 .greenWall {
   background-color: #87FC81;
@@ -137,6 +142,13 @@ h1 {
 
 #back-button span:hover {
   cursor: pointer;
+}
+
+input {
+  color: black;
+  &.btn:hover {
+    color: white;
+  }
 }
 
 

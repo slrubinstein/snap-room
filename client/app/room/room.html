@@ -49,10 +49,15 @@
 	      			 	ng-class="{redTrimFont: roomColor==='red', blueTrimFont: roomColor==='blue', greenTrimFont: roomColor==='green'}">Enter the name of a restaurant:</label>
 	      <div ng-hide="room.timeUp && roomType==='chat'">			 
 	        <label for="restInput"
-	      			 ng-if="roomType==='chat'">Enter a message:</label>
+	      			 ng-if="roomType==='chat'"
+	      			 ng-class="{redTrimFont: roomColor==='red', blueTrimFont: roomColor==='blue', greenTrimFont: roomColor==='green'}"
+	      			 >Enter a message:</label>
 	        <br/>
 				<input id="restInput" name="textInput" type="text" ng-model="room.restName"><br/>
-				<input ng-show="room.restName" class="btn btn-primary" type="submit">
+				<input ng-show="room.restName" 
+					   class="btn" 
+					   type="submit"
+					   ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green', redAccent: roomColor==='red', blueAccent: roomColor==='blue'}">
 		  </div>
 			</form>
 
