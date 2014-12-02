@@ -155,13 +155,8 @@ angular.module('roomApp')
       ctrl.menuOpen = true;
     }
 
-
-
-
-
-
-
-
+    this.timerOptions = ['1:00', '2:00', '5:00', '10:00']
+    this.timerLength = '2:00'
 
 
   });

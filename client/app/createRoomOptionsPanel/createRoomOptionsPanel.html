@@ -1,0 +1,32 @@
+<div class="panel panel-info">
+	<div class="panel-heading">Room Options</div>
+  <div class="panel-body">
+
+		<form name="roomOptions">
+		        
+		  <div class="checkbox">
+		    <label ng-show="main.isLoggedIn">
+		      <input ng-model="main.fbook" type="checkbox">Facebook users only 
+		    </label>
+		    <p ng-hide='main.isLoggedIn'>Log in to Facebook to create private rooms.</p>
+		  </div>
+
+			Room Lifetime:
+			<select
+			  ng-model="main.timerLength"
+			  ng-options="time for time in main.timerOptions">
+			</select>
+
+			<br>
+
+		  <div>
+		    <p>Type of room:</p>
+		    <button class="btn btn-default"
+		            ng-click="main.createRoom(main.roomToCreateColor, 'lunch')">Lunch</button>
+		    <button class="btn btn-default"
+		            ng-click="main.createRoom(main.roomToCreateColor, 'chat')">Chat</button>
+		  </div>
+
+		</form>
+  </div>
+</div>
