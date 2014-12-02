@@ -12,17 +12,24 @@
 						<li ng-repeat="choice in roomData.choices"
 								class="list-group-item">
 
-							<span>
-								<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
-							</span>
-							<span>
-								<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
-							</span>
-						
-							<span><strong>{{choice.choice}}</strong></span><br>
-							<span ng-repeat="voter in choice.voters track by $index">{{voter}} </span>
-							<span class="badge">{{choice.votes}}</span>
+							<div class="restaurants">
+								<span>
+									<button class="btn btn-default" ng-click="room.vote(choice.choice, 'up', $event)">+</button>
+								</span>
+								<span>
+									<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
+								</span>
+								<span>{{choice.choice}}</span>
+							</div>
 
+							<div class="votes">
+								<span>{{choice.votes}}</span>
+								<span class="glyphicon glyphicon-user"></span>
+							</div>
+							<!-- <div ng-show="room.showVoters" id="voters"> -->
+								<!-- <span ng-repeat="voter in choice.voters track by $index">{{voter}} </span> -->
+							<!-- </div> -->
+							<div class="clearfix"></div>
 						</li>
 					</ul>
 				</div>

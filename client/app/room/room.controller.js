@@ -24,6 +24,12 @@ angular.module('roomApp')
       $state.go("main");
     }
 
+    this.showUsers = function() {
+
+    }
+
+
+
     this.runTimer = function(expiresAt) {
       $scope.timeNow = new Date().getTime();
       var minutesLeftDecimal = String(($scope.expiresAt.getTime() - $scope.timeNow) / 1000 / 60);
@@ -89,7 +95,7 @@ angular.module('roomApp')
             colorClass = 'greenTrim';
             break;
         }
-        $(event.target).parent().parent().addClass(colorClass);
+        $(event.target).closest('.list-group-item').addClass(colorClass);
       }
 
       else {

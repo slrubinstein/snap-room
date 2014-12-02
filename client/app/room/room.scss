@@ -149,6 +149,10 @@ h1 {
   cursor: pointer;
 }
 
+.glyphicon-user:hover {
+  cursor: pointer;
+}
+
 input {
   color: black;
   &.btn:hover {
@@ -160,3 +164,15 @@ input {
   margin-top: 10px;
 }
 
+.restaurants {
+  float: left;
+  width: 80%;
+  font-size: 1.3em;
+}
+
+.votes {
+  float: left;
+  width: 20%;
+  text-align: right;
+  font-size: 1.3em;
+}
