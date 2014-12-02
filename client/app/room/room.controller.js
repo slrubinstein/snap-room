@@ -61,13 +61,14 @@ angular.module('roomApp')
 
     this.submitInput = function() {
       var type = $scope.roomType;
-      var name; 
+      var name, picture; 
       if (ctrl.user) {
         if (ctrl.user.facebook) {
           name = ctrl.user.facebook.first_name;
+          picture = ctrl.user.facebook.picture; 
         }
       }
-      roomFactory.submitInput(roomNumber, name, type);
+      roomFactory.submitInput(roomNumber, name, picture, type);
       ctrl.restName = '';
     }
 

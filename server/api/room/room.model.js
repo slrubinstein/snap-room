@@ -19,7 +19,7 @@ var RoomSchema = new Schema({
   lock: String,
   type: String,
   roomName: String,
-  messages: [{message: String, name: String}]
+  messages: [{message: String, name: String, picture: String}]
 });
 
 module.exports = mongoose.model('Room', RoomSchema);
