@@ -4,6 +4,7 @@ h1 {
 
 .redWall {
   background-color: #D46A6A;
+  border: 1px solid #801515;
 }
 
 .redTrim {
@@ -16,6 +17,7 @@ h1 {
 
 .blueWall {
   background-color: #8DADF9;
+  border: 1px solid #2E4272;
 }
 
 .blueTrim {
@@ -28,6 +30,7 @@ h1 {
 
 .greenWall {
   background-color: #87FC81;
+  border: 1px solid #328A2E;
 }
 
 .greenTrim {
@@ -110,7 +113,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-#backButton {
+#back-button {
   float:left;
   color: black;
 }

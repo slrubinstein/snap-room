@@ -4,19 +4,21 @@
   <div class="myContainer container">
     <h1 class="page-header animated zoomIn">Snaproom</h1>
 
-    <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
-
-    <button class="btn btn-primary" 
+    <div id="finding-location">
+      <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
+    </div>
+     <!--  <div class="panel-heading" 
             ng-show="main.geoData.geoLocated && !main.menuOpen" 
-            ng-click="main.openMenu()">Create Room</button><br/>
+            ng-click="main.openMenu()">Create Room</div><br/> -->
 
-    <create-room-options-panel ng-show="main.menuOpen"></create-room-options-panel>
+    <create-room-options-panel></create-room-options-panel>
 
     <div id="buttonDiv" 
          ng-repeat="availRoom in main.availableRooms">
       <button class="btn" 
-              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" style="background-color: {{availRoom.color}}">
-        
+              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" ng-class="{redWall: availRoom.color==='red', blueWall: availRoom.color==='blue', greenWall: availRoom.color==='green'}">
+
+
         <span>{{availRoom.roomName}}</span>
 
         <span ng-show="!availRoom.roomName">{{availRoom.colorAndNum}} room</span>

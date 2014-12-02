@@ -1,35 +1,49 @@
-<div class="panel panel-info">
-	<div class="panel-heading">Room Options</div>
-  <div class="panel-body">
+<div class="panel">
+	<div class="panel-heading"
+			 id="create-room-button"
+			 ng-hide="main.menuOpen"
+			 ng-click="main.openMenu()">Create Room</div>
 
-		<form name="roomOptions">
-		        
-		  <div class="checkbox">
-		    <label ng-show="main.isLoggedIn">
-		      <input ng-model="main.fbook" type="checkbox">Facebook users only 
-		    </label>
-		    <p ng-hide='main.isLoggedIn'>Log in to Facebook to create private rooms.</p>
-		  </div>
+	<div class="panel-heading" 
+			 ng-show="main.menuOpen">Room Options</div>
 
-            Name Room (optional):
-		    <input ng-model="main.nameInput" type="text"/> <br/>
 
-			Room Lifetime:
-			<select
-			  ng-model="main.timerLength"
-			  ng-options="time for time in main.timerOptions">
-			</select>
+	<div ng-show="main.menuOpen">
 
-			<br>
 
-		  <div>
-		    <p>Type of room:</p>
-		    <button class="btn btn-default"
-		            ng-click="main.createRoom(main.roomToCreateColor, 'lunch')">Lunch</button>
-		    <button class="btn btn-default"
-		            ng-click="main.createRoom(main.roomToCreateColor, 'chat')">Chat</button>
-		  </div>
 
-		</form>
+
+	  <div class="panel-body">
+
+			<form name="roomOptions">
+			        
+			  <div class="checkbox">
+			    <label ng-show="main.isLoggedIn">
+			      <input ng-model="main.fbook" type="checkbox">Facebook users only 
+			    </label>
+			    <p ng-hide='main.isLoggedIn'>Log in to Facebook to create private rooms.</p>
+			  </div>
+
+	            Name Room (optional):
+			    <input ng-model="main.nameInput" type="text"/> <br/>
+
+				Room Lifetime:
+				<select
+				  ng-model="main.timerLength"
+				  ng-options="time for time in main.timerOptions">
+				</select>
+
+				<br>
+
+			  <div>
+			    <p>Type of room:</p>
+			    <button class="btn btn-default"
+			            ng-click="main.createRoom(main.roomToCreateColor, 'lunch')">Lunch</button>
+			    <button class="btn btn-default"
+			            ng-click="main.createRoom(main.roomToCreateColor, 'chat')">Chat</button>
+			  </div>
+
+			</form>
+	  </div>
   </div>
 </div>
