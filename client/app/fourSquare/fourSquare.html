@@ -1,5 +1,6 @@
 <button id="foursquareButton" 
-				class="btn btn-primary" 
+				ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}" ng-if="roomType==='lunch'"
+				 
 				ng-click="room.getFourSquare()">Find Local Restaurants From Foursquare</button>
 
 <div class="foursquareRests"> 

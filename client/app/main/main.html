@@ -11,7 +11,9 @@
             ng-show="main.geoData.geoLocated && !main.menuOpen" 
             ng-click="main.openMenu()">Create Room</div><br/> -->
 
-    <create-room-options-panel></create-room-options-panel>
+    <div ng-show="main.geoData.geoLocated">
+      <create-room-options-panel></create-room-options-panel>
+    </div>
 
     <div id="buttonDiv" 
          ng-repeat="availRoom in main.availableRooms">

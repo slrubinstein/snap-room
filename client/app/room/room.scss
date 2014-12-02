@@ -11,6 +11,10 @@ h1 {
   background-color: #801515;
 }
 
+.redTrimFont {
+  color: #801515;
+}
+
 .redAccent {
   color: #FFAAAA;
 }
@@ -24,6 +28,10 @@ h1 {
   background-color: #2E4272;
 }
 
+.blueTrimFont {
+  color: #2E4272;
+}
+
 .blueAccent {
   color: #010204;
 }
@@ -35,6 +43,10 @@ h1 {
 
 .greenTrim {
   background-color: #328A2E;
+}
+
+.greenTrimFont {
+  color: #328A2E;
 }
 
 .greenAccent {
@@ -97,6 +109,11 @@ h1 {
 }
 
 #foursquareButton {
+  -webkit-appearance: none;
+  padding: 10px;
+  box-shadow: none;
+  border: none;
+  border-radius: 3px;
   margin-bottom: 10px;
 }
 
@@ -117,3 +134,9 @@ h1 {
   float:left;
   color: black;
 }
+
+#back-button span:hover {
+  cursor: pointer;
+}
+
+

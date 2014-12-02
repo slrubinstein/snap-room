@@ -21,17 +21,21 @@
 			    <label ng-show="main.isLoggedIn">
 			      <input ng-model="main.fbook" type="checkbox">Facebook users only 
 			    </label>
-			    <p ng-hide='main.isLoggedIn'>Log in to Facebook to create private rooms.</p>
+<!-- 			    <p ng-hide='main.isLoggedIn'>Log in to Facebook to create private rooms.</p> -->
 			  </div>
-
-	            Name Room (optional):
-			    <input ng-model="main.nameInput" type="text"/> <br/>
-
-				Room Lifetime:
-				<select
-				  ng-model="main.timerLength"
-				  ng-options="time for time in main.timerOptions">
-				</select>
+                
+                <div id="nameInput">
+	              Name Room (optional):<br/>
+			      <input class="form-control" ng-model="main.nameInput" type="text"/> <br/>
+                </div>
+                 
+                <div id="lifetimeInput">
+				  Room Lifetime: <br/>
+				  <select
+				    ng-model="main.timerLength"
+				    ng-options="time for time in main.timerOptions">
+				  </select>
+				</div>
 
 				<br>
 

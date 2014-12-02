@@ -39,13 +39,14 @@
 				</div>
 			</div>
 
-		<four-square ng-if="roomType==='lunch'"></four-square>
+		<four-square></four-square>
 		
-		  <h1 ng-if="roomType==='lunch'">Or</h1>
+		  <h1 ng-class="{redTrimFont: roomColor==='red', blueTrimFont: roomColor==='blue', greenTrimFont: roomColor==='green'}"ng-if="roomType==='lunch'">Or</h1>
 
 			<form id="restForm" name="chatForm" ng-submit="room.submitInput()" novalidate>
 	      <label for="restInput"
-	      			 ng-if="roomType==='lunch'">Enter the name of a restaurant:</label>
+	      			 ng-if="roomType==='lunch'"
+	      			 	ng-class="{redTrimFont: roomColor==='red', blueTrimFont: roomColor==='blue', greenTrimFont: roomColor==='green'}">Enter the name of a restaurant:</label>
 	      <div ng-hide="room.timeUp && roomType==='chat'">			 
 	        <label for="restInput"
 	      			 ng-if="roomType==='chat'">Enter a message:</label>

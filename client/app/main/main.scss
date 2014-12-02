@@ -68,13 +68,35 @@
 }
 
 .panel-heading {
-  background-color: #2E4F95;
-  color: white;
+/*  background-color: #2E4F95; */
+    background-color: #23A8A2;
+    color: white;
+    border-radius: 5px;
 }
 
 #create-room-button:hover {
   cursor: pointer;
 }
+
+#nameInput {
+  margin-bottom: 10px;  
+}
+
+#lifetimeInput {
+  margin-bottom: 8px;  
+}
+
+.panel-body {
+  color: #23A8A2;
+}
+
+.panel-body button {
+  background-color: #23A8A2;
+  color: white;
+}
+
+
+
 
 
 
