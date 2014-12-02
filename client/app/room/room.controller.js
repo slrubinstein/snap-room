@@ -96,6 +96,9 @@ angular.module('roomApp')
             break;
         }
         $(event.target).closest('.list-group-item').addClass(colorClass);
+        setTimeout(function() {
+          $(event.target).closest('.list-group-item').removeClass(colorClass);
+        }, 100);
       }
 
       else {
@@ -152,10 +155,19 @@ angular.module('roomApp')
       $scope.numberPeople = numberPeople;
       $scope.$apply();
     });
-
+    
     socket.socket.on('updateVotes', function(roomData) {
-      $scope.roomData = roomData;
-      $scope.$apply();
+      if ($scope.roomData.choices.length !== roomData.choices.length) {
+        $scope.roomData.choices.push(roomData.choices[roomData.choices.length-1]);
+        $scope.$apply();
+      }
+      else {
+        roomData.choices.forEach(function(el, index) {
+          if (el.votes !== $scope.roomData.choices[index].votes) {
+             $scope.roomData.choices[index].votes = el.votes;
+          }
+        });
+      }
     });
 
     //facebook login stuff
