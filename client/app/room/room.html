@@ -2,11 +2,13 @@
 
 	<room-banner></room-banner>   
 
-    <div ng-hide="room.timeUp && roomType==='lunch'">
+    <div ng-hide="room.timeUp && roomType==='lunch'"
+    		 ng-class="{redAccent: roomColor==='blue'}"
+    		 >
 			<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
 
 				<div ng-if="roomType==='lunch'">
-					<ul class="list-group">
+					<ul class="list-group messages">
 						<li ng-repeat="choice in roomData.choices"
 								class="list-group-item">
 
@@ -28,11 +30,11 @@
 				</div>
 
 				<div ng-if="roomType==='chat'">
-					<ul class="list-group">
+					<ul class="list-group messages">
 						<li ng-repeat="message in roomData.messages"
 								class="list-group-item">
 							<img ng-src={{message.picture}}/>
-							<span>{{message.name}}:</span> 
+							<span ng-show="message.name">{{message.name}}:</span> 
 							<span>{{message.message}}</span> 
 						</li>
 					</ul>
