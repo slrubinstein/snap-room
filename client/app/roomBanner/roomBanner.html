@@ -1,6 +1,5 @@
 <div class="col-sm-12 col-md-12 col-lg-12" 
-     style="background-color: {{room.colorScheme.trimColor}};
-            height: 80px">
+     ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}">
 
   <div id="backButton">
   	<a ui-sref="main">
@@ -9,21 +8,19 @@
   </div>
 
 	<div ng-show="secondsLeft && !room.timeUp">
-		<p style="color: {{room.colorScheme.wallColor}}">Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
+		<p >Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
   </div>
 
     <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
 
     <p>Number of people in this room: {{numberPeople}}</p>
 
-  <h2 ng-show="room.timeUp && !room.winner"
-  		style="background-color: {{room.colorScheme.wallColor}}">
+  <h2 ng-show="room.timeUp && !room.winner">
       No votes were cast
   </h2>
           
 	<div ng-show="room.winner" 
-			 class="col-sm-12 col-md-12 col-lg-12"
-			 style="background-color: {{room.colorScheme.wallColor}}">
+			 class="col-sm-12 col-md-12 col-lg-12">
     <h2 ng-show="room.winner.length > 1">Winners:</h2>
     <h2 ng-show="room.winner.length === 1">Winner:</h2>
     <ul class="list-group">

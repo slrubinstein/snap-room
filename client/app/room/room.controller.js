@@ -18,7 +18,8 @@ angular.module('roomApp')
 
     $scope.roomColor;
 
-    this.colorScheme = setColors.set(this.params.color)
+//    this.colorScheme = setColors.set(this.params.color)
+
 
 
     this.runTimer = function(expiresAt) {

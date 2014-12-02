@@ -1,4 +1,4 @@
-<div class="myContainer" style="background-color: {{room.colorScheme.wallColor}}">
+<div class="myContainer" ng-class="{redWall: roomColor==='red', blueWall: roomColor==='blue', greenWall: roomColor==='green', redAccent: roomColor==='red', blueAccent: roomColor==='blue', greenAccent: roomColor==='green'}">
 
 	<room-banner></room-banner>   
 
