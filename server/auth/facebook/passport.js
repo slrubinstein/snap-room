@@ -23,9 +23,15 @@ exports.setup = function (User, config) {
             role: 'user',
             username: profile.username,
             provider: 'facebook',
-            facebook: profile._json
+            facebook: profile._json,
+
           });
-          user.facebook.picture = profile.picture;
+
+          if (user.facebook) {
+            user.facebook.picture = 'https://graph.facebook.com/' +
+                                    user.facebook.id + '/picture';
+          }
+
           user.save(function(err) {
             if (err) done(err);
             return done(err, user);
