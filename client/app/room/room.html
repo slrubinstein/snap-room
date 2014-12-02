@@ -19,10 +19,8 @@
 								<button class="btn btn-default" ng-click="room.vote(choice.choice, 'down', $event)">-</button>
 							</span>
 						
-							<span>{{choice.choice}}</span>
-
-							<span ng-show="choice.voters.length > 0">{{choice.voters}}</span>
-
+							<span><strong>{{choice.choice}}</strong></span><br>
+							<span ng-repeat="voter in choice.voters track by $index">{{voter}} </span>
 							<span class="badge">{{choice.votes}}</span>
 
 						</li>
