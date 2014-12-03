@@ -73,7 +73,7 @@ angular.module('roomApp')
       if (ctrl.user) {
         if (ctrl.user.facebook) {
           name = ctrl.user.facebook.first_name;
-          picture = ctrl.user.facebook.picture; 
+          picture = ctrl.user.facebook.picture;
         }
       }
       roomFactory.submitInput(roomNumber, name, picture, type);
