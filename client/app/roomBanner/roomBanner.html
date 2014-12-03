@@ -1,52 +1,51 @@
-<div
-     ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}">
+<div ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}">
 
-    <div id="back-button"
-         class="narrowColumn leftColumn">
-    		<span class="glyphicon glyphicon-arrow-left" ng-click="room.backToMain" ng-class="{redTrim: roomColor==='red', blueAccent: roomColor==='blue', greenTrimAccent: roomColor==='green'}" ui-sref="main"></span>
+  <div id="back-button"
+       class="narrowColumn leftColumn">
+    <span class="glyphicon glyphicon-arrow-left" ng-click="room.backToMain" ng-class="{redTrim: roomColor==='red', blueAccent: roomColor==='blue', greenTrimAccent: roomColor==='green'}" ui-sref="main"></span>
+  </div>
+
+  <div class="centerColumn">
+    
+    <h1 ng-show="roomName">{{roomName}}</h1>
+    <h1 ng-hide="roomName"> </h1>
+
+  	<div ng-show="secondsLeft && !room.timeUp">
+  		<p >Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
     </div>
 
-    <div class="centerColumn">
-      <h1 ng-show="roomName">{{roomName}}</h1>
-      
-      <h1 ng-hide="roomName"> </h1>
+    <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
 
-    	<div ng-show="secondsLeft && !room.timeUp">
-    		<p >Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
-      </div>
+    <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'">
+      No votes were cast
+    </h2>
 
-        <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
+    <h2 ng-show="room.timeUp && !room.winner && roomType==='chat'">
+        Time expired
+    </h2>
+            
+  	<div ng-show="room.winner" 
+  			 class="col-sm-12 col-md-12 col-lg-12">
+      <h2 ng-show="room.winner.length > 1">Winners:</h2>
+      <h2 ng-show="room.winner.length === 1">Winner:</h2>
+      <ul class="list-group">
+  			<li ng-repeat="winner in room.winner"
+  					class="list-group-item">
 
-      <h2 ng-show="room.timeUp && !room.winner && roomType==='lunch'">
-          No votes were cast
-      </h2>
+  				<span>{{winner}}</span>
+  				<span class="badge">{{room.maxVotes}}</span>
 
-      <h2 ng-show="room.timeUp && !room.winner && roomType==='chat'">
-          Time expired
-      </h2>
-              
-    	<div ng-show="room.winner" 
-    			 class="col-sm-12 col-md-12 col-lg-12">
-        <h2 ng-show="room.winner.length > 1">Winners:</h2>
-        <h2 ng-show="room.winner.length === 1">Winner:</h2>
-        <ul class="list-group">
-    			<li ng-repeat="winner in room.winner"
-    					class="list-group-item">
+  			</li>
+  		</ul>
+  	</div>
+  </div>
 
-    				<span>{{winner}}</span>
-    				<span class="badge">{{room.maxVotes}}</span>
+  <div class="narrowColumn rightColumn">
+    <span>{{numberPeople}}</span>
+    <span class="glyphicon glyphicon-user"
+          ng-click="main.showUsers()"></span>
+  </div>
 
-    			</li>
-    		</ul>
-    	</div>
-    </div>
-
-    <div class="narrowColumn rightColumn">
-     <span>{{numberPeople}}</span>
-      <span class="glyphicon glyphicon-user"
-            ng-click="main.showUsers()"></span>
-    </div>
-
-    <div class="clearfix"></div>
+  <div class="clearfix"></div>
 </div>
 

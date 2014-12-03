@@ -66,16 +66,16 @@ angular.module('roomApp')
           });
       },
 
-      getFourSquare : function(roomNumber) {
-          var deferred = $q.defer();
-          var restaurants;
-          $http.get('/api/room/' + roomNumber + '/vendor/foursquare')
-            .success(function(data) {
-              restaurants = data.response.groups[0].items;
-              deferred.resolve(restaurants);
-          })
-          return deferred.promise; 
-      } 
+      // getFourSquare : function(roomNumber) {
+      //     var deferred = $q.defer();
+      //     var restaurants;
+      //     $http.get('/api/room/' + roomNumber + '/vendor/foursquare')
+      //       .success(function(data) {
+      //         restaurants = data.response.groups[0].items;
+      //         deferred.resolve(restaurants);
+      //     })
+      //     return deferred.promise; 
+      // } 
     }    
   });
 

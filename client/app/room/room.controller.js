@@ -2,7 +2,8 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomFactory, timerFactory, Auth, $state) {
+                                    roomFactory, timerFactory, Auth, $state,
+                                    fourSquareService, roomSocketsService) {
 
     $scope.message = 'Hello';
     var ctrl = this;
@@ -118,76 +119,30 @@ angular.module('roomApp')
 
     this.restaurants = [];
 
+
+    // fourSquare API call, hide, and show functions
     this.getFourSquare = function() {
-      var promise = roomFactory.getFourSquare(roomNumber)
+      var promise = fourSquareService.get(roomNumber)
         .then(function(restaurants) {
           ctrl.restaurants = restaurants;
         });
     };
 
     this.showFoursquare = function() {
-      $(event.target).toggleClass('ng-hide');
-      $(event.target).prev().toggleClass('ng-hide');
-      $('.foursquareRests').toggleClass('ng-hide');
+      fourSquareService.show(event);
     }
 
     this.hideFoursquare = function() {
-      $(event.target).toggleClass('ng-hide');
-      $(event.target).next().toggleClass('ng-hide');
-      $('.foursquareRests').toggleClass('ng-hide');
+      fourSquareService.hide(event);
     }
 
     this.seeVotes = function(event) {
       $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
     }
 
+    // set up socket event listeners
+    roomSocketsService.listen(roomNumber, $scope, ctrl);
 
-
-    // socket events
-
-    socket.socket.on('timeUp', function(winner, maxVotes, expiredRoomNumber) {
-      if (Number(expiredRoomNumber) === Number(roomNumber)) {
-        ctrl.timeUp = true;
-        ctrl.winner = winner;
-        ctrl.maxVotes = maxVotes;
-      }
-    });
-
-    socket.socket.on('timeUpChat', function(expiredRoomNumber) {
-      if (Number(expiredRoomNumber) === Number(roomNumber)) {
-        ctrl.timeUp = true;
-      }
-    });
-
-    socket.socket.emit('join', roomNumber);
-    
-    socket.socket.on('newPerson', function(numberPeople) {
-      $scope.numberPeople = numberPeople;
-      $scope.$apply();
-    });
-    
-    socket.socket.on('updateVotes', function(roomData) {
-
-      if ($scope.roomType==='lunch') {
-        if ($scope.roomData.choices.length !== roomData.choices.length) {
-          $scope.roomData.choices.push(roomData.choices[roomData.choices.length-1]);
-          $scope.$apply();
-        }
-        else {
-          roomData.choices.forEach(function(el, index) {
-            if (el.votes !== $scope.roomData.choices[index].votes) {
-               $scope.roomData.choices[index].votes = el.votes;
-               $scope.roomData.choices[index].voters = el.voters;
-            }
-          });
-        }
-      }
-
-      else if ($scope.roomType==='chat') {
-        $scope.roomData = roomData;
-        $scope.$apply();
-      }
-    });
 
     //facebook login stuff
     this.user = Auth.getCurrentUser();

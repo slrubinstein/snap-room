@@ -3,10 +3,6 @@ h1 {
   margin-top: 0px;
 }
 
-.glyphicon-arrow-left {
-  font-size: 2em;
-}
-
 .redWall {
   background-color: #D46A6A;
   border: 1px solid #801515;
@@ -105,7 +101,7 @@ h1 {
 }
 
 
-#voted-list {
+#input-list {
   margin-top: 10px;
   min-height: 200px;
   text-align: left;
@@ -128,19 +124,6 @@ h1 {
   margin-bottom: 10px;
 }
 
-#back-button {
-  float:left;
-  color: black;
-}
-
-#back-button span:hover {
-  cursor: pointer;
-}
-
-.glyphicon-user:hover {
-  cursor: pointer;
-}
-
 input {
   color: black;
   &.btn:hover {
@@ -148,19 +131,3 @@ input {
   }
 }
 
-/*.list-group.messages {
-  margin-top: 10px;
-}*/
-
-.restaurants {
-  float: left;
-  width: 80%;
-  font-size: 1.3em;
-}
-
-.votes {
-  float: left;
-  width: 20%;
-  text-align: right;
-  font-size: 1.3em;
-}
