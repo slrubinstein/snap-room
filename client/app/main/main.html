@@ -11,11 +11,13 @@
     </header>
     
     <div id="finding-location">
-       <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
+       <p ng-hide="main.geoData.geoLocated || main.geolocationCallFailed">Finding your location...</p>
+       <h3 class="text-warning" ng-show="main.geolocationCallFailed">Error finding your location</h3>
     </div>
 
     <div ng-show="main.geoData.geoLocated">
        <create-room-options-panel></create-room-options-panel>
+      <h3 class="text-warning" ng-show="main.getRoomsCallFailed">Error finding available rooms</h3>
     </div>
 
     <room-list> </room-list>

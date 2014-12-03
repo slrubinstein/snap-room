@@ -44,6 +44,11 @@ angular.module('roomApp')
     this.user = {};
     this.isLoggedIn = false;
 
+    //when geolocationCallFailed or getRoomsCallFailed are true, an error
+    //message is shown to the user
+    this.geolocationCallFailed = false;
+    this.getRoomsCallFailed = false;
+
     //determines whether the menu for creating a room is open or closed.
     //It is toggled by openMenu()
     this.menuOpen = false;
@@ -92,7 +97,7 @@ angular.module('roomApp')
     //geolocationService.getLocation() method rejects the deferred that 
     //the geoGeo promise is associated with   
     function geoErrorCallback() {
-
+      ctrl.geolocationCallFailed = true;
     }
 
     //getRoomsSuccessCallback is called by geoSuccessCallback 
@@ -108,7 +113,7 @@ angular.module('roomApp')
     //when the roomCreationService.get() method rejects the deferred 
     //that the getRooms promise is associated with  
     function getRoomsErrorCallback() {
-      
+      ctrl.getRoomsCallFailed = true;
     }
 
     //the refreshRoomList event is emitted by the server whenever
