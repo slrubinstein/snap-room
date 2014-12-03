@@ -74,6 +74,7 @@ angular.module('roomApp')
 
     }
 
+
     //geoSuccessCallback is called by getRoomByGeo when the 
     //geolocation.getLocation() method rejects the deferred that 
     //the geoGeo promise is associated with   

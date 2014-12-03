@@ -1,0 +1,29 @@
+<ul class="list-group messages">
+	<div ng-repeat="choice in roomData.choices">
+		<li class="list-group-item">
+
+			<div class="restaurants">
+				<span>
+					<button class="btn btn-default" 
+									ng-click="room.vote(choice.choice, 'up', $event)">+</button>
+				</span>
+				<span>
+					<button class="btn btn-default" 
+									ng-click="room.vote(choice.choice, 'down', $event)">-</button>
+				</span>
+				<span>{{choice.choice}}</span>
+			</div>
+
+			<div class="votes">
+				<span>{{choice.votes}}</span>
+				<span class="glyphicon glyphicon-user"
+							ng-click="room.seeVotes($event)"></span>
+			</div>
+			<div class="clearfix"></div>
+
+		</li>
+		<li class="list-group-item voters" ng-show="room.showVoters">
+			<span ng-repeat="voter in choice.voters track by $index">{{voter + " "}}  </span>
+		</li>
+	</div>
+</ul>
