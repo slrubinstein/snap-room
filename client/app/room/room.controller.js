@@ -84,22 +84,7 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, event, index) {
       
       if (upOrDown) {
-        var colorClass;
-        switch($scope.roomColor) {
-          case 'red':
-            colorClass = 'redTrim';
-            break;
-          case 'blue':
-            colorClass = 'blueTrim';
-            break;
-          case 'green':
-            colorClass = 'greenTrim';
-            break;
-        }
-        $(event.target).closest('.list-group-item').addClass(colorClass);
-        setTimeout(function() {
-          $(event.target).closest('.list-group-item').removeClass(colorClass);
-        }, 100);
+        roomFactory.toggleColors($scope.roomColor, event)
       }
 
       else {
