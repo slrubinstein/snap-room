@@ -26,7 +26,7 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: process.env.JWT_SECRET
+    session: process.env.JWT_SECRET_SNAP
   },
 
   // List of user roles
