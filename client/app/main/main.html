@@ -2,14 +2,13 @@
 
 <div ng-controller="MainCtrl as main">
   <div class="myContainer container">
-    <h1 class="page-header animated zoomIn">Snaproom</h1>
-
+    <header class="page-header">
+      <h1 class="animated zoomIn">Snaproom</h1>
+      <p class="subheading"><em>Your temporary, location-specific collaboration space</em></p>
+    </header>
     <div id="finding-location">
       <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
     </div>
-     <!--  <div class="panel-heading" 
-            ng-show="main.geoData.geoLocated && !main.menuOpen" 
-            ng-click="main.openMenu()">Create Room</div><br/> -->
 
     <div ng-show="main.geoData.geoLocated">
       <create-room-options-panel></create-room-options-panel>
@@ -37,8 +36,8 @@
 
    </div>
 
-    <p ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
-    <p ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
+    <p class="subheading" ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
+    <p class="subheading" ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
     <a ng-hide="main.isLoggedIn"
        class="btn btn-facebook" 
        ng-click="loginOauth('facebook')">

@@ -2,16 +2,16 @@
     margin: 20px 0;
 }
 
-#banner {
-    border-bottom: none;
-    margin-top: -20px;
+/*#banner {
+  border-bottom: none;
+  margin-top: -20px;
 }
 
 #banner h1 {
-    font-size: 60px;
-    line-height: 1;
-    letter-spacing: -1px;
-}
+  font-size: 60px;
+  line-height: 1;
+  letter-spacing: -1px;
+}*/
 
 .hero-unit {
     position: relative;
@@ -34,8 +34,17 @@
   text-align: center;
 }
 
-.page-header{
+/*header{
   color: #23A8A2;
+  border-bottom: 1px solid;
+}*/
+
+.page-header {
+  color: #23A8A2;
+}
+
+p.subheading {
+  color: #666666;
 }
 
 .center-block{
