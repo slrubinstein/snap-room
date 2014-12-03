@@ -68,13 +68,15 @@ angular.module('roomApp')
     this.createRoom = function (color, type) {
       var lock = ctrl.fbook ? 'facebook': null;
       var roomName = ctrl.nameInput || null;
+      var timerLength = ctrl.timerLength;
       populateRooms.create({lat: ctrl.geoData.lat,
                             lon: ctrl.geoData.lon, 
                             color: color, 
                             geoRoom: ctrl.geoRoom,
                             type: type,
                             lock: lock,
-                            roomName: roomName});
+                            roomName: roomName,
+                            timerLength: timerLength});
     };
 
     this.enterRoom = function(roomNumber, color) {
