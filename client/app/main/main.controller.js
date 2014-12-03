@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('MainCtrl', function ($scope, $http, socket,
-          $window, geolocationService, populateRooms, Auth, $state, 
+          $window, geolocationService, roomCreationService, Auth, $state, 
           User) {
 
     var ctrl = this;
@@ -67,14 +67,14 @@ angular.module('roomApp')
     ctrl.getRoomByGeo();
         
     //geoSuccessCallback is called by getRoomByGeo when the 
-    //geolocation.getLocation() method resolves the deferred that 
+    //geolocationService.getLocation() method resolves the deferred that 
     //the geoGeo promise is associated with     
     function geoSuccessCallback (geoData) {
       ctrl.geoData = geoData; //geoData has three properties:
       //latitude, longitude, and geoLocated (a boolean)
 
-      //geolocation.makeGeoRoomName creates the name (a string) for
-      //the geoRoom that this user will be added to, using
+      //geolocationService.makeGeoRoomName creates the name (a string)
+      //for the geoRoom that this user will be added to, using
       //geoData.latitude and geoData.longitude
       ctrl.geoRoom = geolocationService.makeGeoRoomName(geoData)
 
@@ -82,21 +82,21 @@ angular.module('roomApp')
       socket.socket.emit("joinAnteroom", ctrl.geoRoom);
 
       //getRooms is a promise
-      var getRooms = populateRooms.get(geoData)
+      var getRooms = roomCreationService.get(geoData)
         .then(getRoomsSuccessCallback, getRoomsErrorCallback);
 
     }
 
 
     //geoSuccessCallback is called by getRoomByGeo when the 
-    //geolocation.getLocation() method rejects the deferred that 
+    //geolocationService.getLocation() method rejects the deferred that 
     //the geoGeo promise is associated with   
     function geoErrorCallback() {
 
     }
 
     //getRoomsSuccessCallback is called by geoSuccessCallback 
-    //when the populateRooms.get() method resolves the deferred 
+    //when the roomCreationService.get() method resolves the deferred 
     //that the getRooms promise is associated with  
     function getRoomsSuccessCallback(rooms) {
       ctrl.availableRooms = rooms;
@@ -105,7 +105,7 @@ angular.module('roomApp')
 
 
     //getRoomsErrorCallback is called by geoSuccessCallback 
-    //when the populateRooms.get() method rejects the deferred 
+    //when the roomCreationService.get() method rejects the deferred 
     //that the getRooms promise is associated with  
     function getRoomsErrorCallback() {
       
@@ -115,7 +115,7 @@ angular.module('roomApp')
     //a room is created or expires. It is sent to the members of
     //the relevant geoRoom
     socket.socket.on('refreshRoomList', function() {
-      var getRooms = populateRooms.get(ctrl.geoData)
+      var getRooms = roomCreationService.get(ctrl.geoData)
         .then(function(rooms) {
           ctrl.availableRooms = rooms;
           assignRoomColorAndNum(rooms);
@@ -173,7 +173,7 @@ angular.module('roomApp')
       //Users can adjust this by using the select element in 
       //createRoomOptionsPanel.html
       var timerLength = ctrl.timerLength;
-      populateRooms.create({lat: ctrl.geoData.lat,
+      roomCreationService.create({lat: ctrl.geoData.lat,
                             lon: ctrl.geoData.lon, 
                             color: color, 
                             geoRoom: ctrl.geoRoom,
@@ -185,7 +185,7 @@ angular.module('roomApp')
 
     this.enterRoom = function(roomNumber, color) {
       if (roomNumber) {
-        populateRooms.enter({roomNumber: roomNumber, 
+        roomCreationService.enter({roomNumber: roomNumber, 
                              color: color, 
                              geoRoom: ctrl.geoRoom, 
                              isLoggedIn: Auth.isLoggedIn(), 
