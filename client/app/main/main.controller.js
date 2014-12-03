@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('MainCtrl', function ($state, $scope, $http, 
-          socket, $stateParams, $window, timerFactory, geolocation,
-          populateRooms, Auth, $location, $cookieStore, User) {
+  .controller('MainCtrl', function ($scope, $http, socket,
+          $window, geolocation, populateRooms, Auth, $state, 
+          User) {
 
     var ctrl = this;
 
@@ -25,21 +25,34 @@ angular.module('roomApp')
     this.roomToCreateColor;//setRoomToCreateColor is the color of
     //the room that will be created if this user creates a room
 
-    this.nameInput;
+    this.nameInput;//this is attached to the nameInput input element
+    //in createRoomOptionsPanel.html. It is used for customizing
+    //the name of a room
+    this.fbook = false;//this is toggled when the user checks the
+    //box (in div.checkbox in createRoomOptionsPanel.html)
+    //for making a room open only to facebook users
 
+    //the options for the select element in createRoomOptionsPanel.html
+    this.timerOptions = ['1:00', '2:00', '5:00', '10:00']
+    //the initial time that the select element in 
+    //createRoomOptionsPanel.html is set to
+    this.timerLength = '2:00'
+
+    //when a user navigates to the main page, if they are authenticated
+    //via facebook, user will be assigned to an object containing the
+    //user's name and other info and isLoggedIn will be assigned to true
     this.user = {};
     this.isLoggedIn = false;
 
-    // create menu functions
+    //determines whether the menu for creating a room is open or closed.
+    //It is toggled by openMenu()
     this.menuOpen = false;
-    this.fbook = false;
+
+    //openMenu is called when the user clicks on #create-room-button
+    //in createRoomOptionsPanel.html
     this.openMenu = function() {
       ctrl.menuOpen = true;
     }
-
-    this.timerOptions = ['1:00', '2:00', '5:00', '10:00']
-    this.timerLength = '2:00'
-
 
     //getRoomByGeo is called just after the function definition.
     //It runs whenever a user navigates to the main page. Its
@@ -146,10 +159,19 @@ angular.module('roomApp')
         setRoomToCreateColor(num + 1);
     }
 
-
+    //createRoom is called when the user clicks on a button to 
+    //create a room (in createRoomOptionsPanel.html). As arguments,
+    //it takes the color of the room and the type of room (lunch, chat)
     this.createRoom = function(color, type) {
+      //lock will be true when a user has chosen to create a room that
+      //is only open to facebook users
       var lock = ctrl.fbook ? 'facebook': null;
+      //roomName will be non-null when a user has chosen to create a room
+      //with a custom name
       var roomName = ctrl.nameInput || null;
+      //timerLength determines how much time a room will be active for.
+      //Users can adjust this by using the select element in 
+      //createRoomOptionsPanel.html
       var timerLength = ctrl.timerLength;
       populateRooms.create({lat: ctrl.geoData.lat,
                             lon: ctrl.geoData.lon, 
@@ -171,20 +193,12 @@ angular.module('roomApp')
       }
     };
 
-    
-    $scope.loginOauth = function(provider) {
-      $window.location.href = '/auth/' + provider;
-      ctrl.user = Auth.getCurrentUser();
-      ctrl.isLoggedIn = Auth.isLoggedIn();
-    };
-
-    $scope.logout = function() {
-      Auth.logout();
-      ctrl.user = Auth.getCurrentUser();
-      ctrl.isLoggedIn = Auth.isLoggedIn();
-      $location.path('/');
-    }
-
+    //setUser is passed as an argument to Auth.isLoggedInAsync, 
+    //which is called just after the function definition.
+    //When it is called by Auth.isLoggedInAsync, it is passed
+    //a boolean argument indicating whether a user is logged in
+    //or not. If a user is logged in, User.get() will be called,
+    //in order to get information about the user from the database
     function setUser(validUser) {
        if (validUser) {
         ctrl.isLoggedIn = true;
@@ -194,6 +208,13 @@ angular.module('roomApp')
 
     Auth.isLoggedInAsync(setUser);
 
+    this.loginOauth = function(provider) {
+      $window.location.href = '/auth/' + provider;
+    };
 
+    this.logout = function() {
+      Auth.logout();
+      $state.reload();
+    }
 
   });
