@@ -73,10 +73,10 @@ angular.module('roomApp')
       ctrl.geoData = geoData; //geoData has three properties:
       //latitude, longitude, and geoLocated (a boolean)
 
-      //geolocation.makeGeoRoom creates the name (a string) for
+      //geolocation.makeGeoRoomName creates the name (a string) for
       //the geoRoom that this user will be added to, using
       //geoData.latitude and geoData.longitude
-      ctrl.geoRoom = geolocation.makeGeoRoom(geoData)
+      ctrl.geoRoom = geolocation.makeGeoRoomName(geoData)
 
       //this statement causes the user to join a geoRoom 
       socket.socket.emit("joinAnteroom", ctrl.geoRoom);

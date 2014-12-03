@@ -38,7 +38,7 @@ angular.module('roomApp')
 
         return deferred.promise;
       },
-      makeGeoRoom: function(geoData) {
+      makeGeoRoomName: function(geoData) {
         var geoRoom = 'geoRoom';
         var latString = String(geoData.lat);
         var lonString = String(geoData.lon);
