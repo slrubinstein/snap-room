@@ -125,6 +125,17 @@ angular.module('roomApp')
         });
     };
 
+    this.showFoursquare = function() {
+      $(event.target).toggleClass('ng-hide');
+      $(event.target).prev().toggleClass('ng-hide');
+      $('.foursquareRests').toggleClass('ng-hide');
+    }
+
+    this.hideFoursquare = function() {
+      $(event.target).toggleClass('ng-hide');
+      $(event.target).next().toggleClass('ng-hide');
+      $('.foursquareRests').toggleClass('ng-hide');
+    }
 
     this.seeVotes = function(event) {
       $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
