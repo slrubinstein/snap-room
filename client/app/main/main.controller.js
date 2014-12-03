@@ -56,8 +56,8 @@ angular.module('roomApp')
         })
     }
 
-    function geoErrorCallback() {
-
+    function geoErrorCallback(error) {
+      console.log(error);
     }
 
 

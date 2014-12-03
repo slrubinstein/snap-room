@@ -11,8 +11,31 @@ angular.module('roomApp')
           geoData.geoLocated = true;
           geoData.lat = position.coords.latitude;
           geoData.lon = position.coords.longitude;
-          deferred.resolve(geoData)
+          deferred.resolve(geoData);
+        }, 
+          function(error) {
+            var errorMsg;
+            switch(error.code) {
+              case error.PERMISSION_DENIED:
+                errorMsg = "User denied the request for Geolocation."
+                break;
+              case error.POSITION_UNAVAILABLE:
+                errorMsg = "Location information is unavailable."
+                break;
+              case error.TIMEOUT:
+                errorMsg = "The request to get user location timed out."
+                break;
+              case error.UNKNOWN_ERROR:
+                errorMsg = "An unknown error occurred."
+                break;
+            }
+          deferred.reject(errorMsg)  
         });
+
+
+
+
+
         return deferred.promise;
       },
       makeGeoRoom: function(geoData) {
