@@ -26,7 +26,7 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'room-secret'
+    session: process.env.JWT_SECRET
   },
 
   // List of user roles
