@@ -2,52 +2,36 @@
 
 <div ng-controller="MainCtrl as main">
   <div class="myContainer container">
+    
     <header class="page-header">
-      <h1 class="animated zoomIn">Snaproom</h1>
-      <p class="subheading"><em>Your temporary, location-specific collaboration space</em></p>
+       <h1 class="animated zoomIn">Snaproom</h1>
+       <p class="subheading">
+         <em>Your temporary, location-specific collaboration space</em>
+       </p>
     </header>
+    
     <div id="finding-location">
-      <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
+       <p ng-hide="main.geoData.geoLocated">Finding your location...</p>
     </div>
 
     <div ng-show="main.geoData.geoLocated">
-      <create-room-options-panel></create-room-options-panel>
+       <create-room-options-panel></create-room-options-panel>
     </div>
 
-    <div id="buttonDiv" 
-         ng-repeat="availRoom in main.availableRooms">
-      <button class="btn" 
-              ng-click="main.enterRoom(availRoom.roomNumber, availRoom.color)" ng-class="{redWall: availRoom.color==='red', blueWall: availRoom.color==='blue', greenWall: availRoom.color==='green'}">
-
-
-        <span>{{availRoom.roomName}}</span>
-
-        <span ng-show="!availRoom.roomName">{{availRoom.colorAndNum}} room</span>
-
-        <!-- show if locked & not logged in -->
-        <span ng-show="availRoom.lock && !main.isLoggedIn"
-              class="glyphicon glyphicon-lock"></span>
-
-        <!-- show if locked & logged in -->
-        <span ng-show="availRoom.lock && main.isLoggedIn"
-              class="glyphicon glyphicon-thumbs-up"></span>
-
-      </button> 
-
-   </div>
+    <room-list> </room-list>
 
     <p class="subheading" ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
     <p class="subheading" ng-show="main.isLoggedIn">Currently logged in as {{main.user.facebook.first_name}}</p>
+
     <a ng-hide="main.isLoggedIn"
        class="btn btn-facebook" 
        ng-click="loginOauth('facebook')">
       <i class="fa fa-facebook"></i> Login with Facebook
-    </a>
-    <br>
+    </a> <br>
+    
     <a ng-show="main.isLoggedIn"
        class="btn btn-default" 
        ng-click="logout()">Log out</a>
-
 
   </div>
 </div>
