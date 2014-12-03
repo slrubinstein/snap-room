@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('MainCtrl', function ($scope, $http, socket,
-          $window, geolocation, populateRooms, Auth, $state, 
+          $window, geolocationService, populateRooms, Auth, $state, 
           User) {
 
     var ctrl = this;
@@ -60,7 +60,7 @@ angular.module('roomApp')
     //their geolocation, and join them to a socket geoRoom
     this.getRoomByGeo = function() {
       //get geolocation. getGeo is a promise
-      var getGeo = geolocation.getLocation()
+      var getGeo = geolocationService.getLocation()
         .then(geoSuccessCallback, geoErrorCallback);
     };
 
@@ -76,7 +76,7 @@ angular.module('roomApp')
       //geolocation.makeGeoRoomName creates the name (a string) for
       //the geoRoom that this user will be added to, using
       //geoData.latitude and geoData.longitude
-      ctrl.geoRoom = geolocation.makeGeoRoomName(geoData)
+      ctrl.geoRoom = geolocationService.makeGeoRoomName(geoData)
 
       //this statement causes the user to join a geoRoom 
       socket.socket.emit("joinAnteroom", ctrl.geoRoom);
