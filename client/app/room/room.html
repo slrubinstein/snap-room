@@ -1,38 +1,43 @@
-<div class="myContainer" ng-class="{redWall: roomColor==='red', blueWall: roomColor==='blue', greenWall: roomColor==='green', redAccent: roomColor==='red', blueAccent: roomColor==='blue', greenAccent: roomColor==='green'}">
+<div class="myContainer" ng-class="{redWall: room.roomColor==='red', blueWall: room.roomColor==='blue', greenWall: room.roomColor==='green', redAccent: room.roomColor==='red', blueAccent: room.roomColor==='blue', greenAccent: room.roomColor==='green'}">
 
 	<room-banner></room-banner>   
 
-    <div ng-hide="room.timeUp && roomType==='lunch'"
-    		 ng-class="{redAccent: roomColor==='blue'}"
+    <div ng-hide="room.timeUp && room.roomType==='lunch'"
+    		 ng-class="{redAccent: room.roomColor==='blue'}"
     		 >
 			<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
 
-				<restaurant-list ng-show="roomType==='lunch'"></restaurant-list>
-				<chat-list ng-show="roomType==='chat'"></chat-list>
+				<restaurant-list ng-show="room.roomType==='lunch'"></restaurant-list>
+				<chat-list ng-show="room.roomType==='chat'"></chat-list>
 
 			</div>
 
 		<four-square></four-square>
 		
-		  <h1 ng-class="{redTrimFont: roomColor==='red', blueTrimFont: roomColor==='blue', greenTrimFont: roomColor==='green'}"ng-if="roomType==='lunch'">Or</h1>
+		  <h1 ng-class="{redTrimFont: room.roomColor==='red', blueTrimFont: room.roomColor==='blue', greenTrimFont: room.roomColor==='green'}"ng-if="room.roomType==='lunch'">Or</h1>
 
 			<form id="restForm" name="chatForm" ng-submit="room.submitInput()" novalidate>
 	      <label for="restInput"
-	      			 ng-if="roomType==='lunch'"
-	      			 	ng-class="{redTrimFont: roomColor==='red', blueTrimFont: roomColor==='blue', greenTrimFont: roomColor==='green'}">Enter the name of a restaurant:</label>
-	      <div ng-hide="room.timeUp && roomType==='chat'">			 
+	      			 ng-if="room.roomType==='lunch'"
+	      			 	ng-class="{redTrimFont: room.roomColor==='red', blueTrimFont: room.roomColor==='blue', greenTrimFont: room.roomColor==='green'}">Enter the name of a restaurant:</label>
+	      <div ng-hide="room.timeUp && room.roomType==='chat'">			 
 	        <label for="restInput"
-	      			 ng-if="roomType==='chat'"
-	      			 ng-class="{redTrimFont: roomColor==='red', blueTrimFont: roomColor==='blue', greenTrimFont: roomColor==='green'}"
+	      			 ng-if="room.roomType==='chat'"
+	      			 class="form-control"
+	      			 ng-class="{redTrimFont: room.roomColor==='red', blueTrimFont: room.roomColor==='blue', greenTrimFont: room.roomColor==='green'}"
 	      			 >Enter a message:</label>
 	        <br/>
-				<input id="restInput" name="textInput" type="text" ng-model="room.restName"><br/>
+				<input id="restInput" 
+							 name="textInput" 
+							 type="text" 
+							 class="form-control"
+							 ng-model="room.restName"><br/>
 				<input ng-show="room.restName" 
 					   class="btn" 
 					   type="submit"
-					   ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green', redAccent: roomColor==='red', blueAccent: roomColor==='blue'}">
+					   ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green', redAccent: room.roomColor==='red', blueAccent: room.roomColor==='blue'}">
 		  </div>
-		  <div ng-show="room.timeUp && roomType==='chat'" class="clearfix"></div>
+		  <div ng-show="room.timeUp && room.roomType==='chat'" class="clearfix"></div>
 			</form>
 
 

@@ -5,21 +5,18 @@ angular.module('roomApp')
                                     roomFactory, timerFactory, Auth, $state,
                                     fourSquareService, roomSocketsService) {
 
-    $scope.message = 'Hello';
+
     var ctrl = this;
 
     this.params = $stateParams;
     var roomNumber = $stateParams.roomNumber;
     var geoRoom = $stateParams.geoRoom;
 
-    $scope.roomData;
-    $scope.roomType;
+    this.roomData;
+    this.roomType;
+    this.roomColor;
 
     this.restName = '';
-
-    $scope.roomColor;
-
-//    this.colorScheme = setColors.set(this.params.color)
 
     this.backToMain = function() {
       $state.go("main");
@@ -30,18 +27,17 @@ angular.module('roomApp')
     }
 
 
-
     this.runTimer = function(expiresAt) {
       $scope.timeNow = new Date().getTime();
-      var minutesLeftDecimal = String(($scope.expiresAt.getTime() - $scope.timeNow) / 1000 / 60);
+      var minutesLeftDecimal = String((ctrl.expiresAt.getTime() - $scope.timeNow) / 1000 / 60);
       $scope.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
       var rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
       $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
       if (Number($scope.secondsLeft) < 10) $scope.secondsLeft = "0" + $scope.secondsLeft; 
 
       if(Number(minutesLeftDecimal) < 0) {
-        $interval.cancel($scope.countDown);
-        socket.socket.emit('timeUp', $scope.roomData.roomNumber, geoRoom);
+        $interval.cancel(ctrl.countDown);
+        socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoom);
       }
     };
 
@@ -55,21 +51,20 @@ angular.module('roomApp')
 
     this.getRoom = function(roomNumber) {
        var promise = roomFactory.get(roomNumber)
-       .then(function(roomData) {
-          $scope.roomData = roomData.initialRoomData;
-          $scope.roomColor = roomData.roomColor;
-          $scope.expiresAt = roomData.expiresAt;
-          $scope.countDown = $interval(ctrl.runTimer, 1000);
-          $scope.lockedRoom = roomData.lockedRoom;
-          $scope.roomType = roomData.type;
-          $scope.roomName = roomData.roomName;
+       .then(function(room) {
+          ctrl.roomData = room;
+          ctrl.roomColor = room.color;
+          ctrl.roomType = room.type
+          ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
+          ctrl.countDown = $interval(ctrl.runTimer, 1000);
+          console.log(ctrl.roomData)
        })
     };
 
     this.getRoom(roomNumber);
 
     this.submitInput = function() {
-      var type = $scope.roomType;
+      var type = ctrl.roomType;
       var name, picture; 
       if (ctrl.user) {
         if (ctrl.user.facebook) {
@@ -84,7 +79,7 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, event, index) {
       
       if (upOrDown) {
-        roomFactory.toggleColors($scope.roomColor, event)
+        roomFactory.toggleColors(ctrl.roomColor, event)
       }
 
       else {

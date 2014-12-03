@@ -1,22 +1,22 @@
 <button class="foursquareButton" 
-				ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}" 
-				ng-if="roomType==='lunch'"
+				ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green'}" 
+				ng-if="room.roomType==='lunch'"
 				ng-show="room.restaurants.length===0"
 				ng-click="room.getFourSquare()">Find Local Restaurants From Foursquare</button>
 
 <button ng-show="room.restaurants.length!==0"
 				class="foursquareButton"
-				ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}" 
+				ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green'}" 
 				ng-click="room.hideFoursquare()">Hide Foursquare Restaurants
 </button>
 
 <button ng-click="room.showFoursquare()"
 				class="foursquareButton ng-hide"
-				ng-class="{redTrim: roomColor==='red', blueTrim: roomColor==='blue', greenTrim: roomColor==='green'}" 
+				ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green'}" 
 				>Show Foursquare Restaurants</button>
 
 <div class="foursquareRests"
-		ng-class="{redAccent: roomColor==='red', blueAccent: roomColor==='blue', greenAccent: roomColor==='green'}"> 
+		ng-class="{redAccent: room.roomColor==='red', blueAccent: room.roomColor==='blue', greenAccent: room.roomColor==='green'}"> 
 	<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
 		<p>
 			<button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}

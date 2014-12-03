@@ -11,16 +11,19 @@ angular.module('roomApp')
     return {
       get: function (roomNumber) {
         var deferred = $q.defer();
-        var roomData = {};
+        var room = {};
         $http.get("/api/room/" + roomNumber)
          .success(function(data){
-          roomData.initialRoomData = data;
-          roomData.roomColor = data.color;
-          roomData.expiresAt = new Date(Date.parse(data.ourExpTime));
-          roomData.lockedRoom = data.lock;
-          roomData.type = data.type;
-          roomData.roomName = data.roomName;
-          deferred.resolve(roomData); 
+
+          // console.log(data)
+
+          room = data;
+          // roomData.roomColor = data.color;
+          // roomData.expiresAt = new Date(Date.parse(data.ourExpTime));
+          // roomData.lockedRoom = data.lock;
+          // roomData.type = data.type;
+          // roomData.roomName = data.roomName;
+          deferred.resolve(room); 
         }).error(function(data){
            $location.path("/");
         });
@@ -81,7 +84,7 @@ angular.module('roomApp')
               colorClass = 'greenTrim';
               break;
           }
-          
+
           $(event.target).closest('.list-group-item').addClass(colorClass);
           setTimeout(function() {
             $(event.target).closest('.list-group-item').removeClass(colorClass);
