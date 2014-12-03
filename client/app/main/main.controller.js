@@ -4,41 +4,62 @@ angular.module('roomApp')
   .controller('MainCtrl', function ($state, $scope, $http, 
           socket, $stateParams, $window, timerFactory, geolocation,
           populateRooms, Auth, $location, $cookieStore, User) {
-    $scope.awesomeThings = [];
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
-      socket.syncUpdates('thing', $scope.awesomeThings);
-    });
-
-    
-    this.message;
     var ctrl = this;
+
     this.availableRooms = [];
+    
+
+    this.roomToCreateColor;
+    this.nameInput;
+
+    this.user = {};
+    this.isLoggedIn = false;
+    Auth.isLoggedInAsync(setUser);
+
+        // create menu functions
+    this.menuOpen = false;
+    this.fbook = false;
+    this.openMenu = function() {
+      ctrl.menuOpen = true;
+    }
+
+    this.timerOptions = ['1:00', '2:00', '5:00', '10:00']
+    this.timerLength = '2:00'
+
+
     this.lat;
     this.lon;
     this.geoLocated = false;
     this.geoData;
     this.geoRoom;
 
-    this.getRoomByGeo = function() {
-      // get geolocation
+
+    getRoomByGeo();
+
+    function getRoomByGeo() {
+      // get geolocation. getGeo is a promise
       var getGeo = geolocation.getLocation()
-        .then(function(geoData) {
-          ctrl.geoData = geoData;
-          ctrl.geoRoom = geolocation.makeGeoRoom(geoData)
-          // use geolocation to find available rooms
-          socket.socket.emit("joinAnteroom", ctrl.geoRoom);
-          var getRooms = populateRooms.get(geoData)
-            .then(function(rooms) {
-              ctrl.availableRooms = rooms;
-              // run assign colors
-              ctrl.assignColors(rooms);
-            })
+        .then(geoSuccessCallback, geoErrorCallback);
+    }
+        
+    function geoSuccessCallback(geoData) {
+      ctrl.geoData = geoData;
+      ctrl.geoRoom = geolocation.makeGeoRoom(geoData)
+      // use geolocation to find available rooms
+      socket.socket.emit("joinAnteroom", ctrl.geoRoom);
+      var getRooms = populateRooms.get(geoData)
+        .then(function(rooms) {
+          ctrl.availableRooms = rooms;
+          // run assign colors
+          ctrl.assignColors(rooms);
         })
     }
 
-    this.roomToCreateColor;
+    function geoErrorCallback() {
+
+    }
+
 
     this.setRoomToCreateColor = function(num) {
       for (var color in this.assignedColors) {
@@ -63,7 +84,7 @@ angular.module('roomApp')
       ctrl.setRoomToCreateColor(0);
     }
 
-    this.nameInput;
+
 
     this.createRoom = function (color, type) {
       var lock = ctrl.fbook ? 'facebook': null;
@@ -90,7 +111,7 @@ angular.module('roomApp')
     };
 
     
-    this.getRoomByGeo();
+
     
     socket.socket.on('refreshRoomList', function() {
       var getRooms = populateRooms.get(ctrl.geoData)
@@ -102,9 +123,7 @@ angular.module('roomApp')
     });
 
     
-    this.user = {};
-    this.isLoggedIn = false;
-    Auth.isLoggedInAsync(setUser);
+
     
     function setUser(validUser) {
        if (validUser) {
@@ -128,17 +147,6 @@ angular.module('roomApp')
       $location.path('/');
     }
 
-
-
-    // create menu functions
-    this.menuOpen = false;
-    this.fbook = false;
-    this.openMenu = function() {
-      ctrl.menuOpen = true;
-    }
-
-    this.timerOptions = ['1:00', '2:00', '5:00', '10:00']
-    this.timerLength = '2:00'
 
 
   });
