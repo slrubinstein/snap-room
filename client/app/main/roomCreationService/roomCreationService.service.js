@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('populateRooms', function ($q, $http, $state, socket) {
+  .factory('roomCreationService', function ($q, $http, $state, socket) {
 
     return {
       get: function (loc) {
@@ -10,8 +10,11 @@ angular.module('roomApp')
         $http.get("/api/room/" + loc.lat.toFixed(1) + "/" + loc.lon.toFixed(1))
          .success(function(rooms){
             deferred.resolve(rooms);
+          })
+         .error(function(error){
+            deferred.reject();
           });
-        return deferred.promise;
+         return deferred.promise;
       },
       enter: function(options) {
 
