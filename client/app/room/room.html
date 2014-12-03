@@ -5,22 +5,11 @@
     <div ng-hide="room.timeUp && roomType==='lunch'"
     		 ng-class="{redAccent: roomColor==='blue'}"
     		 >
-			<div id="voted-list" class="col-sm-12 col-md-12 col-lg-12">
+			<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
 
 				<restaurant-list ng-show="roomType==='lunch'"></restaurant-list>
+				<chat-list ng-show="roomType==='chat'"></chat-list>
 
-				
-
-				<div ng-if="roomType==='chat'">
-					<ul class="list-group messages">
-						<li ng-repeat="message in roomData.messages"
-								class="list-group-item">
-							<img ng-src={{message.picture}}/>
-							<span ng-show="message.name">{{message.name}}:</span> 
-							<span>{{message.message}}</span> 
-						</li>
-					</ul>
-				</div>
 			</div>
 
 		<four-square></four-square>
