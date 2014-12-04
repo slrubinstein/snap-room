@@ -9,23 +9,43 @@ angular.module('roomApp')
     var ctrl = this;
 
     this.params = $stateParams;
-    var roomNumber = $stateParams.roomNumber;
-    var geoRoom = $stateParams.geoRoom;
+    var roomNumber = this.params.roomNumber;
+    var geoRoom = this.params.geoRoom;
 
+    //roomData, roomType, and roomColor are all assigned in
+    //getRoomSuccessCallback
     this.roomData;
     this.roomType;
     this.roomColor;
 
-    this.restName = '';
+    this.restaurants = []; //assigned to the array of restaurants
+    //returned by getFourSquare, if getFourSquare is called
 
-    this.backToMain = function() {
-      $state.go("main");
+    this.inputField = ''; //sets the input field to be empty initially
+
+    //getRoom is called whenever a user enters a room. The method call
+    //is just below the function definition. Its purpose is to make available
+    //to the client any info that has already been posted in the room, the
+    //amount of time left before the room expires, and the room color/type,
+    //as well as to start the interval that runs the timer.
+    this.getRoom = function(roomNumber) {
+      var promise = roomFactory.get(roomNumber)
+      .then(getRoomSuccessCallback, getRoomErrorCallback)
+    };
+
+    this.getRoom(roomNumber);
+
+    function getRoomSuccessCallback(room) {
+        ctrl.roomData = room;
+        ctrl.roomColor = room.color;
+        ctrl.roomType = room.type
+        ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
+        ctrl.countDown = $interval(ctrl.runTimer, 1000);
     }
 
-    this.showUsers = function() {
-
+    function getRoomErrorCallback(error) {
+      
     }
-
 
     this.runTimer = function(expiresAt) {
       $scope.timeNow = new Date().getTime();
@@ -40,29 +60,10 @@ angular.module('roomApp')
         socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoom);
       }
     };
-
-   this.returnArray = function(num) {
-          var arr = []; 
-          for (var i = 0; i < num; i++) {
-            arr.push(i);
-          }
-          return arr;
-    };
-
-    this.getRoom = function(roomNumber) {
-       var promise = roomFactory.get(roomNumber)
-       .then(function(room) {
-          ctrl.roomData = room;
-          ctrl.roomColor = room.color;
-          ctrl.roomType = room.type
-          ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
-          ctrl.countDown = $interval(ctrl.runTimer, 1000);
-          console.log(ctrl.roomData)
-       })
-    };
-
-    this.getRoom(roomNumber);
-
+    
+    //submitInput is called when the user submits the name of a restaurant
+    //or a message. It calls roomFactory.submitInput with a number of
+    //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
       var type = ctrl.roomType;
       var name, picture; 
@@ -73,11 +74,14 @@ angular.module('roomApp')
         }
       }
       roomFactory.submitInput(roomNumber, name, picture, type);
-      ctrl.restName = '';
+      //to empty the input field:
+      ctrl.inputField = '';
     }
 
+    //vote is called either by up/downvoting an already-selected
+    //restaurant, or selecting a restaurant from the foursquare list
     this.vote = function(choice, upOrDown, event, index) {
-      
+      //if called by up/downvoting
       if (upOrDown) {
         roomFactory.toggleColors(ctrl.roomColor, event)
       }
@@ -87,7 +91,8 @@ angular.module('roomApp')
         ctrl.restaurants.splice(index,1);
       } 
 
-      var name; 
+      var name;
+      //if the user is logged in 
       if (ctrl.user) {
         if (ctrl.user.facebook) {
           name = ctrl.user.facebook.first_name;
@@ -97,14 +102,19 @@ angular.module('roomApp')
 
     };
 
-    this.restaurants = [];
 
+    this.seeVotes = function(event) {
+      $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
+    }
 
-    // fourSquare API call, hide, and show functions
+///////////////////////////////////////////////////////////////
+// fourSquare API call, hide, and show functions
     this.getFourSquare = function() {
       var promise = fourSquareService.get(roomNumber)
         .then(function(restaurants) {
           ctrl.restaurants = restaurants;
+        },
+        function(error) {
         });
     };
 
@@ -116,9 +126,8 @@ angular.module('roomApp')
       fourSquareService.hide(event);
     }
 
-    this.seeVotes = function(event) {
-      $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
-    }
+////////////////////////////////////////////////////////////////
+
 
     // set up socket event listeners
     roomSocketsService.listen(roomNumber, $scope, ctrl);
@@ -127,7 +136,24 @@ angular.module('roomApp')
     //facebook login stuff
     this.user = Auth.getCurrentUser();
     this.isLoggedIn = Auth.isLoggedIn();
+    
+    this.backToMain = function() {
+      $state.go("main");
+    }
 
+    this.showUsers = function() {
+
+    }
+
+    //returnArray is used to display the correct number of dollar signs
+    //for the list of restaurants from foursquare
+    this.returnArray = function(num) {
+          var arr = []; 
+          for (var i = 0; i < num; i++) {
+            arr.push(i);
+          }
+          return arr;
+    };
 
 
 
