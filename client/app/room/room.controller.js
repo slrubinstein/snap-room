@@ -84,9 +84,12 @@ angular.module('roomApp')
           picture = ctrl.user.facebook.picture;
         }
       }
-      chatroomService.submitInput(roomNumber, name, picture, type);
-      //to empty the input field:
-      ctrl.inputField = '';
+  
+      if (ctrl.inputField.length < 50) {
+        chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
+        //to empty the input field:
+        ctrl.inputField = '';
+      }
     }
 
     //vote is called either by up/downvoting an already-selected

@@ -4,10 +4,10 @@ angular.module('roomApp')
   .factory('chatroomService', function ($http) {
 
     return {
-submitInput: function(roomNumber, name, picture, type) {
+submitInput: function(userInput, roomNumber, name, picture, type) {
        if (type === 'lunch') {
          $http.put("/api/room/" + roomNumber, 
-           {choice : inputForm.textInput.value,
+           {choice : userInput,
              name : name})
            .success(function(data){
            // console.log(data);
