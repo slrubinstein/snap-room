@@ -3,7 +3,7 @@
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
                                     roomFactory, timerFactory, Auth, $state,
-                                    fourSquareService, roomSocketsService) {
+                                    fourSquareService, roomSocketsService, $window) {
 
 
     var ctrl = this;
@@ -17,6 +17,7 @@ angular.module('roomApp')
     this.roomData;
     this.roomType;
     this.roomColor;
+
 
     this.restaurants = []; //assigned to the array of restaurants
     //returned by getFourSquare, if getFourSquare is called
@@ -41,6 +42,16 @@ angular.module('roomApp')
         ctrl.roomType = room.type
         ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
         ctrl.countDown = $interval(ctrl.runTimer, 1000);
+
+        if (ctrl.roomColor === "red") {
+           $("body").css("background-color", "#D46A6A" );
+        }
+        else if (ctrl.roomColor === "green") {
+           $("body").css("background-color","#87FC81" );
+        }
+        else if (ctrl.roomColor === "blue") {
+           $("body").css("background-color", "#8DADF9" );
+        }
     }
 
     function getRoomErrorCallback(error) {

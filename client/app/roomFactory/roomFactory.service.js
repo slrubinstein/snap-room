@@ -34,7 +34,7 @@ angular.module('roomApp')
       submitInput: function(roomNumber, name, picture, type) {
         if (type === 'lunch') {
           $http.put("/api/room/" + roomNumber, 
-            {choice : chatForm.textInput.value,
+            {choice : inputForm.textInput.value,
               name : name})
             .success(function(data){
             // console.log(data);
@@ -45,7 +45,7 @@ angular.module('roomApp')
         }
         else if (type === 'chat') {
           $http.put('api/chat/' + roomNumber,
-            {message: chatForm.textInput.value,
+            {message: inputForm.textInput.value,
               name: name,
               picture: picture})
           .success(function(data) {

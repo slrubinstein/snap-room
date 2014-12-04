@@ -1,11 +1,15 @@
 
+
 h1 {
   margin-top: 0px;
 }
 
 .redWall {
   background-color: #D46A6A;
-  border: 1px solid #801515;
+}
+
+button.redWall{
+   border: 1px solid #801515;
 }
 
 .redTrim {
@@ -23,6 +27,9 @@ h1 {
 
 .blueWall {
   background-color: #8DADF9;
+}
+
+button.blueWall{
   border: 1px solid #2E4272;
 }
 
@@ -44,6 +51,9 @@ h1 {
 
 .greenWall {
   background-color: #87FC81;
+}
+
+button.greenWall{
   border: 1px solid #328A2E;
 }
 
@@ -114,13 +124,11 @@ h1 {
 
 }
 
-
-
-#restForm {
+#inputForm {
   margin-bottom: 20px;
 }
 
-#restInput {
+#textInput {
   margin-bottom: 10px;
 }
 

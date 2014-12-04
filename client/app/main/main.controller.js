@@ -59,6 +59,8 @@ angular.module('roomApp')
       ctrl.menuOpen = true;
     }
 
+    $("body").css("background-color", "white");
+
     //getRoomByGeo is called just after the function definition.
     //It runs whenever a user navigates to the main page. Its
     //purpose is to show the user a list of available rooms near 
