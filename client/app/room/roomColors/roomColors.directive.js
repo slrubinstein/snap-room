@@ -17,7 +17,6 @@ angular.module('roomApp')
 	      	switch(roomColor) {
 	      		case 'red':
 	      			element.addClass('redWall');
-	      			console.log(element);
 	      			break;
 	      		case 'blue':
 	      			element.addClass('blueWall');
