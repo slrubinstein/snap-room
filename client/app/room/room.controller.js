@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomFactory, timerFactory, Auth, $state,
+                                    chatroomService, roomService, Auth, $state,
                                     fourSquareService, roomSocketsService, $window) {
 
 
@@ -30,7 +30,7 @@ angular.module('roomApp')
     //amount of time left before the room expires, and the room color/type,
     //as well as to start the interval that runs the timer.
     this.getRoom = function(roomNumber) {
-      var promise = roomFactory.get(roomNumber)
+      var promise = roomService.get(roomNumber)
       .then(getRoomSuccessCallback, getRoomErrorCallback)
     };
 
@@ -73,7 +73,7 @@ angular.module('roomApp')
     };
     
     //submitInput is called when the user submits the name of a restaurant
-    //or a message. It calls roomFactory.submitInput with a number of
+    //or a message. It calls chatroomService.submitInput with a number of
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
       var type = ctrl.roomType;
@@ -84,7 +84,7 @@ angular.module('roomApp')
           picture = ctrl.user.facebook.picture;
         }
       }
-      roomFactory.submitInput(roomNumber, name, picture, type);
+      chatroomService.submitInput(roomNumber, name, picture, type);
       //to empty the input field:
       ctrl.inputField = '';
     }
@@ -94,7 +94,7 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, event, index) {
       //if called by up/downvoting
       if (upOrDown) {
-        roomFactory.toggleColors(ctrl.roomColor, event)
+        chatroomService.toggleColors(ctrl.roomColor, event)
       }
 
       else {
@@ -109,7 +109,7 @@ angular.module('roomApp')
           name = ctrl.user.facebook.first_name;
         }
       }
-      roomFactory.submitVote(roomNumber, choice, upOrDown, name);
+      chatroomService.submitVote(roomNumber, choice, upOrDown, name);
 
     };
 
