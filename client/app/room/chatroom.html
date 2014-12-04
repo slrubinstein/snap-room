@@ -1,0 +1,32 @@
+ <div room-accent
+	 id="room-body">
+
+		<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
+			
+			<chat-list>
+			</chat-list>
+
+		</div>
+
+		<form id="inputForm" 
+					name="inputForm"
+					ng-submit="room.submitInput()" 
+					novalidate>
+	      <div ng-hide="room.timeUp">			 
+	        <label for="textInput"
+	      			 room-trim-font
+	      			 >Enter a message:</label>
+	        <br/>
+					<input id="textInput" 
+							 name="textInput" 
+							 type="text" 
+							 class="form-control"
+							 ng-model="room.inputField"><br/>
+					<input ng-show="room.inputField" 
+					   class="btn" 
+					   type="submit"
+					   room-trim room-accent>
+		  	</div>
+		</form>
+
+ </div>

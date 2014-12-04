@@ -1,8 +1,8 @@
-<div ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green'}">
+<div room-wall room-trim>
 
   <div id="back-button"
        class="narrowColumn leftColumn">
-    <span class="glyphicon glyphicon-arrow-left" ng-click="room.backToMain" ng-class="{redTrim: room.roomColor==='red', blueAccent: room.roomColor==='blue', greenTrimAccent: room.roomColor==='green'}" ui-sref="main"></span>
+    <span class="glyphicon glyphicon-arrow-left" ng-click="room.backToMain" ui-sref="main"></span>
   </div>
 
   <div class="centerColumn">

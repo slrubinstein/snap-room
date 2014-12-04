@@ -70,7 +70,7 @@ angular.module('roomApp')
       var getGeo = geolocationService.getLocation()
         .then(geoSuccessCallback, geoErrorCallback);
     };
-    console.log("in controller");
+
     ctrl.getRoomByGeo();
         
     //geoSuccessCallback is called by getRoomByGeo when the 
@@ -190,13 +190,14 @@ angular.module('roomApp')
                             timerLength: timerLength});
     };
 
-    this.enterRoom = function(roomNumber, color) {
+    this.enterRoom = function(roomNumber, color, type) {
       if (roomNumber) {
         roomCreationService.enter({roomNumber: roomNumber, 
                              color: color, 
                              geoRoom: ctrl.geoRoom, 
                              isLoggedIn: Auth.isLoggedIn(), 
-                             geoData: ctrl.geoData});
+                             geoData: ctrl.geoData,
+                             type: type});
       }
     };
 

@@ -23,13 +23,14 @@ angular.module('roomApp')
             roomNumber = options.roomNumber,
             color = options.color,
             geoRoom = options.geoRoom,
-            isLoggedIn = options.isLoggedIn;
+            isLoggedIn = options.isLoggedIn,
+            roomType = options.type;
 
         var stateGo = function() {
-          $state.go("room", {roomNumber: roomNumber,
-                                 color: color,
-                                 geoRoom: geoRoom
-                                });
+          $state.go("room." + roomType, {roomNumber: roomNumber,
+                                color: color,
+                                geoRoom: geoRoom
+                              });
         }
 
         $http.get("/api/room/" + roomNumber)
@@ -67,10 +68,10 @@ angular.module('roomApp')
                                  roomName: roomName,
                                  timerLength: timerLength})
         .success(function(data){
-          $state.go("room", {roomNumber: data.roomNumber,
-                              color: color,
-                              geoRoom: geoRoom
-                            });
+          $state.go("room." + type, {roomNumber: data.roomNumber,
+                                color: color,
+                                geoRoom: geoRoom
+                              });
           socket.socket.emit('createRoom', data.roomNumber, color, geoRoom)
           //timerFactory.timerListener();
         })

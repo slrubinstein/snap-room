@@ -1,0 +1,37 @@
+ <div room-accent
+    		 id="room-body"
+    		 ng-hide="room.timeUp">
+
+				<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
+					
+					<restaurant-list>
+					</restaurant-list>
+
+				</div>
+
+				<four-square>
+				</four-square>
+			
+			  <h1 room-trim-font>Or</h1>
+
+				<form id="inputForm" 
+							name="inputForm"
+							ng-submit="room.submitInput()" 
+							novalidate>
+		      <label for="textInput"
+		      			 room-trim-font
+		      			 room-trip>Enter the name of a restaurant:</label>
+		        <br/>
+						<input id="textInput" 
+								 name="textInput" 
+								 type="text" 
+								 class="form-control"
+								 ng-model="room.inputField"><br/>
+						<input ng-show="room.inputField" 
+						   class="btn" 
+						   type="submit"
+						   room-trim room-accent>
+				</form>
+
+  </div> 
+</div>

@@ -1,53 +1,10 @@
 <div class="myContainer" style="min-height: {{room.windowHeight}}px" room-wall>
 
-	<room-banner></room-banner>   
+  
+	<room-banner></room-banner> 
+
+    <div ui-view> </div>
 
 
-    <div room-accent
-    		 id="room-body"
-    		 ng-hide="room.timeUp && room.roomType==='lunch'">
-
-				<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
-					
-					<restaurant-list ng-show="room.roomType==='lunch'">
-					</restaurant-list>
-
-					<chat-list ng-show="room.roomType==='chat'">
-					</chat-list>
-
-				</div>
-
-				<four-square>
-				</four-square>
-			
-			  <h1 room-trim-font ng-if="room.roomType==='lunch'">Or</h1>
-
-				<form id="inputForm" 
-							name="inputForm"
-							ng-submit="room.submitInput()" 
-							novalidate>
-		      <label for="textInput"
-		      			 ng-if="room.roomType==='lunch'"
-		      			 room-trim-font
-		      			 room-trip>Enter the name of a restaurant:</label>
-		      <div ng-hide="room.timeUp && room.roomType==='chat'">			 
-		        <label for="textInput"
-		      			 ng-if="room.roomType==='chat'"
-		      			 room-trim-font
-		      			 >Enter a message:</label>
-		        <br/>
-						<input id="textInput" 
-								 name="textInput" 
-								 type="text" 
-								 class="form-control"
-								 ng-model="room.inputField"><br/>
-						<input ng-show="room.inputField" 
-						   class="btn" 
-						   type="submit"
-						   room-trim room-accent>
-			  	</div>
-				</form>
-
-  </div> 
 </div>
 
