@@ -48,6 +48,7 @@ function onConnect(socket) {
 
 
   socket.on('timeUp', function(room, geoRoom) {
+    console.log('time up event')
     Room.findOne({roomNumber:room}, function(err, room) {
 
       if (room.type === 'lunch') {
@@ -83,9 +84,6 @@ function onConnect(socket) {
   })
 
   // Insert sockets below
-  require('../api/chat/chat.socket').register(socket);
-  require('../api/room/room.socket').register(socket);
-  require('../api/thing/thing.socket').register(socket);
 }
 
 module.exports = function (socketio) {
@@ -122,4 +120,7 @@ module.exports = function (socketio) {
     onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
   });
+  require('../api/chat/chat.socket').register(socketio);
+  require('../api/room/room.socket').register(socketio);
+  require('../api/thing/thing.socket').register(socketio);
 };

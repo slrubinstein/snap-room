@@ -120,6 +120,7 @@ angular.module('roomApp')
     //a room is created or expires. It is sent to the members of
     //the relevant geoRoom
     socket.socket.on('refreshRoomList', function() {
+      console.log('refreshing room list')
       var getRooms = roomCreationService.get(ctrl.geoData)
         .then(function(rooms) {
           ctrl.availableRooms = rooms;
