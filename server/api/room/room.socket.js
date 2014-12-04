@@ -6,21 +6,21 @@
 
 var Room = require('./room.model');
 
-exports.register = function(socket) {
+exports.register = function(socketio) {
   Room.schema.post('save', function (doc) {
-    onSave(socket, doc);
+    onSave(socketio, doc);
   });
   Room.schema.post('remove', function (doc) {
-    onRemove(socket, doc);
+    onRemove(socketio, doc);
   });
 }
 
-function onSave(socket, doc, cb) {
+function onSave(socketio, doc, cb) {
 	var roomNumber = doc.roomNumber
-  //socket.broadcast.to(roomNumber).emit('updateVotes', doc);
-  socket.to(roomNumber).emit('updateVotes', doc);
+  //socketio.broadcast.to(roomNumber).emit('updateVotes', doc);
+  socketio.to(roomNumber).emit('updateVotes', doc);
 }
 
-function onRemove(socket, doc, cb) {
-  socket.emit('room:remove', doc);
+function onRemove(socketio, doc, cb) {
+  socketio.emit('room:remove', doc);
 }

@@ -25,6 +25,7 @@ exports.show = function(req, res) {
 
 // Get a single room by geolocation
 exports.showByGeo = function(req, res) {
+
   Room.find({lat:req.params.lat})
        .find({'ourExpTime': {$gt : new Date().getTime()}})
        .exec(function (err, rooms) {

@@ -70,7 +70,7 @@ angular.module('roomApp')
       var getGeo = geolocationService.getLocation()
         .then(geoSuccessCallback, geoErrorCallback);
     };
-
+    console.log("in controller");
     ctrl.getRoomByGeo();
         
     //geoSuccessCallback is called by getRoomByGeo when the 
