@@ -32,7 +32,7 @@
   			<li ng-repeat="winner in room.winner"
   					class="list-group-item">
 
-  				<span>{{winner}}</span>
+  				<span>{{room.winner}}</span>
   				<span class="badge">{{room.maxVotes}}</span>
 
   			</li>
@@ -41,7 +41,7 @@
   </div>
 
   <div class="narrowColumn rightColumn">
-    <span>{{numberPeople}}</span>
+    <span>{{room.numberPeople}}</span>
     <span class="glyphicon glyphicon-user"
           ng-click="main.showUsers()"></span>
   </div>
