@@ -49,7 +49,7 @@ module.exports = function(app) {
     // app.use(function(err,req,res) {
     //   res.send(500);
     //   console.log('ERROR', err);
-    })
+    //})
   }
 
   if ('development' === env || 'test' === env) {
