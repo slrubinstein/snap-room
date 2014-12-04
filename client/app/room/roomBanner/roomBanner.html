@@ -1,0 +1,51 @@
+<div room-wall room-trim>
+
+  <div id="back-button"
+       class="narrowColumn leftColumn">
+    <span class="glyphicon glyphicon-arrow-left" ng-click="room.backToMain" ui-sref="main"></span>
+  </div>
+
+  <div class="centerColumn">
+    
+    <h1 ng-show="room.roomData.roomName">{{room.roomData.roomName}}</h1>
+    <h1 ng-hide="room.roomData.roomName"> </h1>
+
+  	<div ng-show="secondsLeft && !room.timeUp">
+  		<p >Room Closes in: {{minutesLeft}}:{{secondsLeft}}</p>
+    </div>
+
+    <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
+
+    <h2 ng-show="room.timeUp && !room.winner && room.roomType==='lunch'">
+      No votes were cast
+    </h2>
+
+    <h2 ng-show="room.timeUp && !room.winner && room.roomType==='chat'">
+        Time expired
+    </h2>
+            
+  	<div ng-show="room.winner" 
+  			 class="col-sm-12 col-md-12 col-lg-12">
+      <h2 ng-show="room.winner.length > 1">Winners:</h2>
+      <h2 ng-show="room.winner.length === 1">Winner:</h2>
+      <ul class="list-group">
+  			<li ng-repeat="winner in room.winner"
+  					class="list-group-item">
+
+  				<span>{{room.winner}}</span>
+  				<span class="badge">{{room.maxVotes}}</span>
+
+  			</li>
+  		</ul>
+  	</div>
+  </div>
+
+  <div class="narrowColumn rightColumn">
+    <span>{{room.numberPeople}}</span>
+    <span class="glyphicon glyphicon-user"
+          ng-click="main.showUsers()"></span>
+  </div>
+
+  <div class="clearfix"></div>
+</div>
+

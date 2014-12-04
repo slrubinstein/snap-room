@@ -1,0 +1,11 @@
+.panel {
+	max-width: 350px;
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.room-types button:hover, #create-room-button:hover {
+	background-color: #27bdb6;
+	color: white;
+}
