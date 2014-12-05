@@ -35,7 +35,8 @@ angular.module('roomApp')
   																				total: ctrl.grandTotal,
   																				taxPercent: ctrl.taxPercent,
   																				runningTotal: ctrl.runningTotal,
-  																				remainder: ctrl.remainder}
+  																				remainder: ctrl.remainder,
+  																				tipFromEach: ctrl.tipFromEach}
   		);
   	}
 
@@ -114,6 +115,7 @@ angular.module('roomApp')
 	  	ctrl.taxPercent = totals.taxPercent;
 	  	ctrl.runningTotal = totals.runningTotal;
 	  	ctrl.remainder = totals.remainder;
+	  	ctrl.tipFromEach = totals.tipFromEach;
 	  })
 
   	this.runningTotal = this.calculateRunningTotal(this.billItems);

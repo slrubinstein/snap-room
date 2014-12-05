@@ -27,9 +27,15 @@
 		</table>
 
 		<div class="panel-footer">
+			<p>Running total: {{split.runningTotal | number:2}}</p>
+			<p>Short: {{split.remainder | number:2}}</p>
+			<p>Tip from each: {{split.tipFromEach | number:2}}</p>
 
 
-			<p>Subtotal:
+		</div>
+
+		<div class="panel-body bill-totals">	
+			<p>Subtotal from bill:
 				<input class="sub-total" 
 							 type="text" 
 							 ng-model="split.subtotal" 
@@ -39,26 +45,38 @@
 			<p>Total: {{split.grandTotal | number:2}}</p>
 		</div>
 
-		<div class="panel-body">	
-			<p>Running total: {{split.runningTotal | number:2}}</p>
-			<p>Short: {{split.remainder | number:2}}</p>
-			<p>Tip from each: {{split.tipFromEach | number:2}}</p>
-		</div>
-
 	</div>
 
 
 
 
 <div class="panel panel-default">
-	<div class="panel-header">Input your bill items below</div>
+	<div class="panel-heading">Input your bill items below</div>
   <div class="panel-body">
-    <form novalidate class="simple-form">
-    Name: <input type="text" ng-model="split.user" /><br />
-    Item: <input type="item" ng-model="split.item" /><br />
-    Price: $<input type="item" ng-model="split.price" /><br />
-    Tax: <input type="item" ng-model="split.taxPercent" / ng-change="split.updateTax()"><br />
-    <input type="submit" ng-click="split.submit()" value="Save" />
-  </form>
+
+  	<div class="row">
+      <div class="col-md-6 item-input">
+         <form novalidate class="simple-form">
+			    <p>Name: <input type="text" ng-model="split.user" /><br /></p>
+			    <p>Item: <input type="item" ng-model="split.item" /><br /></p>
+			    <p>Price: $<input type="item" ng-model="split.price" /><br /></p>
+			    <p>Tax: <input type="item" ng-model="split.taxPercent" / ng-change="split.updateTax()"><br /></p>
+			    <div class="clearfix"></div>
+			    <p><input type="submit" ng-click="split.submit()" value="Add to bill" /></p>
+			  </form>
+      </div>
+      <div class="col-md-6">
+         <h4>Your Totals</h4>
+         <p>Food total:</p>
+         <p>Tax:</p>
+         <p>Tip:</p>
+         <p>You owe:</p>
+
+     	</div>
+   	</div>
+
+
+
+    
   </div>
 </div>
