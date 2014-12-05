@@ -28,12 +28,14 @@ angular.module('roomApp')
 	  	ctrl.totalTip = ctrl.subtotal * ctrl.tipPercent/100;
   		ctrl.totalTax = ctrl.subtotal * ctrl.taxPercent/100;
   		ctrl.grandTotal = +ctrl.subtotal + ctrl.totalTip + ctrl.totalTax;
+  		ctrl.remainder = ctrl.grandTotal - ctrl.runningTotal;
   		socket.socket.emit('updateTotals', {subtotal: ctrl.subtotal,
   																				tip: ctrl.totalTip,
   																				tax: ctrl.totalTax,
   																				total: ctrl.grandTotal,
   																				taxPercent: ctrl.taxPercent,
-  																				runningTotal: ctrl.runningTotal}
+  																				runningTotal: ctrl.runningTotal,
+  																				remainder: ctrl.remainder}
   		);
   	}
 
@@ -54,11 +56,7 @@ angular.module('roomApp')
   		ctrl.tipFromEach = ctrl.totalTip / ctrl.billItems.length;
 
   		//socket call
-  		socket.socket.emit('updateBill', {billItems: ctrl.billItems, 
-  																			runningTotal: ctrl.runningTotal,
-  																			remainder: ctrl.remainder,
-  																			tipFromEach: ctrl.tipFromEach}
-  		)
+  		ctrl.updateBillThroughSocket();
   	}
 
   	this.calculateRunningTotal = function(billItems) {
@@ -72,17 +70,24 @@ angular.module('roomApp')
 
 	  this.deleteItem = function(index) {
 	  	ctrl.billItems.splice(index, 1);
-	  	socket.socket.emit('deleteItem', index)
+	  	socket.socket.emit('deleteItem', index);
 	  }
 
-	  // this.updateTax = function() {
-	  // 	ctrl.billItems.forEach(function(item) {
-	  // 		item.itemTax = item.price * ctrl.taxPercent/100;
-	  // 	});
-	  // 	ctrl.updateTotals();
-	  // 	socket.socket.emit('updateBill', ctrl.billItems)
-	  // }
+	  this.updateTax = function() {
+	  	ctrl.billItems.forEach(function(item) {
+	  		item.itemTax = item.price * ctrl.taxPercent/100;
+	  	});
+	  	ctrl.updateTotals();
+	  	ctrl.updateBillThroughSocket();
+	  }
 
+	  this.updateBillThroughSocket = function() {
+	  	socket.socket.emit('updateBill', {billItems: ctrl.billItems, 
+  																			runningTotal: ctrl.runningTotal,
+  																			remainder: ctrl.remainder,
+  																			tipFromEach: ctrl.tipFromEach}
+  		);	
+	  }
 
 
 	  socket.socket.on('updateBill', function(data) {
@@ -93,15 +98,12 @@ angular.module('roomApp')
 	  })
 
 	  socket.socket.on('updateMyBill', function() {
-	  	socket.socket.emit('updateBill', {billItems: ctrl.billItems, 
-  																			runningTotal: ctrl.runningTotal,
-  																			remainder: ctrl.remainder,
-  																			tipFromEach: ctrl.tipFromEach}
-  		);
+	  	ctrl.updateBillThroughSocket();
 	  })
 
 	  socket.socket.on('deleteItem', function(index) {
-	  	ctrl.billItems.splice(index, 1)
+	  	ctrl.billItems.splice(index, 1);
+	  	ctrl.updateTotals();
 	  })
 
 	  socket.socket.on('updateTotals', function(totals) {
@@ -111,6 +113,7 @@ angular.module('roomApp')
 	  	ctrl.grandTotal = totals.total;
 	  	ctrl.taxPercent = totals.taxPercent;
 	  	ctrl.runningTotal = totals.runningTotal;
+	  	ctrl.remainder = totals.remainder;
 	  })
 
   	this.runningTotal = this.calculateRunningTotal(this.billItems);
