@@ -55,7 +55,7 @@
   <div class="panel-body">
 
   	<div class="row">
-      <div class="col-md-6 item-input">
+      <div class="col-sm-6 col-md-6 col-lg-5 item-input">
          <form novalidate class="simple-form">
 			    <p>Name: <input type="text" ng-model="split.user" /><br /></p>
 			    <p>Item: <input type="item" ng-model="split.item" /><br /></p>
@@ -65,13 +65,13 @@
 			    <p><input type="submit" ng-click="split.submit()" value="Add to bill" /></p>
 			  </form>
       </div>
-      <div class="col-md-6">
+      <div class="col-sm-6 col-md-6 col-lg-5">
          <h4>Your Totals</h4>
-         <p>Food total:</p>
-         <p>Tax:</p>
-         <p>Tip:</p>
-         <p>You owe:</p>
-
+         <p>Food total: ${{split.personalTotal.food | number:2}}</p>
+         <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
+         <p>Tip: ${{split.personalTotal.tip | number:2}}</p>
+         <p>You owe: ${{split.personalTotal.myTotal | number:2}}</p>
+         <button ng-click="split.calculateMyTotal()">Calculate My Total</button>
      	</div>
    	</div>
 

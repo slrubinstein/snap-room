@@ -15,9 +15,16 @@ angular.module('roomApp')
 
   	this.billItems = [];
 
+  	this.personalTotal = {
+  		food: 0,
+  		tax: 0,
+  		tip: 0,
+  		myTotal: 0
+  	}
+
+
   	this.subtotal;
 
-  	this.test = this.subtotal;
   	this.remainder = this.grandTotal - this.runningTotal;
 
   	// should update to divide by num of people in room?
@@ -25,10 +32,12 @@ angular.module('roomApp')
 
 
   	this.updateTotals = function() {
+  		ctrl.runningTotal = ctrl.calculateRunningTotal(ctrl.billItems);
 	  	ctrl.totalTip = ctrl.subtotal * ctrl.tipPercent/100;
   		ctrl.totalTax = ctrl.subtotal * ctrl.taxPercent/100;
   		ctrl.grandTotal = +ctrl.subtotal + ctrl.totalTip + ctrl.totalTax;
   		ctrl.remainder = ctrl.grandTotal - ctrl.runningTotal;
+  		ctrl.tipFromEach = ctrl.totalTip / ctrl.billItems.length;
   		socket.socket.emit('updateTotals', {subtotal: ctrl.subtotal,
   																				tip: ctrl.totalTip,
   																				tax: ctrl.totalTax,
@@ -47,17 +56,50 @@ angular.module('roomApp')
   			price: Number(ctrl.price),
   			itemTax: ctrl.price * ctrl.taxPercent/100
   		}
+  		ctrl.updateMyTotals({food: Number(ctrl.price),
+  												 tax: Number(ctrl.price) * ctrl.taxPercent/100},
+  												 'plus'
+  		);
 
   		ctrl.billItems.push(userBill);
   		ctrl.runningTotal = ctrl.calculateRunningTotal(ctrl.billItems);
   		ctrl.remainder = ctrl.grandTotal - ctrl.runningTotal;
-  		ctrl.user = '';
   		ctrl.item = '';
   		ctrl.price = '';
   		ctrl.tipFromEach = ctrl.totalTip / ctrl.billItems.length;
 
   		//socket call
   		ctrl.updateBillThroughSocket();
+
+  	}
+
+  	this.updateMyTotals = function(totals, plusOrMinus) {
+  		if (plusOrMinus === 'plus') {
+  			console.log(ctrl.personalTotal)
+	  		ctrl.personalTotal.food += totals.food;
+	  		ctrl.personalTotal.tax += totals.tax;
+	  		ctrl.personalTotal.myTotal = ctrl.personalTotal.food +
+	  																 ctrl.personalTotal.tax +
+	  																 ctrl.personalTotal.tip;
+	  	} else {
+
+	  	}
+  	}
+
+  	this.calculateMyTotal = function() {
+  		var myFood = 0, 
+  				myTax = 0, 
+  				myTip = 0;
+  		ctrl.billItems.forEach(function(item) {
+  			if(item.user === ctrl.user) {
+  				myFood += item.price;
+  				myTax += item.itemTax;
+  			}
+  		});
+  		ctrl.personalTotal.food = myFood;
+  		ctrl.personalTotal.tax = myTax;
+  		ctrl.personalTotal.tip = ctrl.tipFromEach;
+  		ctrl.updateMyTotals({food: 0, tax: 0}, 'plus')
   	}
 
   	this.calculateRunningTotal = function(billItems) {
@@ -71,6 +113,7 @@ angular.module('roomApp')
 
 	  this.deleteItem = function(index) {
 	  	ctrl.billItems.splice(index, 1);
+	  	ctrl.updateMyTotals
 	  	socket.socket.emit('deleteItem', index);
 	  }
 
@@ -96,6 +139,7 @@ angular.module('roomApp')
 	  	ctrl.runningTotal = data.runningTotal;
 	  	ctrl.remainder = data.remainder;
 	  	ctrl.tipFromEach = data.tipFromEach;
+	  	ctrl.personalTotal.tip = ctrl.tipFromEach;
 	  })
 
 	  socket.socket.on('updateMyBill', function() {
