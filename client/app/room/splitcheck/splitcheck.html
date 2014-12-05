@@ -1,0 +1,64 @@
+<div class="container">
+	
+
+	<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">The Bill</div>
+
+	  <!-- Table -->
+	  <table class="table">
+			<thead>
+				<tr>
+					<th>Delete</th>
+					<th>Name</th>
+					<th>Item</th>
+					<th>Price</th>
+					<th>Tax</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr  ng-repeat="item in split.billItems">
+					<td><button class="btn btn-danger btn-xs">X</button></td>
+					<td>{{item.user}}</td>
+					<td>{{item.item}}</td>
+					<td>${{item.price}}</td>
+					<td>${{item.itemTax}}</td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+
+
+
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form novalidate class="simple-form">
+    Name: <input type="text" ng-model="split.user" /><br />
+    Item: <input type="item" ng-model="split.item" /><br />
+    Price: $<input type="item" ng-model="split.price" /><br />
+    Tax: will be calculated at <input type="item" ng-model="split.tax" />(NYS)<br />
+    <input type="submit" ng-click="split.submit()" value="Save" />
+  </form>
+  </div>
+</div>
+
+
+
+<div class="container">
+  
+
+Models:
+  <div>
+  	<p>{{split.user}}</p>
+  	<p>{{split.item}}</p>
+  	<p>{{split.price}}</p>
+  	<p>{{split.billItems}}</p>
+  </div>
+
+
+
+</div>
