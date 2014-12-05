@@ -17,6 +17,7 @@ exports.show = function(req, res) {
   Gameboard.findOne({roomNumber: roomNumber}, function (err, gameBoard) {
     if(err) { return handleError(res, err); }
     if(!gameBoard) { return res.send(404); }
+    console.log("showGameboard: ", gameBoard);
     return res.json(gameBoard);
   });
 };
@@ -31,6 +32,7 @@ exports.create = function(req, res) {
     updated.roomNumber = req.body.roomNumber;
     updated.isActive = true;
     updated.save(function(err, updatedGameboard){
+      console.log("createdGameboard: ", updatedGameboard);
       if (err) { return handleError(res, err); }
       return res.json(201, updatedGameboard);
     });
@@ -40,14 +42,18 @@ exports.create = function(req, res) {
 // Updates an existing gameBoard in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Gameboard.findOne({roomNumber:req.body.roomNumber}, function (err, gameBoard) {
+  var roomNumber = req.params.id;
+  Gameboard.findOne({roomNumber: roomNumber}, function (err, gameBoard) {
+    console.log("found gameBoard: ", gameBoard);
     if (err) { return handleError(res, err); }
     if(!gameBoard) { return res.send(404); }
     var updated = _.merge(gameBoard, req.body);
+    console.log("updated:", updated)
     updated.save(function (err, updatedGameboard) {
       if (err) { return handleError(res, err); }
       if(!updatedGameboard) { return res.send(404); }
-      return res.json(200, gameBoard);
+      console.log("updatedGameboard" , updatedGameboard);
+      return res.json(200, updatedGameboard);
     });
   });
 };
