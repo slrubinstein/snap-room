@@ -204,6 +204,10 @@
    border-right: 4px solid black;
 }
 
+ .rightOfDivider {
+   border-left: 4px solid black;
+}
+
 #gameBoard {
   min-width: 740px;
 }
@@ -213,6 +217,10 @@
   margin-right: auto;
 }
 
+.bottomRowSpace { 
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);    
+}
 
 
 

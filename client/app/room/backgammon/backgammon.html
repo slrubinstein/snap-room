@@ -28,7 +28,7 @@
     <div ng-hide="table.pieces.piecesArray.length===0" id="bottomRow">
 
       <space ng-init ="row='bottomRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
-      ng-class="{leftOfDivider : i===5}" class="space">
+      ng-class="{rightOfDivider : i===5}" class="bottomRowSpace space">
       </space>
 
       <div id="offBoardBlue" ng-show="table.showOffBoardBlue">
