@@ -14,7 +14,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in split.billItems">
+				<tr ng-repeat="item in split.billItems track by $index">
 					<td>
 						<button class="btn btn-danger btn-xs"
 										ng-click="split.deleteItem($index)">X</button></td>
@@ -35,13 +35,13 @@
 							 ng-model="split.subtotal" 
 							 ng-change="split.updateTotals()"/></p>
 			<p>Tip ({{split.tipPercent}}%): {{split.totalTip | number:2}}</p>
-			<p>Tax: {{split.totalTax | number:2}}</p>
+			<p>Tax: ({{split.taxPercent}}%): {{split.totalTax | number:2}}</p>
 			<p>Total: {{split.grandTotal | number:2}}</p>
 		</div>
 
 		<div class="panel-body">	
 			<p>Running total: {{split.runningTotal | number:2}}</p>
-			<p>Short: {{split.short | number:2}}</p>
+			<p>Short: {{split.remainder | number:2}}</p>
 			<p>Tip from each: {{split.tipFromEach | number:2}}</p>
 		</div>
 
@@ -57,7 +57,7 @@
     Name: <input type="text" ng-model="split.user" /><br />
     Item: <input type="item" ng-model="split.item" /><br />
     Price: $<input type="item" ng-model="split.price" /><br />
-    Tax: will be calculated at <input type="item" ng-model="split.tax" />(NYS)<br />
+    Tax: <input type="item" ng-model="split.taxPercent" / ng-change="split.updateTax()"><br />
     <input type="submit" ng-click="split.submit()" value="Save" />
   </form>
   </div>
