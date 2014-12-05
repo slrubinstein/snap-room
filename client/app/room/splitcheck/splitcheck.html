@@ -2,7 +2,6 @@
 	<div class="panel panel-default">
 	  <!-- Default panel contents -->
 	  <div class="panel-heading">The Bill</div>
-
 	  <!-- Table -->
 	  <table class="table">
 			<thead>
@@ -26,26 +25,29 @@
 			</tbody>
 		</table>
 		<div class="panel-footer">
-			<table class="table">
-				<tr>
-					<th>Running Total</th>
-					<th>Short</th>
-					<th>Tip amount</th>
-					<th></th>
-					<th>Total</th>
-				</tr>
-			<tbody>
-				<tr>
-					<td>{{split.runningTotal}}</td>
-					<td></td>
-					<td></td>
-					<td>{{split.grandTotal}}</td>
-				</tr>
 
-			</tbody>
-		</table>
 		</div>
 	</div>
+
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-body bill-totals">
+			<p>Subtotal:
+				<input class="sub-total" 
+							 type="text" 
+							 ng-model="split.subtotal" 
+							 ng-change="split.updateTotals()"/></p>
+			<p>Tip: {{split.totalTip | number:2}}</p>
+			<p>Tax: {{split.totalTax | number:2}}</p>
+			<p>Total: {{split.grandTotal | number:2}}</p>
+		</div>  
+		<div class="panel-footer">
+			Running total: {{split.runningTotal}}
+			Short: {{split.short}}
+			Tip from each: {{split.tipFromEach}}
+		</div>
+	</div>
+</div>
 
 <div class="panel panel-default">
 	<div class="panel-header">Input your bill items below</div>
@@ -59,4 +61,3 @@
   </form>
   </div>
 </div>
-

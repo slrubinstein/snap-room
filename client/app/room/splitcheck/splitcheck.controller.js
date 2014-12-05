@@ -9,10 +9,24 @@ angular.module('roomApp')
   	this.item = '';
   	this.price = '';
   	this.tax = 8.875;
+  	this.tipPercent = 18;
 
   	this.billItems = [{user: 'Steve', item: 'sandwich', price: 4, itemTax: 1}];
 
-  	this.subtotal = '';
+  	this.subtotal;
+
+  	this.test = this.subtotal;
+  	this.short = this.grandTotal - this.runningTotal;
+
+  	// should update to divide by num of people in room?
+  	this.tipFromEach = this.totalTip / this.billItems.length;
+
+
+  	this.updateTotals = function() {
+	  	ctrl.totalTip = ctrl.subtotal * ctrl.tipPercent/100;
+  		ctrl.totalTax = ctrl.subtotal * ctrl.tax/100;
+  		ctrl.grandTotal = +ctrl.subtotal + ctrl.totalTip + ctrl.totalTax;
+  	}
 
   	this.submit = function() {
   		var userBill = {
@@ -35,7 +49,6 @@ angular.module('roomApp')
 	  		runningTotal += item.price;
 	  		runningTotal += item.itemTax;
 	  	})
-	  	console.log('running total', runningTotal)
 	  	return runningTotal;
 	  }
 
