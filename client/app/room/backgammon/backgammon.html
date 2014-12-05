@@ -23,33 +23,42 @@
 
   </div>
 
-  <div id="blueJail" class="jail">
+  <div id="jails">
 
-    <div ng-repeat="piece in table.returnArray(table.bluePiecesInJail)"
-    class="piece bluePiece" ng-click="table.checkSpacesFromJail('blue')">
+    <div id="blueJail" class="jail">
+
+      <div ng-repeat="piece in table.returnArray(table.bluePiecesInJail)"
+      class="piece bluePiece" ng-click="table.checkSpacesFromJail('blue')">
+
+      </div>
+
+    </div>
+
+    <div id="greenJail" class="jail">
+
+      <div ng-repeat="piece in table.returnArray(table.greenPiecesInJail)"
+      class="piece greenPiece" ng-click="table.checkSpacesFromJail('green')">
+      </div>
 
     </div>
 
   </div>
 
-  <div id="greenJail" class="jail">
-
-    <div ng-repeat="piece in table.returnArray(table.greenPiecesInJail)"
-    class="piece greenPiece" ng-click="table.checkSpacesFromJail('green')">
-    </div>
-
+<div id="buttonsAndInfo">
+  <div id="buttonCol1">
+    <button ng-click="table.rollFunction()">Roll</button>
+    <div>Roll: {{table.roll[0]}},{{table.roll[1]}}</div>
+    <div>Turn: {{table.turn}}</div>
   </div>
-
-<button ng-click="table.rollFunction()">Roll</button>
-<div>Roll: {{table.roll[0]}},{{table.roll[1]}}</div>
-<div>Turn: {{table.turn}}</div>
-<button ng-click="table.changeTurn()">Change Turn</button>
-<div>BlueHomeNumber: {{table.blueHomeNumber}}</div>
-<div>GreenHomeNumber:{{table.greenHomeNumber}}</div>
-<div>Blue Score: {{table.blueScore}}</div>
-<div>Green Score:{{table.greenScore}}</div>
-<button ng-show="table.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
+  <div id="buttonCol2">
+    <button ng-click="table.changeTurn()">Change Turn</button>
+    <div>Blue Score: {{table.blueScore}}</div>
+    <div>Green Score:{{table.greenScore}}</div>
+    <button ng-show="table.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
+  </div>
+</div>
 
 <!-- <button ng-click="table.seeGames()">See who's playing</button> -->
 
-<div ng-repeat="game in table.gameList">{{game.players}}</div>
+<!-- <div ng-repeat="game in table.gameList">{{game.players}}</div>
+ -->
