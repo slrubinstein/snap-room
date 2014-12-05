@@ -1,0 +1,55 @@
+
+  <div id="topRow">
+
+    <space  ng-init ="row='topRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
+    ng-class="{leftOfDivider : i===5}" class="space">
+    </space>
+
+    <div id="offBoardGreen" ng-show="table.showOffBoardGreen">
+        <div ng-click="table.moveOffBoard('green')" class="greenSquare"></div> 
+    </div>
+
+  </div>
+  
+  <div id="bottomRow">
+
+    <space ng-init ="row='bottomRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
+    ng-class="{leftOfDivider : i===5}" class="space">
+    </space>
+
+    <div id="offBoardBlue" ng-show="table.showOffBoardBlue">
+        <div ng-click="table.moveOffBoard('blue')" class="greenSquare"></div> 
+    </div>
+
+  </div>
+
+  <div id="blueJail" class="jail">
+
+    <div ng-repeat="piece in table.returnArray(table.bluePiecesInJail)"
+    class="piece bluePiece" ng-click="table.checkSpacesFromJail('blue')">
+
+    </div>
+
+  </div>
+
+  <div id="greenJail" class="jail">
+
+    <div ng-repeat="piece in table.returnArray(table.greenPiecesInJail)"
+    class="piece greenPiece" ng-click="table.checkSpacesFromJail('green')">
+    </div>
+
+  </div>
+
+<button ng-click="table.rollFunction()">Roll</button>
+<div>Roll: {{table.roll[0]}},{{table.roll[1]}}</div>
+<div>Turn: {{table.turn}}</div>
+<button ng-click="table.changeTurn()">Change Turn</button>
+<div>BlueHomeNumber: {{table.blueHomeNumber}}</div>
+<div>GreenHomeNumber:{{table.greenHomeNumber}}</div>
+<div>Blue Score: {{table.blueScore}}</div>
+<div>Green Score:{{table.greenScore}}</div>
+<button ng-show="table.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
+
+<!-- <button ng-click="table.seeGames()">See who's playing</button> -->
+
+<div ng-repeat="game in table.gameList">{{game.players}}</div>
