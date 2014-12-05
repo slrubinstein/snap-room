@@ -20,5 +20,11 @@ angular.module('roomApp')
        templateUrl: 'app/room/chatroom.html',
        controller: 'RoomCtrl',
        controllerAs: 'room'
+     })
+     .state('room.backgammon', {
+       url: '/backgammon',
+       templateUrl: 'app/room/backgammon/backgammon.html',
+       controller: 'BackgammonCtrl',
+       controllerAs: 'table'
      });
  });

@@ -33,7 +33,7 @@ angular.module('roomApp')
     //for making a room open only to facebook users
 
     //the options for the select element in createRoomOptionsPanel.html
-    this.timerOptions = ['1:00', '2:00', '5:00', '10:00']
+    this.timerOptions = ['1:00', '2:00', '5:00', '10:00', '20:00']
     //the initial time that the select element in 
     //createRoomOptionsPanel.html is set to
     this.timerLength = '2:00'

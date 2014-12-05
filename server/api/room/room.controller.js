@@ -63,9 +63,8 @@ exports.create = function(req, res) {
                type: type,
                roomName: roomName,
                }, function(err, room) {
-     if(err) { return handleError(res, err); }
-  //   return res.json(201, room);
-    return res.status(200).send(room);
+           if(err) { return handleError(res, err); }
+           return res.status(200).send(room);
   });
 };
 

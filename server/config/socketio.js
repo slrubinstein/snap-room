@@ -84,6 +84,7 @@ function onConnect(socket) {
   })
 
   // Insert sockets below
+  require('../api/gameBoard/gameBoard.socket').register(socket);
 }
 
 module.exports = function (socketio) {
