@@ -1,6 +1,6 @@
 
   <div id="gameBoard">
-    <div id="topRow">
+    <div ng-hide="table.pieces.piecesArray.length===0" id="topRow">
 
       <space  ng-init ="row='topRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
       ng-class="{leftOfDivider : i===5}" class="space">
@@ -14,18 +14,18 @@
 
     <div id="buttonsAndInfo">
       <div id="buttonCol1">
-        <button ng-click="table.rollFunction()">Roll</button>
-        <div>Roll: {{table.roll[0]}},{{table.roll[1]}}</div>
-        <div>Turn: {{table.turn}}</div>
+        <button ng-hide="table.pieces.piecesArray.length===0" ng-click="table.rollFunction()">Roll</button>
+        <div ng-hide="table.pieces.piecesArray.length===0" >Roll: {{table.roll[0]}},{{table.roll[1]}}</div>
+        <div ng-hide="table.pieces.piecesArray.length===0" >Turn: {{table.turn}}</div>
       </div>
       <div id="buttonCol2">
-        <button ng-click="table.changeTurn()">Change Turn</button>
+        <button ng-hide="table.pieces.piecesArray.length===0" ng-click="table.changeTurn()">Change Turn</button>
         <button ng-show="table.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
       </div>
       <div class="clearfix"></div>
   </div>
     
-    <div id="bottomRow">
+    <div ng-hide="table.pieces.piecesArray.length===0" id="bottomRow">
 
       <space ng-init ="row='bottomRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
       ng-class="{leftOfDivider : i===5}" class="space">
