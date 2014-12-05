@@ -20,5 +20,11 @@ angular.module('roomApp')
        templateUrl: 'app/room/chatroom.html',
        controller: 'RoomCtrl',
        controllerAs: 'room'
-     });
+     })
+     .state('room.splitcheck', {
+       url: '/splitcheck',
+       templateUrl: 'app/room/splitcheck/splitcheck.html',
+       controller: 'SplitcheckCtrl',
+       controllerAs: 'split'
+     })
  });

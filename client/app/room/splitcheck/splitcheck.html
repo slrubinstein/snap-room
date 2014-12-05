@@ -27,10 +27,21 @@
 		</table>
 
 		<div class="panel-footer">
-			<p>Running total: {{split.runningTotal | number:2}}</p>
-			<p>Short: {{split.remainder | number:2}}</p>
-			<p>Tip from each: {{split.tipFromEach | number:2}}</p>
-
+			<div class="row">
+				<div class="col-sm-4 col-md-4 col-lg-4">
+					<p><strong>Running total: </strong></p>
+					<p>${{split.runningTotal | number:2}}</p>
+				</div>
+				<div class="col-sm-4 col-md-4 col-lg-4">
+					<p><strong>Still short: </strong></p>
+					<p>${{split.remainder | number:2}}</p>
+				</div>
+				<div class="col-sm-4 col-md-4 col-lg-4">
+					<p>{{room.numberPeople}}</p>
+					<!-- <p><strong>Each person tips: </strong></p>
+					<p>{{split.tipFromEach | number:2}}</p> -->
+				</div>
+			</div>
 
 		</div>
 

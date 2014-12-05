@@ -89,21 +89,20 @@ function onConnect(socket) {
   // Split Check Sockets
 
   //UPDATE THIS
-  socket.on('joinBillRoom', function() {
-    socket.join('split') // this should be changed to room number
-    socket.broadcast.to('split').emit('updateMyBill')
+  socket.on('joinBillRoom', function(roomNumber) {
+    socket.broadcast.to(roomNumber).emit('updateMyBill')
   })
 
-  socket.on('updateBill', function(data) {
-    socket.broadcast.to('split').emit('updateBill', data);
+  socket.on('updateBill', function(roomNumber, data) {
+    socket.broadcast.to(roomNumber).emit('updateBill', data);
   })
 
-  socket.on('deleteItem', function(index) {
-    socket.broadcast.to('split').emit('deleteItem', index);
+  socket.on('deleteItem', function(roomNumber, index) {
+    socket.broadcast.to(roomNumber).emit('deleteItem', index);
   })
 
-  socket.on('updateTotals', function(totals) {
-    socket.broadcast.to('split').emit('updateTotals', totals);
+  socket.on('updateTotals', function(roomNumber, totals) {
+    socket.broadcast.to(roomNumber).emit('updateTotals', totals);
   })
 
   // Insert sockets below
