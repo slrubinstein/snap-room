@@ -6,7 +6,7 @@
 	  <table class="table">
 			<thead>
 				<tr>
-					<th>Delete</th>
+					<th></th>
 					<th>Name</th>
 					<th>Item</th>
 					<th>Price</th>
@@ -14,40 +14,41 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr  ng-repeat="item in split.billItems">
-					<td><button class="btn btn-danger btn-xs">X</button></td>
+				<tr ng-repeat="item in split.billItems">
+					<td>
+						<button class="btn btn-danger btn-xs"
+										ng-click="split.deleteItem($index)">X</button></td>
 					<td>{{item.user}}</td>
 					<td>{{item.item}}</td>
 					<td>${{item.price}}</td>
-					<td>${{item.itemTax}}</td>
+					<td>${{item.itemTax | number:2}}</td>
 				</tr>
-
 			</tbody>
 		</table>
+
 		<div class="panel-footer">
 
-		</div>
-	</div>
 
-<div class="container">
-	<div class="panel panel-default">
-		<div class="panel-body bill-totals">
 			<p>Subtotal:
 				<input class="sub-total" 
 							 type="text" 
 							 ng-model="split.subtotal" 
 							 ng-change="split.updateTotals()"/></p>
-			<p>Tip: {{split.totalTip | number:2}}</p>
+			<p>Tip ({{split.tipPercent}}%): {{split.totalTip | number:2}}</p>
 			<p>Tax: {{split.totalTax | number:2}}</p>
 			<p>Total: {{split.grandTotal | number:2}}</p>
-		</div>  
-		<div class="panel-footer">
-			Running total: {{split.runningTotal}}
-			Short: {{split.short}}
-			Tip from each: {{split.tipFromEach}}
 		</div>
+
+		<div class="panel-body">	
+			<p>Running total: {{split.runningTotal | number:2}}</p>
+			<p>Short: {{split.short | number:2}}</p>
+			<p>Tip from each: {{split.tipFromEach | number:2}}</p>
+		</div>
+
 	</div>
-</div>
+
+
+
 
 <div class="panel panel-default">
 	<div class="panel-header">Input your bill items below</div>

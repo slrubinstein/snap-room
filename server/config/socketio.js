@@ -83,6 +83,15 @@ function onConnect(socket) {
 
   })
 
+
+
+
+  // Split Check Sockets
+
+  
+
+
+
   // Insert sockets below
 }
 

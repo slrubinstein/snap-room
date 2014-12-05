@@ -38,9 +38,11 @@ angular.module('roomApp')
 
   		ctrl.billItems.push(userBill);
   		ctrl.runningTotal = ctrl.calculateRunningTotal(ctrl.billItems);
+  		ctrl.short = ctrl.grandTotal - ctrl.runningTotal;
   		ctrl.user = '';
   		ctrl.item = '';
   		ctrl.price = '';
+  		ctrl.tipFromEach = ctrl.totalTip / ctrl.billItems.length;
   	}
 
   	this.calculateRunningTotal = function(billItems) {
@@ -52,8 +54,13 @@ angular.module('roomApp')
 	  	return runningTotal;
 	  }
 
-  	console.log(this.calculateRunningTotal(ctrl.billItems))
+	  this.deleteItem = function(index) {
+	  	ctrl.billItems.splice(index);
+	  }
 
+	  this.updateBill = function() {
+	  	console.log('update bill')
+	  }
 
   	this.runningTotal = this.calculateRunningTotal(this.billItems);
 
