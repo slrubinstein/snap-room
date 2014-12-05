@@ -1,5 +1,3 @@
-<div class="container">
-	
 
 	<div class="panel panel-default">
 	  <!-- Default panel contents -->
@@ -27,14 +25,30 @@
 
 			</tbody>
 		</table>
+		<div class="panel-footer">
+			<table class="table">
+				<tr>
+					<th>Running Total</th>
+					<th>Short</th>
+					<th>Tip amount</th>
+					<th></th>
+					<th>Total</th>
+				</tr>
+			<tbody>
+				<tr>
+					<td>{{split.runningTotal}}</td>
+					<td></td>
+					<td></td>
+					<td>{{split.grandTotal}}</td>
+				</tr>
+
+			</tbody>
+		</table>
+		</div>
 	</div>
 
-
-
-</div>
-
-
 <div class="panel panel-default">
+	<div class="panel-header">Input your bill items below</div>
   <div class="panel-body">
     <form novalidate class="simple-form">
     Name: <input type="text" ng-model="split.user" /><br />
@@ -46,19 +60,3 @@
   </div>
 </div>
 
-
-
-<div class="container">
-  
-
-Models:
-  <div>
-  	<p>{{split.user}}</p>
-  	<p>{{split.item}}</p>
-  	<p>{{split.price}}</p>
-  	<p>{{split.billItems}}</p>
-  </div>
-
-
-
-</div>
