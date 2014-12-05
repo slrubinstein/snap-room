@@ -13,12 +13,10 @@ exports.index = function(req, res) {
 
 // Get a single gameBoard
 exports.show = function(req, res) {
-  console.log("roomNumber: ", req.params.id);
   var roomNumber = req.params.id;
   Gameboard.findOne({roomNumber: roomNumber}, function (err, gameBoard) {
     if(err) { return handleError(res, err); }
     if(!gameBoard) { return res.send(404); }
-    console.log("showing gameboard: ", gameBoard)
     return res.json(gameBoard);
   });
 };
@@ -33,7 +31,6 @@ exports.create = function(req, res) {
     updated.roomNumber = req.body.roomNumber;
     updated.isActive = true;
     updated.save(function(err, updatedGameboard){
-      console.log("updatedGameboard:" ,updatedGameboard);
       if (err) { return handleError(res, err); }
       return res.json(201, updatedGameboard);
     });
@@ -49,8 +46,7 @@ exports.update = function(req, res) {
     var updated = _.merge(gameBoard, req.body);
     updated.save(function (err, updatedGameboard) {
       if (err) { return handleError(res, err); }
-      if(!updateGameboard) { return res.send(404); }
-      console.log("updated gameboard: " + updatedGameboard);
+      if(!updatedGameboard) { return res.send(404); }
       return res.json(200, gameBoard);
     });
   });
