@@ -157,12 +157,12 @@
   }
 
 @media (max-width: 399px) {
-  button {
+  #gameBoard button {
    -webkit-appearance: none;
   }
 }
 
-  button {
+  #gameBoard button {
    width: 100px;
    height: 50px;
    border-radius: 5px;
