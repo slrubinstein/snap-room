@@ -32,6 +32,7 @@ angular.module('roomApp')
     this.checkSpaces = gameLogic.checkSpaces;
 
     this.movePiece = function(spaceNumber) {
+      console.log("click");
        gameLogic.movePiece(spaceNumber, ctrl);      
     }
 
