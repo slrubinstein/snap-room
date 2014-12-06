@@ -2,6 +2,7 @@
 
 angular.module('roomApp')
   .controller('BackgammonCtrl', function ($stateParams, $scope,
+                                      roomSocketsService,
                                       socket, gameLogic, $http) {
 
     var ctrl = this;
@@ -137,6 +138,9 @@ angular.module('roomApp')
     };
 
   this.getGame(roomNumber);
+
+   // set up socket event listeners
+   roomSocketsService.listen(roomNumber, $scope, ctrl);
 
    socket.socket.on("updateGame", function(doc) {
             ctrl.turn = doc.turn,

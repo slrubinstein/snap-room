@@ -6,7 +6,7 @@ angular.module('roomApp')
     return {
 
       listen: function(roomNumber, $scope, ctrl) {
-      
+        
         socket.socket.on('timeUp', function(winner, maxVotes, expiredRoomNumber) {
           if (Number(expiredRoomNumber) === Number(roomNumber)) {
             ctrl.timeUp = true;
