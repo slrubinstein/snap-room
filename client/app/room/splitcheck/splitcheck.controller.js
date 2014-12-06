@@ -11,19 +11,21 @@ angular.module('roomApp')
 
     // variables shared with everyone on bill
     // when any of these change, it should change for everyone via socket
-    this.billSoFar = splitcheckService.billSoFar;
-    this.taxPercent = splitcheckService.taxPercent;
-    this.tipPercent = splitcheckService.taxPercent;
-    this.runningTotal = splitcheckService.runningTotal;
-    this.subtotal = splitcheckService.subtotal;
-    this.remainder = splitcheckService.remainder;
-    this.myTip = splitcheckService.tipPerPerson;
-    this.totalTax = splitcheckService.totalTax;
-    this.grandTotal = splitcheckService.grandTotal;
 
+    var updateMyPage = function() {
+      ctrl.billSoFar = splitcheckService.billSoFar;
+      ctrl.taxPercent = splitcheckService.taxPercent;
+      ctrl.tipPercent = splitcheckService.taxPercent;
+      ctrl.runningTotal = splitcheckService.runningTotal;
+      ctrl.subtotal = splitcheckService.subtotal;
+      ctrl.remainder = splitcheckService.remainder;
+      ctrl.myTip = splitcheckService.tipPerPerson;
+      ctrl.totalTax = splitcheckService.totalTax;
+      ctrl.grandTotal = splitcheckService.grandTotal;
+    }
     // this.billItems = [];
 
-
+    updateMyPage();
     // user inputs for single bill item
   	this.user = '';
   	this.food = '';
@@ -66,29 +68,27 @@ angular.module('roomApp')
   	}
 
   	this.submit = function() {
-
   		splitcheckService.submit({user: ctrl.user,
                             		food: ctrl.food,
                             		price: Number(ctrl.price),
                             		tax: ctrl.price * ctrl.taxPercent/100}
       )
 
+      updateMyPage();
+  		// ctrl.updateMyTotals({food: Number(ctrl.price),
+  		// 										 tax: Number(ctrl.price) * ctrl.taxPercent/100},
+  		// 										 'plus'
+  		// );
 
 
-  		ctrl.updateMyTotals({food: Number(ctrl.price),
-  												 tax: Number(ctrl.price) * ctrl.taxPercent/100},
-  												 'plus'
-  		);
-
-  		ctrl.billItems.push(userBill);
-  		ctrl.runningTotal = ctrl.calculateRunningTotal(ctrl.billItems);
-  		ctrl.remainder = ctrl.grandTotal - ctrl.runningTotal;
-  		ctrl.item = '';
-  		ctrl.price = '';
-  		ctrl.tipFromEach = ctrl.totalTip / ctrl.billItems.length;
-  		// ctrl.personalTotal.tip = ctrl.tipFromEach;
-  		//socket call
-  		ctrl.updateBillThroughSocket();
+  		// ctrl.runningTotal = ctrl.calculateRunningTotal(ctrl.billItems);
+  		// ctrl.remainder = ctrl.grandTotal - ctrl.runningTotal;
+  		// ctrl.item = '';
+  		// ctrl.price = '';
+  		// ctrl.tipFromEach = ctrl.totalTip / ctrl.billItems.length;
+  		// // ctrl.personalTotal.tip = ctrl.tipFromEach;
+  		// //socket call
+  		// ctrl.updateBillThroughSocket();
 
   	}
 
@@ -130,9 +130,11 @@ angular.module('roomApp')
 	  }
 
 	  this.deleteItem = function(index) {
-	  	ctrl.billSoFar.splice(index, 1);
-	  	ctrl.updateMyTotals
-	  	socket.socket.emit('deleteItem', roomNumber, index);
+	  	splitcheckService.deleteItem(index);
+      updateMyPage();
+      // ctrl.billSoFar.splice(index, 1);
+	  	// ctrl.updateMyTotals
+	  	// socket.socket.emit('deleteItem', roomNumber, index);
 	  }
 
 	  this.updateTax = function() {

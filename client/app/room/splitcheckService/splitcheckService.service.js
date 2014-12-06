@@ -19,34 +19,38 @@ angular.module('roomApp')
             food = singleItem.food,
             price = singleItem.price,
             tax = singleItem.tax
+        console.log('tax', tax, typeof tax)
 
         this.billSoFar.push(singleItem)
         this.updateBillTotals();
-        this.updateMyTotals(singleItem);
+
+        // this.updateMyTotals(singleItem);
 
       },
 
       updateBillTotals: function() {
-        runningTotal = this.calculateRunningTotal();
-        remainder: = calculateRemainder();
-        //update with socket
+        this.runningTotal = this.calculateRunningTotal();
+        this.remainder = this.calculateRemainder();
+        //update everyone with socket
+
       },
 
       calculateRunningTotal: function() {
         var runningTotal = 0;
           this.billSoFar.forEach(function(item) {
-          runningTotal += item.price;
-          runningTotal += item.itemTax;
-        })
+            runningTotal += item.price;
+            runningTotal += item.tax;
+          })
       return runningTotal;
       },
 
       calculateRemainder: function() {
         return this.subtotal - this.runningTotal;
-      }
+      },
 
       deleteItem: function(index) {
-        this.billItem.splice(index, 1)
+        this.billSoFar.splice(index, 1)
+        this.updateBillTotals();
       },
 
       updateMyTotals: function(item) {
