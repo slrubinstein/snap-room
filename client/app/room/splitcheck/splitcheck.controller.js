@@ -7,6 +7,9 @@ angular.module('roomApp')
   	var ctrl = this;
   	var roomNumber = $state.params.roomNumber
 
+    // REDUNDANT
+    this.roomNumber = roomNumber;
+
   	socket.socket.emit('joinBillRoom', roomNumber)
 
     // set up socket listeners
@@ -17,16 +20,16 @@ angular.module('roomApp')
     ctrl.updateMyPage = function() {
       var bill = {};
       
-      bill.billSoFar = splitcheckService.billSoFar;
-      bill.taxPercent = splitcheckService.taxPercent;
-      bill.tipPercent = splitcheckService.tipPercent;
-      bill.runningTotal = splitcheckService.runningTotal;
-      bill.subtotal = splitcheckService.subtotal;
-      bill.remainder = splitcheckService.remainder;
-      bill.totalTip = splitcheckService.totalTip;
-      bill.myTip = splitcheckService.tipPerPerson;
-      bill.totalTax = splitcheckService.totalTax;
-      bill.grandTotal = splitcheckService.grandTotal;
+      bill.billSoFar = splitcheckService.bill.billSoFar;
+      bill.taxPercent = splitcheckService.bill.taxPercent;
+      bill.tipPercent = splitcheckService.bill.tipPercent;
+      bill.runningTotal = splitcheckService.bill.runningTotal;
+      bill.subtotal = splitcheckService.bill.subtotal;
+      bill.remainder = splitcheckService.bill.remainder;
+      bill.totalTip = splitcheckService.bill.totalTip;
+      bill.myTip = splitcheckService.bill.tipPerPerson;
+      bill.totalTax = splitcheckService.bill.totalTax;
+      bill.grandTotal = splitcheckService.bill.grandTotal;
 
       return bill;
       }
