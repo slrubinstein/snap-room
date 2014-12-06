@@ -1,3 +1,6 @@
+#landscapeMessage {
+  display: none;
+}
 
 #bottomRow {
   clear: both;
@@ -159,6 +162,16 @@
 @media (max-width: 399px) {
   #gameBoard button {
    -webkit-appearance: none;
+  }
+}
+
+@media (max-width: 399px) and (orientation: portrait) {
+
+  #landscapeMessage {
+    display: block;
+  }
+  #newGameButton {
+    display: none;
   }
 }
 
