@@ -4,4 +4,4 @@ class="piece {{table.piecesColor[spaceNumber] + 'Piece'}}"
 ng-click="table.turn === table.piecesColor[spaceNumber] && table.checkSpaces(spaceNumber, table.piecesColor[spaceNumber])"
  ></div>
 
-<div ng-init="spaceNumber = (row === 'topRow')? (12 + i) : (11 - i);"" ng-click="table.movePiece(spaceNumber)" ng-show="table.possibleMove[spaceNumber]" class="greenSquare"></div> 
+<div ng-init="spaceNumber = (row === 'topRow')? (12 + i) : (11 - i);" ng-click="table.movePiece(spaceNumber)" ng-show="table.possibleMove[spaceNumber]" class="greenSquare"></div> 
