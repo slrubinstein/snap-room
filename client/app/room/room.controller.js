@@ -66,7 +66,7 @@ angular.module('roomApp')
       $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
       if (Number($scope.secondsLeft) < 10) $scope.secondsLeft = "0" + $scope.secondsLeft; 
 
-      if(Number(minutesLeftDecimal) < 0) {
+      if(Number(minutesLeftDecimal) < 0.01) {
         $interval.cancel(ctrl.countDown);
         socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoom);
       }
