@@ -20,7 +20,7 @@ angular.module('roomApp')
       },
 
       updateSubtotal: function(newSubtotal) {
-        this.subtotal = newSubtotal;
+        this.bill.subtotal = newSubtotal;
         this.updateBillTotals();
       },
 
@@ -38,11 +38,11 @@ angular.module('roomApp')
       },
 
       updateBillTotals: function() {
-        this.runningTotal = this.calculateRunningTotal();
-        this.remainder = this.calculateRemainder();
-        this.totalTip = this.calculateTip();
-        this.totalTax = this.calculateTax();
-        this.grandTotal = this.calculateTotal();
+        this.bill.runningTotal = this.calculateRunningTotal();
+        this.bill.remainder = this.calculateRemainder();
+        this.bill.totalTip = this.calculateTip();
+        this.bill.totalTax = this.calculateTax();
+        this.bill.grandTotal = this.calculateTotal();
         //update everyone with socket
 
       },
@@ -57,19 +57,19 @@ angular.module('roomApp')
       },
 
       calculateRemainder: function() {
-        return this.subtotal - this.runningTotal;
+        return this.bill.subtotal - this.bill.runningTotal;
       },
 
       calculateTip: function() {
-        return this.subtotal * this.tipPercent / 100;
+        return this.bill.subtotal * this.bill.tipPercent / 100;
       },
 
       calculateTax: function() {
-        return this.subtotal * this.taxPercent / 100;
+        return this.bill.subtotal * this.bill.taxPercent / 100;
       },
 
       calculateTotal: function() {
-        return Number(this.subtotal) + this.totalTip + this.totalTax;
+        return Number(this.bill.subtotal) + this.bill.totalTip + this.bill.totalTax;
       },
 
       deleteItem: function(index) {
