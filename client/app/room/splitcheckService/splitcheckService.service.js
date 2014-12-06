@@ -18,6 +18,13 @@ angular.module('roomApp')
         grandTotal: 0,
       },
 
+      personalTotals: {
+        food: 0,
+        tax: 0,
+        tip: 0,
+        total: 0
+      },
+
       updateSubtotal: function(newSubtotal, newTip, newTax) {
         this.bill.subtotal = newSubtotal;
         this.bill.tipPercent = newTip;
@@ -26,7 +33,7 @@ angular.module('roomApp')
         this.updateBillTotals();
       },
 
-      submit: function (singleItem) {
+      submit: function (singleItem, numberPeople) {
         var user = singleItem.user,
             food = singleItem.food,
             price = singleItem.price,
@@ -35,7 +42,7 @@ angular.module('roomApp')
         this.bill.billSoFar.push(singleItem)
         this.updateBillTotals();
 
-        // this.updateMyTotals(singleItem);
+        this.addToMyTotals(singleItem, numberPeople);
 
       },
 
@@ -73,7 +80,8 @@ angular.module('roomApp')
       },
 
       deleteItem: function(index) {
-        this.bill.billSoFar.splice(index, 1)
+        var item = this.bill.billSoFar.splice(index, 1)[0]
+        this.subtractFromMyTotals(item)
         this.updateBillTotals();
       },
 
@@ -84,9 +92,33 @@ angular.module('roomApp')
         });
       },
 
+      addToMyTotals: function(item, numberPeople) {
+        this.personalTotals.food += item.price;
+        this.personalTotals.tax += item.tax;
+        this.personalTotals.tip = this.totalTip / numberPeople;
+        this.personalTotals.total += item.price + item.tax;
+      },
 
-      updateMyTotals: function(item) {
+      subtractFromMyTotals: function(item) {
+        this.personalTotals.food -= item.price;
+        this.personalTotals.tax -= item.tax;
+        this.personalTotals.total -= (item.price + item.tax);
+      },
 
+      calculateMyTotal: function(name) {
+        var srvc = this;
+        this.personalTotals = {
+          food: 0,
+          tax: 0,
+          tip: 0,
+          total: 0
+        }
+        this.bill.billSoFar.forEach(function(item) {
+          if (item.user===name) {
+            srvc.addToMyTotals(item);
+          }
+        });
+        return this.personalTotals;
       },
 
       updateFromSocket: function(bill) {

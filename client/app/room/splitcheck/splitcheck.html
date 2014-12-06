@@ -76,9 +76,7 @@
 
 						%: {{split.bill.totalTax | number:2}}</p>
 					<p><strong>Total: {{split.bill.grandTotal | number:2}}</strong></p>
-
 				</div>
-
 			</div>
 		</div>
 
@@ -96,16 +94,10 @@
 				</div>
 				<div class="col-sm-4 col-md-4 col-lg-4">
 					<p><strong>Splitting tip between {{room.numberPeople}}</strong></p>
-					<!-- <p><strong>Each person tips: </strong></p>
-					<p>{{split.tipFromEach | number:2}}</p> -->
 				</div>
 			</div>
 		</div>
-
 	</div>
-
-
-
 
 <div class="panel panel-default">
 	<div class="panel-heading">Input your bill items below</div>
@@ -118,21 +110,19 @@
 			    <p>Item: <input type="item" ng-model="split.food" /><br /></p>
 			    <p>Price: $<input type="item" ng-model="split.price" /><br /></p>
 			    <div class="clearfix"></div>
+      </div>
 			    <p><input type="submit" ng-click="split.submit()" value="Add to bill" /></p>
 			  </form>
-      </div>
-      <div class="col-sm-6 col-md-6 col-lg-5">
+   	</div>
+
+      <div class="panel panel-default">
          <h4>Your Totals</h4>
          <p>Food total: ${{split.personalTotal.food | number:2}}</p>
          <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
          <p>Tip: ${{split.personalTotal.tip | number:2}}</p>
-         <p>You owe: ${{split.personalTotal.myTotal | number:2}}</p>
+         <p>You owe: ${{split.personalTotal.total | number:2}}</p>
          <button ng-click="split.calculateMyTotal()">Calculate My Total</button>
      	</div>
-   	</div>
 
-
-
-    
   </div>
 </div>

@@ -6,6 +6,12 @@ angular.module('roomApp')
 
   	var ctrl = this;
   	var roomNumber = $state.params.roomNumber
+    this.numberPeople = 1;
+
+    socket.socket.on('newPerson', function(numberPeople) {
+      ctrl.numberPeople = numberPeople;
+    });
+
 
     // updates bill for late joiners
   	socket.socket.emit('joinBillRoom', roomNumber)
@@ -35,11 +41,10 @@ angular.module('roomApp')
     var updatePersonalTotal = function() {
       var personalTotal = {};
       
-      personalTotal.food = 0,
-      personalTotal.tax = 0,
-      personalTotal.tip = 0,
-      personalTotal.myTotal = 0
-
+      personalTotal.food = splitcheckService.personalTotals.food;
+      personalTotal.tax = splitcheckService.personalTotals.tax;
+      personalTotal.tip = splitcheckService.personalTotals.tip;
+      personalTotal.total = splitcheckService.personalTotals.total;
       return personalTotal;
     }
 
@@ -70,10 +75,12 @@ angular.module('roomApp')
   		splitcheckService.submit({user: ctrl.user,
                             		food: ctrl.food,
                             		price: Number(ctrl.price),
-                            		tax: ctrl.price * ctrl.bill.taxPercent/100}
+                            		tax: ctrl.price * ctrl.bill.taxPercent/100},
+                                ctrl.numberPeople
       )
 
       ctrl.bill = ctrl.updateMyPage();
+      ctrl.personalTotal = updatePersonalTotal();
 
       // reset page inputs to empty
   		ctrl.food = '';
@@ -82,41 +89,13 @@ angular.module('roomApp')
 
   	}
 
-
-
-
-
-
-  	// this.updateMyTotals = function(totals, plusOrMinus) {
-  	// 	if (plusOrMinus === 'plus') {
-	  // 		ctrl.personalTotal.food += totals.food;
-	  // 		ctrl.personalTotal.tax += totals.tax;
-	  // 		ctrl.personalTotal.myTotal = ctrl.personalTotal.food +
-	  // 																 ctrl.personalTotal.tax +
-	  // 																 ctrl.personalTotal.tip;
-	  // 	} else {
-
-	  // 	}
-  	// }
-
-  	// this.calculateMyTotal = function() {
-  	// 	var myFood = 0, 
-  	// 			myTax = 0, 
-  	// 			myTip = 0;
-  	// 	ctrl.billItems.forEach(function(item) {
-  	// 		if(item.user === ctrl.user) {
-  	// 			myFood += item.price;
-  	// 			myTax += item.itemTax;
-  	// 		}
-  	// 	});
-  	// 	ctrl.personalTotal.food = myFood;
-  	// 	ctrl.personalTotal.tax = myTax;
-  	// 	ctrl.personalTotal.tip = ctrl.tipFromEach;
-  	// 	ctrl.updateMyTotals({food: 0, tax: 0}, 'plus')
-  	// }
+    this.calculateMyTotal = function() {
+      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user);
+    }
 
 	  this.deleteItem = function(index) {
 	  	splitcheckService.deleteItem(index);
+      ctrl.personalTotal = updatePersonalTotal();
       ctrl.updateMyPage();
       splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
 	  }
