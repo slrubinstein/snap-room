@@ -71,7 +71,7 @@
 			    <p>Name: <input type="text" ng-model="split.user" /><br /></p>
 			    <p>Item: <input type="item" ng-model="split.item" /><br /></p>
 			    <p>Price: $<input type="item" ng-model="split.price" /><br /></p>
-			    <p>Tax: <input type="item" ng-model="split.taxPercent" / ng-change="split.updateTax()"><br /></p>
+			    <p>Tax: <input type="item" ng-model="split.taxPercent" ng-change="split.updateTax()"><br /></p>
 			    <div class="clearfix"></div>
 			    <p><input type="submit" ng-click="split.submit()" value="Add to bill" /></p>
 			  </form>
