@@ -82,16 +82,17 @@ angular.module('roomApp')
       },
 
       updateFromSocket: function(bill) {
+        console.log('updateFromSocket')
         this.bill.billSoFar = bill.billSoFar;
-        this.taxPercent = bill.taxPercent;
-        this.tipPercent = bill.tipPercent;
-        this.runningTotal = bill.runningTotal;
-        this.subtotal = bill.subtotal;
-        this.remainder = bill.remainder;
-        this.totalTip = bill.totalTip;
-        this.tipPerPerson = bill.tipPerPerson;
-        this.totalTax = bill.totalTax;
-        this.grandTotal = bill.grandTotal;
+        this.bill.taxPercent = bill.taxPercent;
+        this.bill.tipPercent = bill.tipPercent;
+        this.bill.runningTotal = bill.runningTotal;
+        this.bill.subtotal = bill.subtotal;
+        this.bill.remainder = bill.remainder;
+        this.bill.totalTip = bill.totalTip;
+        this.bill.tipPerPerson = bill.tipPerPerson;
+        this.bill.totalTax = bill.totalTax;
+        this.bill.grandTotal = bill.grandTotal;
       }
     };
   })

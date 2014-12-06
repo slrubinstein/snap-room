@@ -63,7 +63,7 @@ angular.module('roomApp')
       splitcheckService.updateSubtotal(ctrl.bill.subtotal);
       ctrl.bill = ctrl.updateMyPage();
 
-
+      splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
 
   		// ctrl.runningTotal = ctrl.calculateRunningTotal(ctrl.billItems);
 	  	// ctrl.totalTip = ctrl.subtotal * ctrl.tipPercent/100;
