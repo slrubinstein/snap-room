@@ -1,0 +1,93 @@
+
+	<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">The Bill</div>
+	  <!-- Table -->
+	  <table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Item</th>
+					<th>Price</th>
+					<th>Tax</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in split.billItems track by $index">
+					<td>
+						<button class="btn btn-danger btn-xs"
+										ng-click="split.deleteItem($index)">X</button></td>
+					<td>{{item.user}}</td>
+					<td>{{item.item}}</td>
+					<td>${{item.price}}</td>
+					<td>${{item.itemTax | number:2}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="panel-footer">
+			<div class="row">
+				<div class="col-sm-4 col-md-4 col-lg-4">
+					<p><strong>Running total: </strong></p>
+					<p>${{split.runningTotal | number:2}}</p>
+				</div>
+				<div class="col-sm-4 col-md-4 col-lg-4">
+					<p><strong>Still short: </strong></p>
+					<p>${{split.remainder | number:2}}</p>
+				</div>
+				<div class="col-sm-4 col-md-4 col-lg-4">
+					<p>{{room.numberPeople}}</p>
+					<!-- <p><strong>Each person tips: </strong></p>
+					<p>{{split.tipFromEach | number:2}}</p> -->
+				</div>
+			</div>
+
+		</div>
+
+		<div class="panel-body bill-totals">	
+			<p>Subtotal from bill:
+				<input class="sub-total" 
+							 type="text" 
+							 ng-model="split.subtotal" 
+							 ng-change="split.updateTotals()"/></p>
+			<p>Tip ({{split.tipPercent}}%): {{split.totalTip | number:2}}</p>
+			<p>Tax: ({{split.taxPercent}}%): {{split.totalTax | number:2}}</p>
+			<p>Total: {{split.grandTotal | number:2}}</p>
+		</div>
+
+	</div>
+
+
+
+
+<div class="panel panel-default">
+	<div class="panel-heading">Input your bill items below</div>
+  <div class="panel-body">
+
+  	<div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-5 item-input">
+         <form novalidate class="simple-form">
+			    <p>Name: <input type="text" ng-model="split.user" /><br /></p>
+			    <p>Item: <input type="item" ng-model="split.item" /><br /></p>
+			    <p>Price: $<input type="item" ng-model="split.price" /><br /></p>
+			    <p>Tax: <input type="item" ng-model="split.taxPercent" / ng-change="split.updateTax()"><br /></p>
+			    <div class="clearfix"></div>
+			    <p><input type="submit" ng-click="split.submit()" value="Add to bill" /></p>
+			  </form>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-5">
+         <h4>Your Totals</h4>
+         <p>Food total: ${{split.personalTotal.food | number:2}}</p>
+         <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
+         <p>Tip: ${{split.personalTotal.tip | number:2}}</p>
+         <p>You owe: ${{split.personalTotal.myTotal | number:2}}</p>
+         <button ng-click="split.calculateMyTotal()">Calculate My Total</button>
+     	</div>
+   	</div>
+
+
+
+    
+  </div>
+</div>
