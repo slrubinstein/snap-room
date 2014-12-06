@@ -39,12 +39,11 @@ angular.module('roomApp')
 
       updateBillTotals: function() {
         this.bill.runningTotal = this.calculateRunningTotal();
-        this.bill.remainder = this.calculateRemainder();
         this.bill.totalTip = this.calculateTip();
         this.bill.totalTax = this.calculateTax();
         this.bill.grandTotal = this.calculateTotal();
-        //update everyone with socket
-
+        this.bill.remainder = this.calculateRemainder();
+        console.log('update bill total to', this.bill.grandTotal)
       },
 
       calculateRunningTotal: function() {
@@ -57,7 +56,7 @@ angular.module('roomApp')
       },
 
       calculateRemainder: function() {
-        return this.bill.subtotal - this.bill.runningTotal;
+        return this.bill.grandTotal - this.bill.runningTotal;
       },
 
       calculateTip: function() {
@@ -107,8 +106,7 @@ angular.module('roomApp')
           ctrl.bill = ctrl.updateMyPage();
         })
 
-        socket.socket.on('updateMyBill', function() {
-          var roomNumber = ctrl.roomNumber;
+        socket.socket.on('updateMyBill', function(roomNumber) {
           var bill = splitcheckService.bill;
           sendBillUpdate(roomNumber, bill)
         })

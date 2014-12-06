@@ -90,7 +90,7 @@ function onConnect(socket) {
 
   //UPDATE THIS
   socket.on('joinBillRoom', function(roomNumber) {
-    socket.broadcast.to(roomNumber).emit('updateMyBill')
+    socket.broadcast.to(roomNumber).emit('updateMyBill', roomNumber)
   })
 
   socket.on('updateBill', function(roomNumber, bill) {

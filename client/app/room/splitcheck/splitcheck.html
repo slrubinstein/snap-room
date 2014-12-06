@@ -29,12 +29,14 @@
 		<div class="panel-footer">
 			<div class="row">
 				<div class="col-sm-4 col-md-4 col-lg-4">
-					<p><strong>Running total: </strong></p>
+					<p><strong>In the pot: </strong></p>
 					<p>${{split.bill.runningTotal | number:2}}</p>
 				</div>
 				<div class="col-sm-4 col-md-4 col-lg-4">
 					<p><strong>Still short: </strong></p>
-					<p>${{split.bill.remainder | number:2}}</p>
+					<p ng-class="{negative: split.bill.remainder > 0,
+												positive: split.bill.remainder < 0}"
+						>${{split.bill.remainder | number:2}}</p>
 				</div>
 				<div class="col-sm-4 col-md-4 col-lg-4">
 					<p>Splitting tip between {{room.numberPeople}}</p>
