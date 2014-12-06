@@ -56,8 +56,11 @@ angular.module('roomApp')
 
 
   	this.updateSubtotal = function() {
+      var subtotal = ctrl.bill.subtotal,
+          tipPercent = ctrl.bill.tipPercent,
+          taxPercent = ctrl.bill.taxPercent;
 
-      splitcheckService.updateSubtotal(ctrl.bill.subtotal);
+      splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent);
       ctrl.bill = ctrl.updateMyPage();
 
       splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
@@ -78,12 +81,6 @@ angular.module('roomApp')
       splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
 
   	}
-
-
-    // styling
-    
-
-
 
   	// this.updateMyTotals = function(totals, plusOrMinus) {
   	// 	if (plusOrMinus === 'plus') {

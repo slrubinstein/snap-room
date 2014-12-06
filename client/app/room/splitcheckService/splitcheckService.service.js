@@ -19,8 +19,10 @@ angular.module('roomApp')
         grandTotal: 0,
       },
 
-      updateSubtotal: function(newSubtotal) {
+      updateSubtotal: function(newSubtotal, newTip, newTax) {
         this.bill.subtotal = newSubtotal;
+        this.bill.tipPercent = newTip;
+        this.bill.taxPercent = newTax;
         this.updateBillTotals();
       },
 
@@ -43,7 +45,6 @@ angular.module('roomApp')
         this.bill.totalTax = this.calculateTax();
         this.bill.grandTotal = this.calculateTotal();
         this.bill.remainder = this.calculateRemainder();
-        console.log('update bill total to', this.bill.grandTotal)
       },
 
       calculateRunningTotal: function() {
