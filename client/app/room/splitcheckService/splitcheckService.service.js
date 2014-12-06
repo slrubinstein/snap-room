@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('splitcheckService', function (Auth) {
+  .factory('splitcheckService', function () {
 
     return {
+
+
       billSoFar: [],
       taxPercent: 8.875,
       tipPercent: 18,
@@ -75,6 +77,34 @@ angular.module('roomApp')
 
       updateMyTotals: function(item) {
 
+      },
+
+      updateFromSocket: function(bill) {
+        this.billSoFar = bill.billSoFar;
+        this.taxPercent = bill.taxPercent;
+        this.tipPercent = bill.tipPercent;
+        this.runningTotal = bill.runningTotal;
+        this.subtotal = bill.subtotal;
+        this.remainder = bill.remainder;
+        this.totalTip = bill.totalTip;
+        this.tipPerPerson = bill.tipPerPerson;
+        this.totalTax = bill.totalTax;
+        this.grandTotal = bill.grandTotal;
       }
     };
+  })
+  .factory('splitcheckSockets', function(socket, splitcheckService) {
+    return {
+      sendBillUpdate: function(roomNumber, bill) {
+        console.log('bill', bill)
+        socket.socket.emit('updateBill', roomNumber, bill)
+      },
+
+      listen: function(ctrl) {
+        socket.socket.on('updateBill', function(bill) {
+          splitcheckService.updateFromSocket(bill);
+          ctrl.bill = ctrl.updateMyPage();
+        })
+      }
+    }
   });
