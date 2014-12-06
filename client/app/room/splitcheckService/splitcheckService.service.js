@@ -50,8 +50,8 @@ angular.module('roomApp')
       calculateRunningTotal: function() {
         var runningTotal = 0;
           this.bill.billSoFar.forEach(function(item) {
-            runningTotal += item.price;
-            runningTotal += item.tax;
+            runningTotal += Number(item.price);
+            runningTotal += Number(item.tax);
           })
       return runningTotal;
       },
@@ -82,7 +82,6 @@ angular.module('roomApp')
       },
 
       updateFromSocket: function(bill) {
-        console.log('updateFromSocket')
         this.bill.billSoFar = bill.billSoFar;
         this.bill.taxPercent = bill.taxPercent;
         this.bill.tipPercent = bill.tipPercent;
@@ -111,7 +110,6 @@ angular.module('roomApp')
         socket.socket.on('updateMyBill', function() {
           var roomNumber = ctrl.roomNumber;
           var bill = splitcheckService.bill;
-          console.log('socket bill', bill)
           sendBillUpdate(roomNumber, bill)
         })
       }

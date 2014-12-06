@@ -64,30 +64,13 @@ angular.module('roomApp')
       ctrl.bill = ctrl.updateMyPage();
 
       splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
-
-  		// ctrl.runningTotal = ctrl.calculateRunningTotal(ctrl.billItems);
-	  	// ctrl.totalTip = ctrl.subtotal * ctrl.tipPercent/100;
-  		// ctrl.totalTax = ctrl.subtotal * ctrl.taxPercent/100;
-  		// ctrl.grandTotal = +ctrl.subtotal + ctrl.totalTip + ctrl.totalTax;
-  		// ctrl.remainder = ctrl.grandTotal - ctrl.runningTotal;
-  		// ctrl.tipFromEach = ctrl.totalTip / ctrl.billItems.length;
-  		// ctrl.personalTotal.tip = ctrl.tipFromEach;
-  		// socket.socket.emit('updateTotals', roomNumber, {subtotal: ctrl.subtotal,
-				// 		  																				tip: ctrl.totalTip,
-				// 		  																				tax: ctrl.totalTax,
-				// 		  																				total: ctrl.grandTotal,
-				// 		  																				taxPercent: ctrl.taxPercent,
-				// 		  																				runningTotal: ctrl.runningTotal,
-				// 		  																				remainder: ctrl.remainder,
-				// 		  																				tipFromEach: ctrl.tipFromEach}
-  		// );
   	}
 
   	this.submit = function() {
   		splitcheckService.submit({user: ctrl.user,
                             		food: ctrl.food,
                             		price: Number(ctrl.price),
-                            		tax: ctrl.price * ctrl.taxPercent/100}
+                            		tax: ctrl.price * ctrl.bill.taxPercent/100}
       )
 
       ctrl.bill = ctrl.updateMyPage();
