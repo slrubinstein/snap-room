@@ -17,6 +17,8 @@ angular.module('roomApp')
     this.showOffBoardBlue = false;
     this.showOffBoardGreen = false;
 
+    this.showRollButton = true;
+
     this.rollFunction = function() {
       gameLogic.rollFunction(ctrl);
     }

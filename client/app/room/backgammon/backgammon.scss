@@ -150,10 +150,7 @@
 
 }
 
-  button {
-   width: 100px;
-   height: 50px;
-  }
+
 
   #buttonsAndInfo div  {
    font-size: 120%;
@@ -162,10 +159,15 @@
 @media (max-width: 399px) {
   button {
    -webkit-appearance: none;
-   width: 100px;
-   height: 50px;
   }
 }
+
+  button {
+   width: 100px;
+   height: 50px;
+   border-radius: 5px;
+   background-color: #FFF;
+  }
 
 
 
@@ -220,6 +222,24 @@
 .bottomRowSpace { 
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);    
+}
+
+#noMoveButton {
+  -webkit-appearance: none;
+   width: 100px;
+   height: 50px;
+   border: 1px solid black;
+   text-align: center;
+   padding-top: 9px;
+   border-radius: 5px;
+}
+
+#noMoveButton:hover {
+  cursor: pointer;
+}
+
+#newGameButton {
+  margin-top: 10px;
 }
 
 

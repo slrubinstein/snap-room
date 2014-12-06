@@ -11,6 +11,7 @@ return {
         ctrl.numberRolls = 4;
       }
       ctrl.saveGame(ctrl.roomNumber);
+      ctrl.showRollButton = false;
     },
 
     checkSpacesFromJail : function(color) {
@@ -253,6 +254,7 @@ return {
        if (!ctrl.roll[0] && !ctrl.roll[1]) {
           ctrl.turn === "green" ? ctrl.turn = "blue" :
           ctrl.turn = "green";
+          ctrl.showRollButton = true;
        }
        ctrl.saveGame(ctrl.roomNumber);
     },
@@ -269,6 +271,7 @@ return {
          ctrl.possibleMove[i] = 0;
        }
        ctrl.saveGame(ctrl.roomNumber);
+       ctrl.showRollButton = true;
     }
    };
 });

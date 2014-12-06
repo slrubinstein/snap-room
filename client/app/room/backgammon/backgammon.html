@@ -14,13 +14,13 @@
 
     <div id="buttonsAndInfo">
       <div id="buttonCol1">
-        <button ng-hide="table.pieces.piecesArray.length===0" ng-click="table.rollFunction()">Roll</button>
+        <button ng-hide="table.pieces.piecesArray.length===0 || !table.showRollButton" ng-click="table.rollFunction()">Roll</button>
         <div ng-hide="table.pieces.piecesArray.length===0" >Roll: {{table.roll[0]}},{{table.roll[1]}}</div>
         <div ng-hide="table.pieces.piecesArray.length===0" >Turn: {{table.turn}}</div>
       </div>
       <div id="buttonCol2">
-        <button ng-hide="table.pieces.piecesArray.length===0" ng-click="table.changeTurn()">Change Turn</button>
-        <button ng-show="table.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
+        <div id="noMoveButton" ng-hide="table.pieces.piecesArray.length===0" ng-click="table.changeTurn()">No Move</div>
+        <button id="newGameButton" ng-show="table.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
       </div>
       <div class="clearfix"></div>
   </div>
