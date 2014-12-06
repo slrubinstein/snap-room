@@ -32,7 +32,9 @@ angular.module('roomApp')
       bill.grandTotal = splitcheckService.bill.grandTotal;
 
       return bill;
-      }
+    }
+
+    // set up socket listeners
     splitcheckSockets.listen(ctrl);
 
     var updatePersonalTotal = function() {
@@ -125,6 +127,7 @@ angular.module('roomApp')
 	  this.deleteItem = function(index) {
 	  	splitcheckService.deleteItem(index);
       ctrl.updateMyPage();
+      splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
       // ctrl.billSoFar.splice(index, 1);
 	  	// ctrl.updateMyTotals
 	  	// socket.socket.emit('deleteItem', roomNumber, index);

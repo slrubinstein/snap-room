@@ -19,8 +19,8 @@
 						<button class="btn btn-danger btn-xs"
 										ng-click="split.deleteItem($index)">X</button></td>
 					<td>{{item.user}}</td>
-					<td>{{item.food}}</td>
-					<td>${{item.price}}</td>
+					<td>{{item.food | number:2}}</td>
+					<td>${{item.price | number:2}}</td>
 					<td>${{item.tax | number:2}}</td>
 				</tr>
 			</tbody>
