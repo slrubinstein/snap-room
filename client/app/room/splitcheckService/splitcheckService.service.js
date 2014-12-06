@@ -6,7 +6,6 @@ angular.module('roomApp')
     return {
 
       bill: {
-
         billSoFar: [],
         taxPercent: 8.875,
         tipPercent: 18,
@@ -23,6 +22,7 @@ angular.module('roomApp')
         this.bill.subtotal = newSubtotal;
         this.bill.tipPercent = newTip;
         this.bill.taxPercent = newTax;
+        this.updateTax();
         this.updateBillTotals();
       },
 
@@ -76,6 +76,14 @@ angular.module('roomApp')
         this.bill.billSoFar.splice(index, 1)
         this.updateBillTotals();
       },
+
+      updateTax: function() {
+        var taxPercent = this.bill.taxPercent;
+        this.bill.billSoFar.forEach(function(item) {
+          item.tax = item.price * taxPercent / 100;
+        });
+      },
+
 
       updateMyTotals: function(item) {
 

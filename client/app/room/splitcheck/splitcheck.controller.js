@@ -82,6 +82,11 @@ angular.module('roomApp')
 
   	}
 
+
+
+
+
+
   	// this.updateMyTotals = function(totals, plusOrMinus) {
   	// 	if (plusOrMinus === 'plus') {
 	  // 		ctrl.personalTotal.food += totals.food;
