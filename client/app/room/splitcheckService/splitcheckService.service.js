@@ -10,16 +10,21 @@ angular.module('roomApp')
       runningTotal: 0,
       subtotal: 0,
       remainder: 0,
+      totalTip: 0,
       tipPerPerson: 0,
       totalTax: 0,
       grandTotal: 0,
+
+      updateSubtotal: function(newSubtotal) {
+        this.subtotal = newSubtotal;
+        this.updateBillTotals();
+      },
 
       submit: function (singleItem) {
         var user = singleItem.user,
             food = singleItem.food,
             price = singleItem.price,
             tax = singleItem.tax
-        console.log('tax', tax, typeof tax)
 
         this.billSoFar.push(singleItem)
         this.updateBillTotals();
@@ -31,6 +36,9 @@ angular.module('roomApp')
       updateBillTotals: function() {
         this.runningTotal = this.calculateRunningTotal();
         this.remainder = this.calculateRemainder();
+        this.totalTip = this.calculateTip();
+        this.totalTax = this.calculateTax();
+        this.grandTotal = this.calculateTotal();
         //update everyone with socket
 
       },
@@ -46,6 +54,18 @@ angular.module('roomApp')
 
       calculateRemainder: function() {
         return this.subtotal - this.runningTotal;
+      },
+
+      calculateTip: function() {
+        return this.subtotal * this.tipPercent / 100;
+      },
+
+      calculateTax: function() {
+        return this.subtotal * this.taxPercent / 100;
+      },
+
+      calculateTotal: function() {
+        return Number(this.subtotal) + this.totalTip + this.totalTax;
       },
 
       deleteItem: function(index) {
