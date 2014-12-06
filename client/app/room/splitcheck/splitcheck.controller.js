@@ -1,21 +1,34 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('SplitcheckCtrl', function ($scope, Auth, socket, $state) {
-
-  	// MUST ADD ROOM NUMBER
+  .controller('SplitcheckCtrl', function ($scope, Auth, socket, $state,
+                                          splitcheckService) {
 
   	var ctrl = this;
   	var roomNumber = $state.params.roomNumber
+
   	socket.socket.emit('joinBillRoom', roomNumber)
 
-  	this.user = '';
-  	this.item = '';
-  	this.price = '';
-  	this.taxPercent = 8.875;
-  	this.tipPercent = 18;
+    // variables shared with everyone on bill
+    // when any of these change, it should change for everyone via socket
+    this.billSoFar = splitcheckService.billSoFar;
+    this.taxPercent = splitcheckService.taxPercent;
+    this.tipPercent = splitcheckService.taxPercent;
+    this.runningTotal = splitcheckService.runningTotal;
+    this.subtotal = splitcheckService.subtotal;
+    this.remainder = splitcheckService.remainder;
+    this.myTip = splitcheckService.tipPerPerson;
+    this.totalTax = splitcheckService.totalTax;
+    this.grandTotal = splitcheckService.grandTotal;
 
-  	this.billItems = [];
+    // this.billItems = [];
+
+
+    // user inputs for single bill item
+  	this.user = '';
+  	this.food = '';
+  	this.price = '';
+
 
   	this.personalTotal = {
   		food: 0,
@@ -30,7 +43,7 @@ angular.module('roomApp')
   	this.remainder = this.grandTotal - this.runningTotal || 0;
 
   	// should update to divide by num of people in room?
-  	this.tipFromEach = this.totalTip / this.billItems.length;
+  	// this.tipFromEach = this.totalTip / this.billItems.length;
 
 
   	this.updateTotals = function() {
@@ -53,12 +66,15 @@ angular.module('roomApp')
   	}
 
   	this.submit = function() {
-  		var userBill = {
-  			user: ctrl.user,
-  			item: ctrl.item,
-  			price: Number(ctrl.price),
-  			itemTax: ctrl.price * ctrl.taxPercent/100
-  		}
+
+  		splitcheckService.submit({user: ctrl.user,
+                            		food: ctrl.food,
+                            		price: Number(ctrl.price),
+                            		tax: ctrl.price * ctrl.taxPercent/100}
+      )
+
+
+
   		ctrl.updateMyTotals({food: Number(ctrl.price),
   												 tax: Number(ctrl.price) * ctrl.taxPercent/100},
   												 'plus'
@@ -104,9 +120,9 @@ angular.module('roomApp')
   		ctrl.updateMyTotals({food: 0, tax: 0}, 'plus')
   	}
 
-  	this.calculateRunningTotal = function(billItems) {
+  	this.calculateRunningTotal = function(billSoFar) {
   		var runningTotal = 0;
-  		ctrl.billItems.forEach(function(item) {
+  		ctrl.billSoFar.forEach(function(item) {
 	  		runningTotal += item.price;
 	  		runningTotal += item.itemTax;
 	  	})
@@ -114,13 +130,13 @@ angular.module('roomApp')
 	  }
 
 	  this.deleteItem = function(index) {
-	  	ctrl.billItems.splice(index, 1);
+	  	ctrl.billSoFar.splice(index, 1);
 	  	ctrl.updateMyTotals
 	  	socket.socket.emit('deleteItem', roomNumber, index);
 	  }
 
 	  this.updateTax = function() {
-	  	ctrl.billItems.forEach(function(item) {
+	  	ctrl.billSoFar.forEach(function(item) {
 	  		item.itemTax = item.price * ctrl.taxPercent/100;
 	  	});
 	  	ctrl.updateTotals();
@@ -128,7 +144,7 @@ angular.module('roomApp')
 	  }
 
 	  this.updateBillThroughSocket = function() {
-	  	socket.socket.emit('updateBill', roomNumber, {billItems: ctrl.billItems, 
+	  	socket.socket.emit('updateBill', roomNumber, {billSoFar: ctrl.billSoFar, 
 						  																			runningTotal: ctrl.runningTotal,
 						  																			remainder: ctrl.remainder,
 						  																			tipFromEach: ctrl.tipFromEach}
@@ -137,7 +153,7 @@ angular.module('roomApp')
 
 
 	  socket.socket.on('updateBill', function(data) {
-	  	ctrl.billItems = data.billItems;
+	  	ctrl.billSoFar = data.billSoFar;
 	  	ctrl.runningTotal = data.runningTotal;
 	  	ctrl.remainder = data.remainder;
 	  	ctrl.tipFromEach = data.tipFromEach;
@@ -149,7 +165,7 @@ angular.module('roomApp')
 	  })
 
 	  socket.socket.on('deleteItem', function(index) {
-	  	ctrl.billItems.splice(index, 1);
+	  	ctrl.billSoFar.splice(index, 1);
 	  	ctrl.updateTotals();
 	  })
 
@@ -164,6 +180,6 @@ angular.module('roomApp')
 	  	ctrl.tipFromEach = totals.tipFromEach;
 	  })
 
-  	this.runningTotal = this.calculateRunningTotal(this.billItems);
+  	this.runningTotal = this.calculateRunningTotal(this.billSoFar);
 
   });

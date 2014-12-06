@@ -14,12 +14,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in split.billItems track by $index">
+				<tr ng-repeat="item in split.billSoFar track by $index">
 					<td>
 						<button class="btn btn-danger btn-xs"
 										ng-click="split.deleteItem($index)">X</button></td>
 					<td>{{item.user}}</td>
-					<td>{{item.item}}</td>
+					<td>{{item.food}}</td>
 					<td>${{item.price}}</td>
 					<td>${{item.itemTax | number:2}}</td>
 				</tr>
