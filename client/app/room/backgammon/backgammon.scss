@@ -1,0 +1,239 @@
+
+#bottomRow {
+  clear: both;
+}
+
+
+
+.bluePiece {
+  background-color: blue;
+}
+
+.greenPiece {
+  background-color: green;
+}
+
+@media (min-width: 1280px) {
+
+    .space {
+        float: left;
+        width: 90px;
+        height: 300px;
+        border: 1px solid black;
+    }
+
+    .piece {
+      height: 50px;
+      width: 50px;
+      border-radius: 25px; 
+    }
+
+    .greenSquare {
+        width: 25px;
+        height: 25px;
+        background-color: green;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .jail {
+      float: left;
+      height: 60px;
+      width: 60px;
+    }
+
+    #offBoardBlue {
+      float: left;
+      height: 60px;
+      width: 60px;
+    }
+
+    #offBoardGreen {
+      float: left;
+      height: 60px;
+      width: 60px;
+    }
+
+}
+
+
+@media (max-width: 1279px) {
+
+    .space {
+        float: left;
+        width: 67.5px;
+        height: 225px;
+        border: 1px solid black;
+    }
+
+    .piece {
+      height: 42px;
+      width: 42px;
+      border-radius: 22.5px; 
+    }
+
+    .greenSquare {
+        width: 25px;
+        height: 25px;
+        background-color: green;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .jail {
+      float: left;
+      height: 45px;
+      width: 45px;
+    }
+
+    #offBoardBlue {
+      float: left;
+      height: 45px;
+      width: 45px;
+    }
+
+    #offBoardGreen {
+      float: left;
+      height: 45px;
+      width: 45px;
+    }
+
+}
+
+@media (max-width: 975px) {
+    
+    .space {
+        float: left;
+        width: 48.6px;
+        height: 162px;
+        border: 1px solid black;
+    }
+
+    .piece {
+      height: 32px;
+      width: 32px;
+      border-radius: 16px; 
+    }
+
+    .greenSquare {
+        width: 25px;
+        height: 25px;
+        background-color: green;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .jail {
+      float: left;
+      height: 32.4px;
+      width: 32.4px;
+    }
+
+    #offBoardBlue {
+      float: left;
+      height: 32.4px;
+      width: 32.4px;
+    }
+
+    #offBoardGreen {
+      float: left;
+      height: 32.4px;
+      width: 32.4px;
+    }
+
+
+}
+
+  button {
+   width: 100px;
+   height: 50px;
+  }
+
+  #buttonsAndInfo div  {
+   font-size: 120%;
+  }
+
+@media (max-width: 399px) {
+  button {
+   -webkit-appearance: none;
+   width: 100px;
+   height: 50px;
+  }
+}
+
+
+
+#jails {
+  float: left;
+  min-height: 120px;
+}
+ #greenJail {
+   clear: both;
+ }
+
+ #buttonsAndInfo {
+   text-align: left;
+   float: left;
+ }
+
+ #buttonCol1 {
+   float: left;
+   margin-left: 10px;
+ }
+  #buttonCol2 {
+   clear: both;
+   float: left;
+   margin-left: 10px;
+ }
+
+ #topRow, #bottomRow {
+   margin-left: 10px;
+ }
+
+ #topRow {
+   margin-top: 10px;
+ }
+
+ .leftOfDivider {
+   border-right: 4px solid black;
+}
+
+ .rightOfDivider {
+   border-left: 4px solid black;
+}
+
+#gameBoard {
+  min-width: 740px;
+}
+
+.piece {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bottomRowSpace { 
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

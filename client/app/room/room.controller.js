@@ -85,7 +85,7 @@ angular.module('roomApp')
         }
       }
   
-      if (ctrl.inputField.length < 50) {
+      if (ctrl.inputField.length < 100) {
         chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
         //to empty the input field:
         ctrl.inputField = '';

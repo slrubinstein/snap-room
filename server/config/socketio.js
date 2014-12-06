@@ -71,7 +71,7 @@ function onConnect(socket) {
         socket.broadcast.to(room).emit('timeUp', winner, maxVotes, room.roomNumber);
         socket.emit('timeUp', winner, maxVotes, room.roomNumber);
       }
-      else if (room.type === 'chat') {
+      else if (room.type === 'chat' || room.type === 'backgammon') {
         socket.broadcast.to(room).emit('timeUpChat', room.roomNumber);
         socket.emit('timeUpChat', room.roomNumber);
       }
@@ -106,6 +106,7 @@ function onConnect(socket) {
   })
 
   // Insert sockets below
+  require('../api/gameBoard/gameBoard.socket').register(socket);
 }
 
 module.exports = function (socketio) {

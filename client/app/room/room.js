@@ -27,4 +27,10 @@ angular.module('roomApp')
        controller: 'SplitcheckCtrl',
        controllerAs: 'split'
      })
+     .state('room.backgammon', {
+       url: '/backgammon',
+       templateUrl: 'app/room/backgammon/backgammon.html',
+       controller: 'BackgammonCtrl',
+       controllerAs: 'table'
+     });
  });
