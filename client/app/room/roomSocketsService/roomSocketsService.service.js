@@ -23,10 +23,10 @@ angular.module('roomApp')
 
         socket.socket.emit('join', roomNumber);
         
-        socket.socket.on('newPerson', function(numberPeople) {
-          ctrl.numberPeople = numberPeople;
-          $scope.$apply();
-        });
+        // socket.socket.on('newPerson', function(numberPeople) {
+        //   ctrl.numberPeople = numberPeople;
+        //   $scope.$apply();
+        // });
         
         socket.socket.on('updateVotes', function(roomData) {
 

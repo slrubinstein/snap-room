@@ -3,7 +3,8 @@
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
                                     chatroomService, roomService, Auth, $state,
-                                    fourSquareService, roomSocketsService, $window) {
+                                    fourSquareService, roomSocketsService, $window,
+                                    personCounterService) {
 
 
     var ctrl = this;
@@ -17,6 +18,11 @@ angular.module('roomApp')
     this.roomData;
     this.roomType;
     this.roomColor;
+
+    // display number of people in room
+    this.numberPeople = personCounterService.numberPeople;
+    personCounterService.listen(this, $scope);
+
 
 
     this.restaurants = []; //assigned to the array of restaurants
