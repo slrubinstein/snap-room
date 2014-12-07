@@ -86,6 +86,7 @@ return {
        if (!this.roll[0] && !this.roll[1]) {
           this.turn === "green" ? this.turn = "blue" :
           this.turn = "green";
+          ctrl.showRollButton = true;
        }
 /////////////       
 
