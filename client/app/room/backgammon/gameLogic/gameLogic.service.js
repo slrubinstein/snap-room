@@ -53,7 +53,6 @@ return {
         var difference = 24 - this.pieceToMove;
       }
       if (this.numberRolls < 3) {
-        console.log(difference);
         if (difference === this.roll[0]){
             this.roll[0] = 0;
         }
@@ -115,28 +114,22 @@ return {
         this.possibleMove[space2] = 1; 
       }
       if (space1 === -1 && color === "blue" && this.blueHomeNumber === 15) {
-            console.log("hello1");
             this.showOffBoardBlue = true;
         }
       else if (space1 === 24 && color === "green" && this.greenHomeNumber === 15) {
-            console.log("hello2");
             this.showOffBoardGreen = true;
         }
       if (space2 === -1 && color === "blue" && this.blueHomeNumber === 15) {
-            console.log("hello3");
             this.showOffBoardBlue = true;
         }
       else if (space2 === 24 && color === "green" && this.greenHomeNumber === 15) {
-            console.log("hello4");
             this.showOffBoardGreen = true;
         }
       //////only if there are no pieces behind pieceToMove
       if (space1 < -1 && color === "blue" && this.blueHomeNumber === 15) {
-            console.log("hello5");
             var trailingPieces = false;
             for (var i = this.pieceToMove + 1; i <= 5; i++) {
               if (this.pieces[i] > 0) {
-                console.log(i);
                 trailingPieces = true;
               }
             }
@@ -146,11 +139,9 @@ return {
             trailingPieces = false;
         }
       else if (space1 > 24 && color === "green" && this.greenHomeNumber === 15) {
-            console.log("hello6");
             var trailingPieces = false;
             for (var i = 18; i < this.pieceToMove; i++) {
               if (this.pieces[i] > 0) {
-                console.log(i);
                 trailingPieces = true;
                 break;
               }
@@ -161,11 +152,9 @@ return {
             trailingPieces = false;
         }
       if (space2 < -1 && color === "blue" && this.blueHomeNumber === 15) {
-            console.log("hello7");
             var trailingPieces = false;
             for (var i = this.pieceToMove + 1; i <= 5; i++) {
               if (this.pieces[i] > 0) {
-                console.log(i);
                 trailingPieces = true;
                 break;
               }
@@ -176,11 +165,9 @@ return {
             trailingPieces = false;
         }
       else if (space2 > 24 && color === "green" && this.greenHomeNumber === 15) {
-            console.log("hello8");
             var trailingPieces = false;
             for (var i = 18; i < this.pieceToMove; i++) {
               if (this.pieces[i] > 0) {
-                console.log(i);
                 trailingPieces = true;
                 break;
               }
