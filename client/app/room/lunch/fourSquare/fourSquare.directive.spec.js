@@ -4,7 +4,7 @@ describe('Directive: fourSquare', function () {
 
   // load the directive's module and view
   beforeEach(module('roomApp'));
-  beforeEach(module('app/room/fourSquare/fourSquare.html'));
+  beforeEach(module('app/room/lunch/fourSquare/fourSquare.html'));
 
   var element, scope;
 
