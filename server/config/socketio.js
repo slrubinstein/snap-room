@@ -17,8 +17,8 @@ function onDisconnect(socket) {
    if (!isNaN(roomKey)) {
      var roomNumber = Object.keys(roomsObject)[i];
      var roomObject = socket.nsp.adapter.rooms[roomNumber];
-     socket.broadcast.to(roomNumber).emit('newPerson', Object.keys(roomObject).length);
-     socket.emit('newPerson', Object.keys(roomObject).length);
+     socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length);
+     socket.emit('countPeople', Object.keys(roomObject).length);
    }
  }
 }

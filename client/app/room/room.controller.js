@@ -20,6 +20,10 @@ angular.module('roomApp')
     this.roomColor;
 
     // display number of people in room
+    this.numberPeople = personCounterService.numberPeople;
+    personCounterService.listen(this, $scope);
+
+
 
     this.restaurants = []; //assigned to the array of restaurants
     //returned by getFourSquare, if getFourSquare is called
