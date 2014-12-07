@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('roomApp')
-  .directive('restaurantList', function () {
+  .directive('chatList', function () {
     return {
-      templateUrl: 'app/room/restaurantList/restaurantList.html',
+      templateUrl: 'app/room/chat/chatList/chatList.html',
       restrict: 'E',
       link: function (scope, element, attrs) {
       }

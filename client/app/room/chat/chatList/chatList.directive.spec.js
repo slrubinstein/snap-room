@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: restaurantList', function () {
+describe('Directive: chatList', function () {
 
   // load the directive's module and view
   beforeEach(module('roomApp'));
-  beforeEach(module('app/room/restaurantList/restaurantList.html'));
+  beforeEach(module('app/room/chat/chatList/chatList.html'));
 
   var element, scope;
 
@@ -13,9 +13,9 @@ describe('Directive: restaurantList', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<restaurant-list></restaurant-list>');
+    element = angular.element('<chat-list></chat-list>');
     element = $compile(element)(scope);
     scope.$apply();
-    expect(element.text()).toBe('this is the restaurantList directive');
+    expect(element.text()).toBe('this is the chatList directive');
   }));
 });

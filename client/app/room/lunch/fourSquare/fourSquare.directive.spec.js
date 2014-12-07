@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: chatList', function () {
+describe('Directive: fourSquare', function () {
 
   // load the directive's module and view
   beforeEach(module('roomApp'));
-  beforeEach(module('app/room/chatList/chatList.html'));
+  beforeEach(module('app/room/lunch/fourSquare/fourSquare.html'));
 
   var element, scope;
 
@@ -13,9 +13,9 @@ describe('Directive: chatList', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<chat-list></chat-list>');
+    element = angular.element('<four-square></four-square>');
     element = $compile(element)(scope);
     scope.$apply();
-    expect(element.text()).toBe('this is the chatList directive');
+    expect(element.text()).toBe('this is the fourSquare directive');
   }));
 });
