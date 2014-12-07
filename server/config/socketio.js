@@ -42,8 +42,8 @@ function onConnect(socket) {
   socket.on('join', function(room) {
     socket.join(room);
     var roomObject = socket.nsp.adapter.rooms[room];
-    socket.broadcast.to(room).emit('newPerson', Object.keys(roomObject).length);
-    socket.emit('newPerson', Object.keys(roomObject).length);
+    socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length);
+    socket.emit('countPeople', Object.keys(roomObject).length);
   })
 
 
