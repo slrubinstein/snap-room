@@ -4,7 +4,7 @@ describe('Directive: restaurantList', function () {
 
   // load the directive's module and view
   beforeEach(module('roomApp'));
-  beforeEach(module('app/room/restaurantList/restaurantList.html'));
+  beforeEach(module('app/room/lunch/restaurantList/restaurantList.html'));
 
   var element, scope;
 
