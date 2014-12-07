@@ -93,8 +93,8 @@ function onConnect(socket) {
     socket.broadcast.to(roomNumber).emit('updateMyBill', roomNumber)
   })
 
-  socket.on('updateBill', function(roomNumber, bill) {
-    socket.broadcast.to(roomNumber).emit('updateBill', bill);
+  socket.on('updateBill', function(roomNumber, newBill) {
+    socket.broadcast.to(roomNumber).emit('updateBill', newBill);
   })
 
   socket.on('deleteItem', function(roomNumber, index) {
