@@ -32,7 +32,6 @@ angular.module('roomApp')
     this.checkSpaces = gameLogic.checkSpaces;
 
     this.movePiece = function(spaceNumber) {
-      console.log("click");
        gameLogic.movePiece(spaceNumber, ctrl);      
     }
 
@@ -121,7 +120,6 @@ angular.module('roomApp')
     this.getGame = function(roomNumber) {
       $http.get("/api/gameBoard/" + roomNumber)
       .success(function(data) {
-        console.log(data);
         ctrl.turn = data.turn;
         ctrl.roll = data.roll;
         ctrl.numberRolls = data.numberRolls;

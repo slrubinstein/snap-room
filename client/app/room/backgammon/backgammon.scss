@@ -2,11 +2,47 @@
   display: none;
 }
 
-#bottomRow {
-  clear: both;
+#gameBoard {
+  min-width: 740px;
 }
 
+#topRow {
+  margin-top: 10px;
+  margin-left: 10px;
+ }
 
+#bottomRow {
+  clear: both;
+  margin-left: 10px;
+}
+
+.bottomRowSpace { 
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);    
+}
+
+.space {
+  float: left;
+  width: 90px;
+  height: 300px;
+  border: 1px solid black;
+}
+
+.leftOfDivider {
+  border-right: 4px solid black;
+}
+
+.rightOfDivider {
+  border-left: 4px solid black;
+}
+
+.piece {
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+  width: 50px;
+  border-radius: 25px; 
+}
 
 .bluePiece {
   background-color: blue;
@@ -16,148 +52,135 @@
   background-color: green;
 }
 
-@media (min-width: 1280px) {
+.greenSquare {
+  position: relative;
+  z-index: 500;
+  background-color: green;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 25px;
+  height: 25px;
+}
 
-    .space {
-        float: left;
-        width: 90px;
-        height: 300px;
-        border: 1px solid black;
-    }
+#buttonsAndInfo {
+  font-size: 120%;
+  text-align: left;
+  float: left;
+}
 
-    .piece {
-      height: 50px;
-      width: 50px;
-      border-radius: 25px; 
-    }
+#gameBoard button {
+   width: 100px;
+   height: 50px;
+   border-radius: 5px;
+   background-color: #FFF;
+}
 
-    .greenSquare {
-        width: 25px;
-        height: 25px;
-        background-color: green;
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
+#buttonCol1 {
+  float: left;
+  margin-left: 10px;
+}
 
-    .jail {
-      float: left;
-      height: 60px;
-      width: 60px;
-    }
+#buttonCol2 {
+  clear: both;
+  float: left;
+  margin-left: 10px;
+}
 
-    #offBoardBlue {
-      float: left;
-      height: 60px;
-      width: 60px;
-    }
 
-    #offBoardGreen {
-      float: left;
-      height: 60px;
-      width: 60px;
-    }
+#noMoveButton {
+ -webkit-appearance: none;
+  width: 100px;
+  height: 50px;
+  border: 1px solid black;
+  text-align: center;
+  padding-top: 9px;
+  border-radius: 5px;
+}
 
+#noMoveButton:hover {
+  cursor: pointer;
+}
+
+#newGameButton {
+  margin-top: 10px;
+}
+
+.jail {
+  float: left;
+  height: 60px;
+  width: 60px;
+}
+
+#jails {
+  float: left;
+  min-height: 120px;
+}
+
+#greenJail {
+  clear: both;
+}
+
+#offBoardGreen, #offBoardBlue {
+  float: left;
+  height: 60px;
+  width: 60px;
 }
 
 
 @media (max-width: 1279px) {
 
-    .space {
-        float: left;
-        width: 67.5px;
-        height: 225px;
-        border: 1px solid black;
-    }
+  .space {
+    width: 67.5px;
+    height: 225px;
+  }
 
-    .piece {
-      height: 42px;
-      width: 42px;
-      border-radius: 22.5px; 
-    }
+  .piece {
+    height: 42px;
+    width: 42px;
+    border-radius: 22.5px; 
+  }
 
-    .greenSquare {
-        width: 25px;
-        height: 25px;
-        background-color: green;
-        margin-right: auto;
-        margin-left: auto;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
+  .jail {
+    height: 45px;
+    width: 45px;
+  }
 
-    .jail {
-      float: left;
-      height: 45px;
-      width: 45px;
-    }
+  #offBoardBlue, #offBoardGreen {
+    height: 45px;
+    width: 45px;
+  }
 
-    #offBoardBlue {
-      float: left;
-      height: 45px;
-      width: 45px;
-    }
 
-    #offBoardGreen {
-      float: left;
-      height: 45px;
-      width: 45px;
-    }
-
-}
+} /* end 1279 max-width */
 
 @media (max-width: 975px) {
     
-    .space {
-        float: left;
-        width: 48.6px;
-        height: 162px;
-        border: 1px solid black;
-    }
-
-    .piece {
-      height: 32px;
-      width: 32px;
-      border-radius: 16px; 
-    }
-
-    .greenSquare {
-        width: 25px;
-        height: 25px;
-        background-color: green;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-
-    .jail {
-      float: left;
-      height: 32.4px;
-      width: 32.4px;
-    }
-
-    #offBoardBlue {
-      float: left;
-      height: 32.4px;
-      width: 32.4px;
-    }
-
-    #offBoardGreen {
-      float: left;
-      height: 32.4px;
-      width: 32.4px;
-    }
-
-
-}
-
-
-
-  #buttonsAndInfo div  {
-   font-size: 120%;
+  .space {
+    width: 48.6px;
+    height: 162px;
   }
+
+  .piece {
+    height: 32px;
+    width: 32px;
+    border-radius: 16px; 
+  }
+
+  .jail {
+    height: 32.4px;
+    width: 32.4px;
+  }
+
+  #offBoardBlue, #offBoardGreen {
+    height: 32.4px;
+    width: 32.4px;
+  }
+
+
+} /* end 975 max-width */
+
 
 @media (max-width: 399px) {
   #gameBoard button {
@@ -175,90 +198,9 @@
   }
 }
 
-  #gameBoard button {
-   width: 100px;
-   height: 50px;
-   border-radius: 5px;
-   background-color: #FFF;
-  }
 
 
 
-#jails {
-  float: left;
-  min-height: 120px;
-}
- #greenJail {
-   clear: both;
- }
-
- #buttonsAndInfo {
-   text-align: left;
-   float: left;
- }
-
- #buttonCol1 {
-   float: left;
-   margin-left: 10px;
- }
-  #buttonCol2 {
-   clear: both;
-   float: left;
-   margin-left: 10px;
- }
-
- #topRow, #bottomRow {
-   margin-left: 10px;
- }
-
- #topRow {
-   margin-top: 10px;
- }
-
- .leftOfDivider {
-   border-right: 4px solid black;
-}
-
- .rightOfDivider {
-   border-left: 4px solid black;
-}
-
-#gameBoard {
-  min-width: 740px;
-}
-
-.piece {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.bottomRowSpace { 
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);    
-}
-
-#noMoveButton {
-  -webkit-appearance: none;
-   width: 100px;
-   height: 50px;
-   border: 1px solid black;
-   text-align: center;
-   padding-top: 9px;
-   border-radius: 5px;
-}
-
-#noMoveButton:hover {
-  cursor: pointer;
-}
-
-#newGameButton {
-  margin-top: 10px;
-}
-
-.greenSquare {
-          position: relative;
-        z-index: 500;
-}
 
 
 
