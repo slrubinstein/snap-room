@@ -26,8 +26,6 @@ function onDisconnect(socket) {
 // When the user connects.. perform this
 function onConnect(socket) {
   // When the client emits 'info', this listens and executes
-socket.on('login', name)
-  socket.nickname = name
 
   socket.on('info', function (data) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
@@ -44,11 +42,15 @@ socket.on('login', name)
       })
   });
 
-  socket.on('join', function(room) {
+  socket.on('join', function(room, name) {
     socket.join(room);
+
+    socket.nickname = name;
+
     var roomObject = socket.nsp.adapter.rooms[room];
-    socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length);
-    socket.emit('countPeople', Object.keys(roomObject).length);
+
+    socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, name);
+    socket.emit('countPeople', Object.keys(roomObject).length, name);
   })
 
 
@@ -130,7 +132,6 @@ module.exports = function (socketio) {
   //   secret: config.secrets.session,
   //   handshake: true
   // }));
-
   socketio.on('connection', function (socket) {
     socket.address = socket.handshake.address !== null ?
             socket.handshake.address.address + ':' + socket.handshake.address.port :

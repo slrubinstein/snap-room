@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('roomService', function ($q, $http, $location) {
+  .factory('roomService', function ($q, $http, $location, personCounterService) {
  
     return {
       get: function (roomNumber) {
@@ -85,7 +85,9 @@ angular.module('roomApp')
             $(event.target).closest('.list-group-item').removeClass(colorClass);
           }, 100);
         }
-      }    
+      }
+
+
   });
 
 

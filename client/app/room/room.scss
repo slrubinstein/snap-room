@@ -45,11 +45,6 @@ button.blueWall{
   color: #2E4272;
 }
 
-/*
-.whiteAccent {
-  color: white;
-}*/
-
 .greenWall {
   background-color: #87FC81;
 }
@@ -141,4 +136,19 @@ input {
   max-width: 300px;
   margin-left: auto;
   margin-right: auto;
+}
+
+#overlay {
+  position: absolute;
+  text-decoration: none;
+  width: 20%;
+  background-color: white; 
+  left: 80%;
+  z-index: 1000;
+  border: solid 1px;
+  border-bottom-left-radius: 10px;
+  text-align: left;
+  li {
+    list-style-type: none;
+  }
 }

@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('roomSocketsService', function (socket) {
+  .factory('roomSocketsService', function (socket, Auth) {
 
     return {
 
-      listen: function(roomNumber, $scope, ctrl) {
+      listen: function(roomNumber, $scope, ctrl, user) {
         
         socket.socket.on('timeUp', function(winner, maxVotes, expiredRoomNumber) {
           if (Number(expiredRoomNumber) === Number(roomNumber)) {
@@ -21,12 +21,13 @@ angular.module('roomApp')
           }
         });
 
-        socket.socket.emit('join', roomNumber);
-        
-        // socket.socket.on('newPerson', function(numberPeople) {
-        //   ctrl.numberPeople = numberPeople;
-        //   $scope.$apply();
-        // });
+        if (user.hasOwnProperty('facebook')) {
+          var name = user.facebook.first_name + ' ' + user.facebook.last_name[0] + '.';
+        } else {
+          var name = 'anonymous';
+        }
+
+        socket.socket.emit('join', roomNumber, name);
         
         socket.socket.on('updateVotes', function(roomData) {
 

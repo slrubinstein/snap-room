@@ -3,8 +3,19 @@
   
 	<room-banner room-accent></room-banner> 
 
-    <div ui-view> </div>
+	<div id="overlay" ng-show="room.showUsers">
 
+		<ul>
+			<li ng-repeat="(name, value) in room.namesOfPeople">
+				{{name}}
+			</li>
+
+		</ul>
+
+
+	</div>
+
+    <div ui-view> </div>
 
 </div>
 

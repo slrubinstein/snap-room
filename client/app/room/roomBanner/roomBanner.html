@@ -1,3 +1,5 @@
+<!-- RoomCtrl as room -->
+
 <div room-wall room-trim>
 
   <div id="back-button"
@@ -43,7 +45,7 @@
   <div class="narrowColumn rightColumn">
     <span>{{room.numberPeople}}</span>
     <span class="glyphicon glyphicon-user"
-          ng-click="main.showUsers()"></span>
+          ng-click="room.toggleUsers()"></span>
   </div>
 
   <div class="clearfix"></div>

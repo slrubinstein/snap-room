@@ -21,8 +21,8 @@ angular.module('roomApp')
 
     // display number of people in room
     this.numberPeople = personCounterService.numberPeople;
+    this.namesOfPeople = personCounterService.namesOfPeople;
     personCounterService.listen(this, $scope);
-
 
 
     this.restaurants = []; //assigned to the array of restaurants
@@ -149,20 +149,16 @@ angular.module('roomApp')
 ////////////////////////////////////////////////////////////////
 
 
-    // set up socket event listeners
-    roomSocketsService.listen(roomNumber, $scope, ctrl);
-
-
     //facebook login stuff
     this.user = Auth.getCurrentUser();
     this.isLoggedIn = Auth.isLoggedIn();
-    
+
+    // set up socket event listeners
+    roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
+
+
     this.backToMain = function() {
       $state.go("main");
-    }
-
-    this.showUsers = function() {
-
     }
 
     //returnArray is used to display the correct number of dollar signs
@@ -174,6 +170,13 @@ angular.module('roomApp')
           }
           return arr;
     };
+
+    this.showUsers = false;
+
+    this.toggleUsers = function() {
+      ctrl.showUsers = !ctrl.showUsers;
+    }
+
 
 
 
