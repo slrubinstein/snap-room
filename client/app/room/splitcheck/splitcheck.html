@@ -35,7 +35,7 @@
 							 ng-change="split.updateSubtotal()"/></p>
 
 			<div class="row">
-				<div class="col-sm-6 col-md-6 col-lg-6">
+				<div class="half-col">
 
 					<p>
 						<input type="range" 
@@ -58,7 +58,7 @@
 										ng-model="split.bill.taxPercent" />
 					</p>
 				</div>
-				<div class="col-sm-6 col-md-6 col-lg-6">
+				<div class="half-col">
 					<p>Tip 
 						<input class="sub-total"
 									 type="text"
@@ -82,17 +82,17 @@
 
 		<div class="panel-body bill-updating-numbers">	
 			<div class="row">
-				<div class="col-sm-4 col-md-4 col-lg-4">
+				<div class="third-col">
 					<p><strong>In the pot: </strong></p>
 					<p>${{split.bill.runningTotal | number:2}}</p>
 				</div>
-				<div class="col-sm-4 col-md-4 col-lg-4">
+				<div class="third-col">
 					<p><strong>Still short: </strong></p>
 					<p ng-class="{negative: split.bill.remainder > 0,
 												positive: split.bill.remainder < 0}"
 						>${{split.bill.remainder | number:2}}</p>
 				</div>
-				<div class="col-sm-4 col-md-4 col-lg-4">
+				<div class="third-col">
 					<p><strong>Splitting tip between {{split.numberPeople}}</strong></p>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
   <div class="panel-body">
 
   	<div class="row">
-      <div class="col-sm-6 col-md-6 col-lg-5 item-input">
+      <div class="half-col item-input">
          <form novalidate class="simple-form">
 			    <p>Name: <input type="text" ng-model="split.user" /><br /></p>
 			    <p>Item: <input type="item" ng-model="split.food" /><br /></p>

@@ -3,13 +3,6 @@
 angular.module('roomApp')
   .factory('splitcheckService', function () {
 
-
-    // TO DO:
-
-    // move numberPeople in room to own factory
-    // reference numberPeople from factory
-    // test/debug
-
     var bill = {
         billSoFar: [],
         taxPercent: 8.875,
@@ -53,7 +46,6 @@ angular.module('roomApp')
       }
 
       function updateBillTotals(numberPeople) {
-        console.log('num', numberPeople)
         bill.runningTotal = calculateRunningTotal();
         bill.totalTip = calculateTip();
         bill.tipPerPerson = bill.totalTip / numberPeople;
@@ -105,8 +97,7 @@ angular.module('roomApp')
         personalTotals.food += item.price;
         personalTotals.tax += item.tax;
         personalTotals.tip = bill.tipPerPerson;
-        personalTotals.total += item.price + item.tax;
-        console.log(item)
+        personalTotals.total += item.price + item.tax + personalTotals.tip;
       }
 
       function subtractFromMyTotals(item) {
@@ -123,14 +114,12 @@ angular.module('roomApp')
           tip: 0,
           total: 0
         }
+        personalTotals.tip = bill.tipPerPerson;
         bill.billSoFar.forEach(function(item) {
           if (item.user===name) {
             srvc.addToMyTotals(item);
           }
         });
-        console.log(bill.tipPerPerson)
-        console.log('num', numberPeople)
-        personalTotals.tip = bill.tipPerPerson;
         return personalTotals;
       }
 
