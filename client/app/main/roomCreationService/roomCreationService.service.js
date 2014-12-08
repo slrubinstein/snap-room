@@ -20,14 +20,12 @@ angular.module('roomApp')
 
         var roomNumber = options.roomNumber,
             color = options.color,
-            geoRoom = options.geoRoom,
             isLoggedIn = options.isLoggedIn,
             roomType = options.type;
 
         var stateGo = function() {
           $state.go("room." + roomType, {roomNumber: roomNumber,
-                                color: color,
-                                geoRoom: geoRoom
+                                color: color
                               });
         }
 

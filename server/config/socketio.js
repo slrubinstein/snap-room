@@ -49,8 +49,7 @@ function onConnect(socket) {
   })
 
 
-  socket.on('timeUp', function(room, geoRoom) {
-    console.log('time up event')
+  socket.on('timeUp', function(room, geoRoomArr) {
     Room.findOne({roomNumber:room}, function(err, room) {
 
       if (room.type === 'lunch') {
@@ -77,10 +76,12 @@ function onConnect(socket) {
         socket.broadcast.to(room).emit('timeUpChat', room.roomNumber);
         socket.emit('timeUpChat', room.roomNumber);
       }
+      
+      geoRoomArr.forEach(function(el) {
+        socket.broadcast.to(el).emit('refreshRoomList');
+      })
 
-
-        socket.broadcast.to(geoRoom).emit('refreshRoomList');
-        socket.emit('refreshRoomList'); 
+      socket.emit('refreshRoomList'); 
     })
 
   })

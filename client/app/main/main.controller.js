@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('roomApp')
+   .value('geoRoomArrVal', {geoRooms:[]})
   .controller('MainCtrl', function ($scope, $http, socket,
           $window, geolocationService, roomCreationService, Auth, $state, 
-          User) {
+          User, geoRoomArrVal) {
 
     var ctrl = this;
 
@@ -80,6 +81,9 @@ angular.module('roomApp')
       //latitude, longitude, and geoLocated (a boolean)
 
       ctrl.geoRoomArr = geolocationService.makeGeoRoomArr(geoData)
+      
+      //geoRoomArrVal is an angular value
+      geoRoomArrVal.geoRooms = ctrl.geoRoomArr;
 
       //this statement causes the user to join a geoRoom 
       socket.socket.emit("joinAnteroom", ctrl.geoRoomArr[0]);
