@@ -85,7 +85,7 @@ angular.module('roomApp')
       socket.socket.emit("joinAnteroom", ctrl.geoRoomArr[0]);
 
       //getRooms is a promise
-      var getRooms = roomCreationService.get(geoData)
+      var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
         .then(getRoomsSuccessCallback, getRoomsErrorCallback);
 
     }

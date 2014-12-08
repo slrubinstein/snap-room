@@ -4,10 +4,10 @@ angular.module('roomApp')
   .factory('roomCreationService', function ($q, $http, $state, socket) {
 
     return {
-      get: function (loc) {
+      get: function (latLong) {
         var deferred = $q.defer();
 
-        $http.get("/api/room/" + loc.lat.toFixed(1) + "/" + loc.lon.toFixed(1))
+        $http.get("/api/room/latlon/" + latLong)  
          .success(function(rooms){
             deferred.resolve(rooms);
           })
