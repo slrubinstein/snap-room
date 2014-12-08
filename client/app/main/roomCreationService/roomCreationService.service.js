@@ -18,9 +18,7 @@ angular.module('roomApp')
       },
       enter: function(options) {
 
-        var lat = options.geoData.lat,
-            lon = options.geoData.lon,
-            roomNumber = options.roomNumber,
+        var roomNumber = options.roomNumber,
             color = options.color,
             geoRoom = options.geoRoom,
             isLoggedIn = options.isLoggedIn,
@@ -53,7 +51,7 @@ angular.module('roomApp')
         var color = options.color,
             geoRoom = options.geoRoomArr[0],
             type = options.type;
-            
+
         $http.post("/api/room", options)
         .success(function(data){
           $state.go("room." + type, {roomNumber: data.roomNumber,

@@ -191,8 +191,7 @@ angular.module('roomApp')
         roomCreationService.enter({roomNumber: roomNumber, 
                              color: color, 
                              geoRoom: ctrl.geoRoom, 
-                             isLoggedIn: Auth.isLoggedIn(), 
-                             geoData: ctrl.geoData,
+                             isLoggedIn: Auth.isLoggedIn(),
                              type: type});
       }
     };
