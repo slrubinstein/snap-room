@@ -10,11 +10,10 @@ angular.module('roomApp')
     this.geoData;//if geoSuccessCallback is called, 
     //geoData will be assigned to an object containing
     //geolocation information
-    this.geoRoom;//whenever a user accesses the site,
-    //they are placed in a socket room based on their geolocation.
-    //When rooms in their geo area are created or expire, they
-    //will be updated. geoRoom is the name (a string) for that 
-    //socket room
+    this.geoRoomArr;//created by geolocationService.makeGeoRoomArr.
+    //The first element is user's lat/lon coordinates (to thousandth's place),
+    //as a string. The next 8 elements are the neighboring lat/lon coordinates
+
     this.availableRooms = [];//availableRooms is assigned in
     //getRoomsSuccessCallback
 
@@ -80,13 +79,10 @@ angular.module('roomApp')
       ctrl.geoData = geoData; //geoData has three properties:
       //latitude, longitude, and geoLocated (a boolean)
 
-      //geolocationService.makeGeoRoomName creates the name (a string)
-      //for the geoRoom that this user will be added to, using
-      //geoData.latitude and geoData.longitude
-      ctrl.geoRoom = geolocationService.makeGeoRoomName(geoData)
+      ctrl.geoRoomArr = geolocationService.makeGeoRoomArr(geoData)
 
       //this statement causes the user to join a geoRoom 
-      socket.socket.emit("joinAnteroom", ctrl.geoRoom);
+      socket.socket.emit("joinAnteroom", ctrl.geoRoomArr[0]);
 
       //getRooms is a promise
       var getRooms = roomCreationService.get(geoData)
@@ -183,7 +179,7 @@ angular.module('roomApp')
       roomCreationService.create({lat: ctrl.geoData.lat,
                             lon: ctrl.geoData.lon, 
                             color: color, 
-                            geoRoom: ctrl.geoRoom,
+                            geoRoomArr: ctrl.geoRoomArr,
                             type: type,
                             lock: lock,
                             roomName: roomName,
