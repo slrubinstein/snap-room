@@ -8,9 +8,17 @@ angular.module('roomApp')
     var namesOfPeople = {};
 
     var listen = function(ctrl, $scope) {
-        socket.socket.on('countPeople', function(numberPeople, name) {
+        socket.socket.on('countPeople', function(numberPeople, name, leaving) {
           ctrl.numberPeople = numberPeople;
-          namesOfPeople[name] = true;
+          
+          if (leaving) {
+            namesOfPeople[name] = false;
+          } else {
+            namesOfPeople[name] = true;
+          }
+
+          console.log(namesOfPeople)
+
           ctrl.namesOfPeople = namesOfPeople;
           $scope.$apply();
         });

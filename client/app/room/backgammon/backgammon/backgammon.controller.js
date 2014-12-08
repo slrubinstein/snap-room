@@ -140,9 +140,6 @@ angular.module('roomApp')
 
   this.getGame(roomNumber);
 
-   // set up socket event listeners
-   roomSocketsService.listen(roomNumber, $scope, ctrl);
-
    socket.socket.on("updateGame", function(doc) {
             ctrl.turn = doc.turn,
             ctrl.roll = doc.roll,

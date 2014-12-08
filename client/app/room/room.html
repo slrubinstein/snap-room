@@ -7,7 +7,7 @@
 
 		<ul>
 			<li ng-repeat="(name, value) in room.namesOfPeople">
-				{{name}}
+				<span ng-show="value">{{name}}</span>
 			</li>
 
 		</ul>
