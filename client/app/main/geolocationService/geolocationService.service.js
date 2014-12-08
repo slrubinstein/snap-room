@@ -41,30 +41,30 @@ angular.module('roomApp')
       makeGeoRoomArr: function(geoData) {
         var latString = String(geoData.lat);
         var lonString = String(geoData.lon);
-        var latToThousandthPlace =  latString.slice(0, latString.indexOf(".") + 4);
-        var lonToThousandthPlace = lonString.slice(0, lonString.indexOf(".") + 4);
+        var latToHundrethPlace =  latString.slice(0, latString.indexOf(".") + 3);
+        var lonToHundrethPlace = lonString.slice(0, lonString.indexOf(".") + 3);
         var latLonArr = [];
 
-        var northernLat = String((Number(latToThousandthPlace) + .001).toFixed(3));
-        var southernLat = String((Number(latToThousandthPlace) - .001).toFixed(3));
-        var easternLon = String((Number(lonToThousandthPlace) + .001).toFixed(3));
-        var westernLon = String((Number(lonToThousandthPlace) - .001).toFixed(3));
+        var northernLat = String((Number(latToHundrethPlace) + .01).toFixed(2));
+        var southernLat = String((Number(latToHundrethPlace) - .01).toFixed(2));
+        var easternLon = String((Number(lonToHundrethPlace) + .01).toFixed(2));
+        var westernLon = String((Number(lonToHundrethPlace) - .01).toFixed(2));
 
-        latLonArr.push(latToThousandthPlace + lonToThousandthPlace);
+        latLonArr.push(latToHundrethPlace + lonToHundrethPlace);
 
         latLonArr.push(northernLat + westernLon);
 
-        latLonArr.push(northernLat + lonToThousandthPlace);
+        latLonArr.push(northernLat + lonToHundrethPlace);
 
         latLonArr.push(northernLat + easternLon);
 
-        latLonArr.push(latToThousandthPlace + westernLon);
+        latLonArr.push(latToHundrethPlace + westernLon);
 
-        latLonArr.push(latToThousandthPlace + easternLon);
+        latLonArr.push(latToHundrethPlace + easternLon);
 
         latLonArr.push(southernLat + westernLon);
 
-        latLonArr.push(southernLat + lonToThousandthPlace);
+        latLonArr.push(southernLat + lonToHundrethPlace);
 
         latLonArr.push(southernLat + easternLon);
 
