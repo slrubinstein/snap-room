@@ -49,6 +49,7 @@ angular.module('roomApp')
       create: function(options) {
 
         var color = options.color,
+            geoRoomArr = options.geoRoomArr,
             geoRoom = options.geoRoomArr[0],
             type = options.type;
 
@@ -58,7 +59,7 @@ angular.module('roomApp')
                                 color: color,
                                 geoRoom: geoRoom
                               });
-          socket.socket.emit('createRoom', data.roomNumber, color, geoRoom)
+          socket.socket.emit('createRoom', data.roomNumber, color, geoRoomArr)
           //timerFactory.timerListener();
         })
         .error(function(data){

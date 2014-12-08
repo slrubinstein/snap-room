@@ -50,6 +50,8 @@ angular.module('roomApp')
         var easternLon = String((Number(lonToThousandthPlace) + .001).toFixed(3));
         var westernLon = String((Number(lonToThousandthPlace) - .001).toFixed(3));
 
+        latLonArr.push(latToThousandthPlace + lonToThousandthPlace);
+
         latLonArr.push(northernLat + westernLon);
 
         latLonArr.push(northernLat + lonToThousandthPlace);
@@ -57,8 +59,6 @@ angular.module('roomApp')
         latLonArr.push(northernLat + easternLon);
 
         latLonArr.push(latToThousandthPlace + westernLon);
-
-        latLonArr.push(latToThousandthPlace + lonToThousandthPlace);
 
         latLonArr.push(latToThousandthPlace + easternLon);
 

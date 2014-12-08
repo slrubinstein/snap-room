@@ -34,9 +34,11 @@ function onConnect(socket) {
     socket.join(geoRoom);
   })
 
-  socket.on('createRoom', function(room, color, geoRoom) {
+  socket.on('createRoom', function(room, color, geoRoomArr) {
       socket.join(room);
-      socket.broadcast.to(geoRoom).emit('refreshRoomList');
+      geoRoomArr.forEach(function(el) {
+        socket.broadcast.to(el).emit('refreshRoomList');
+      })
   });
 
   socket.on('join', function(room) {
