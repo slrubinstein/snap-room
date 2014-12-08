@@ -90,11 +90,11 @@ function onConnect(socket) {
 
   //UPDATE THIS
   socket.on('joinBillRoom', function(roomNumber) {
-    socket.broadcast.to(roomNumber).emit('updateMyBill')
+    socket.broadcast.to(roomNumber).emit('updateMyBill', roomNumber)
   })
 
-  socket.on('updateBill', function(roomNumber, data) {
-    socket.broadcast.to(roomNumber).emit('updateBill', data);
+  socket.on('updateBill', function(roomNumber, newBill) {
+    socket.broadcast.to(roomNumber).emit('updateBill', newBill);
   })
 
   socket.on('deleteItem', function(roomNumber, index) {
