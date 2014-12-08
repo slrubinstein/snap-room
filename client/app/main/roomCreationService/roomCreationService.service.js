@@ -4,10 +4,10 @@ angular.module('roomApp')
   .factory('roomCreationService', function ($q, $http, $state, socket) {
 
     return {
-      get: function (loc) {
+      get: function (latLong) {
         var deferred = $q.defer();
 
-        $http.get("/api/room/" + loc.lat.toFixed(1) + "/" + loc.lon.toFixed(1))
+        $http.get("/api/room/latlon/" + latLong)  
          .success(function(rooms){
             deferred.resolve(rooms);
           })
@@ -18,18 +18,14 @@ angular.module('roomApp')
       },
       enter: function(options) {
 
-        var lat = options.geoData.lat,
-            lon = options.geoData.lon,
-            roomNumber = options.roomNumber,
+        var roomNumber = options.roomNumber,
             color = options.color,
-            geoRoom = options.geoRoom,
             isLoggedIn = options.isLoggedIn,
             roomType = options.type;
 
         var stateGo = function() {
           $state.go("room." + roomType, {roomNumber: roomNumber,
-                                color: color,
-                                geoRoom: geoRoom
+                                color: color
                               });
         }
 
@@ -50,29 +46,18 @@ angular.module('roomApp')
       },
       create: function(options) {
 
-        var lat = options.lat,
-            lon = options.lon,
-            color = options.color,
-            lock = options.lock || null,
-            geoRoom = options.geoRoom,
-            type = options.type,
-            roomName = options.roomName,
-            timerLength = options.timerLength;
+        var color = options.color,
+            geoRoomArr = options.geoRoomArr,
+            geoRoom = options.geoRoomArr[0],
+            type = options.type;
 
-        $http.post("/api/room", {lat: lat, 
-                                 lon: lon, 
-                                 color: color,
-                                 lock: lock,
-                                 geoRoom: geoRoom,
-                                 type: type,
-                                 roomName: roomName,
-                                 timerLength: timerLength})
+        $http.post("/api/room", options)
         .success(function(data){
           $state.go("room." + type, {roomNumber: data.roomNumber,
                                 color: color,
                                 geoRoom: geoRoom
                               });
-          socket.socket.emit('createRoom', data.roomNumber, color, geoRoom)
+          socket.socket.emit('createRoom', data.roomNumber, color, geoRoomArr)
           //timerFactory.timerListener();
         })
         .error(function(data){

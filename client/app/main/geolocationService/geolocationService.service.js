@@ -38,25 +38,38 @@ angular.module('roomApp')
 
         return deferred.promise;
       },
-      makeGeoRoomName: function(geoData) {
-        var geoRoom = 'geoRoom';
+      makeGeoRoomArr: function(geoData) {
         var latString = String(geoData.lat);
         var lonString = String(geoData.lon);
-        var firstThreeLatNumbers;
-        var firstThreeLonNumbers;
-        if (latString[0] === "-") {
-          firstThreeLatNumbers = latString.slice(1,3) + latString.slice(4,5);
-        }
-        else {
-          firstThreeLatNumbers = latString.slice(0,2) + latString.slice(3,4);
-        }
-        if (lonString[0] === "-") {
-          firstThreeLonNumbers = lonString.slice(1,3) + lonString.slice(4,5);
-        }
-        else {
-          firstThreeLonNumbers = lonString.slice(0,2) + lonString.slice(3,4);
-        }
-        return geoRoom + firstThreeLatNumbers + firstThreeLonNumbers;
+        var latToHundrethPlace =  latString.slice(0, latString.indexOf(".") + 3);
+        var lonToHundrethPlace = lonString.slice(0, lonString.indexOf(".") + 3);
+        var latLonArr = [];
+
+        var northernLat = String((Number(latToHundrethPlace) + .01).toFixed(2));
+        var southernLat = String((Number(latToHundrethPlace) - .01).toFixed(2));
+        var easternLon = String((Number(lonToHundrethPlace) + .01).toFixed(2));
+        var westernLon = String((Number(lonToHundrethPlace) - .01).toFixed(2));
+
+        latLonArr.push(latToHundrethPlace + lonToHundrethPlace);
+
+        latLonArr.push(northernLat + westernLon);
+
+        latLonArr.push(northernLat + lonToHundrethPlace);
+
+        latLonArr.push(northernLat + easternLon);
+
+        latLonArr.push(latToHundrethPlace + westernLon);
+
+        latLonArr.push(latToHundrethPlace + easternLon);
+
+        latLonArr.push(southernLat + westernLon);
+
+        latLonArr.push(southernLat + lonToHundrethPlace);
+
+        latLonArr.push(southernLat + easternLon);
+
+        return latLonArr;
+
       }
     };
   });

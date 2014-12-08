@@ -4,14 +4,14 @@ angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
                                     chatroomService, roomService, Auth, $state,
                                     fourSquareService, roomSocketsService, $window,
-                                    personCounterService) {
+                                    personCounterService, geoRoomArrVal) {
 
 
     var ctrl = this;
 
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
-    var geoRoom = this.params.geoRoom;
+    var geoRoomArr = geoRoomArrVal.geoRooms;
 
     //roomData, roomType, and roomColor are all assigned in
     //getRoomSuccessCallback
@@ -74,7 +74,7 @@ angular.module('roomApp')
 
       if(Number(minutesLeftDecimal) < 0.01) {
         $interval.cancel(ctrl.countDown);
-        socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoom);
+        socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoomArr);
       }
     };
     

@@ -25,23 +25,21 @@ exports.show = function(req, res) {
 
 // Get a single room by geolocation
 exports.showByGeo = function(req, res) {
-
-  Room.find({lat:req.params.lat})
+  var latLon = req.params.latLon;
+  Room.find({'latLonCoords' : {$in: [latLon]} })
        .find({'ourExpTime': {$gt : new Date().getTime()}})
        .exec(function (err, rooms) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
-    if (rooms.length > 0) {
-    }
-
     return res.json(200, rooms);
   });
 };
 
 // Creates a new room in the DB.
 exports.create = function(req, res) {
-  var lat = req.body.lat; 
+  var lat = req.body.lat;
   var lon = req.body.lon;
+  var latLonCoordsArray = req.body.geoRoomArr; 
   var color = req.body.color;
   var roomNumber = Math.floor(Math.random()*1000000);
   var createdAt = new Date();
@@ -51,9 +49,8 @@ exports.create = function(req, res) {
   var lock = req.body.lock;
   var type = req.body.type;
   var roomName = req.body.roomName;
-  Room.create({roomNumber:roomNumber,
-               lat: lat.toFixed(1), 
-               lon: lon.toFixed(1),
+  Room.create({roomNumber: roomNumber,
+               latLonCoords: latLonCoordsArray,
                rawLat: lat,
                rawLon: lon, 
                color: color,
