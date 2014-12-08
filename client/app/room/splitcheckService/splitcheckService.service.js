@@ -31,12 +31,12 @@ angular.module('roomApp')
       };
 
 
-    function updateSubtotal(newSubtotal, newTip, newTax) {
+    function updateSubtotal(newSubtotal, newTip, newTax, numberPeople) {
         bill.subtotal = newSubtotal;
         bill.tipPercent = newTip;
         bill.taxPercent = newTax;
         updateTax();
-        updateBillTotals();
+        updateBillTotals(numberPeople);
       }
 
       function submit(singleItem, numberPeople) {
@@ -46,15 +46,18 @@ angular.module('roomApp')
             tax = singleItem.tax;
 
         bill.billSoFar.push(singleItem)
-        updateBillTotals();
+        updateBillTotals(numberPeople);
 
-        addToMyTotals(singleItem, numberPeople);
+        addToMyTotals(singleItem);
 
       }
 
-      function updateBillTotals() {
+      function updateBillTotals(numberPeople) {
+        console.log('num', numberPeople)
         bill.runningTotal = calculateRunningTotal();
         bill.totalTip = calculateTip();
+        bill.tipPerPerson = bill.totalTip / numberPeople;
+        personalTotals.tip = bill.tipPerPerson;
         bill.totalTax = calculateTax();
         bill.grandTotal = calculateTotal();
         bill.remainder = calculateRemainder();
@@ -85,10 +88,10 @@ angular.module('roomApp')
         return Number(bill.subtotal) + bill.totalTip + bill.totalTax;
       }
 
-      function deleteItem(index) {
+      function deleteItem(index, numberPeople) {
         var item = bill.billSoFar.splice(index, 1)[0]
         subtractFromMyTotals(item)
-        updateBillTotals();
+        updateBillTotals(numberPeople);
       }
 
       function updateTax() {
@@ -98,12 +101,12 @@ angular.module('roomApp')
         });
       }
 
-      function addToMyTotals(item, numberPeople) {
-        console.log(numberPeople)
+      function addToMyTotals(item) {
         personalTotals.food += item.price;
         personalTotals.tax += item.tax;
-        personalTotals.tip = bill.totalTip / numberPeople;
+        personalTotals.tip = bill.tipPerPerson;
         personalTotals.total += item.price + item.tax;
+        console.log(item)
       }
 
       function subtractFromMyTotals(item) {
@@ -122,9 +125,12 @@ angular.module('roomApp')
         }
         bill.billSoFar.forEach(function(item) {
           if (item.user===name) {
-            srvc.addToMyTotals(item, numberPeople);
+            srvc.addToMyTotals(item);
           }
         });
+        console.log(bill.tipPerPerson)
+        console.log('num', numberPeople)
+        personalTotals.tip = bill.tipPerPerson;
         return personalTotals;
       }
 
@@ -191,6 +197,11 @@ angular.module('roomApp')
         socket.socket.on('updateMyBill', function(roomNumber) {
           var bill = splitcheckService.bill;
           sendBillUpdate(roomNumber, bill)
+        })
+
+        socket.socket.on('countPeople', function(numberPeople) {
+          splitcheckService.updateBillTotals(numberPeople);
+          ctrl.bill.tipPerPerson = splitcheckService.bill.tipPerPerson;
         })
       }
 

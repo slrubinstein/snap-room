@@ -9,7 +9,6 @@ angular.module('roomApp')
         socket.socket.on('countPeople', function(numberPeople) {
           ctrl.numberPeople = numberPeople;
           $scope.$apply();
-          console.log('there are now', numberPeople, 'in the room')
         });
     }
 

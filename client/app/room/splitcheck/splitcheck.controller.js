@@ -27,7 +27,7 @@ angular.module('roomApp')
       bill.subtotal = splitcheckService.bill.subtotal;
       bill.remainder = splitcheckService.bill.remainder;
       bill.totalTip = splitcheckService.bill.totalTip;
-      bill.myTip = splitcheckService.bill.tipPerPerson;
+      bill.tipPerPerson = splitcheckService.bill.tipPerPerson;
       bill.totalTax = splitcheckService.bill.totalTax;
       bill.grandTotal = splitcheckService.bill.grandTotal;
 
@@ -64,8 +64,9 @@ angular.module('roomApp')
           tipPercent = ctrl.bill.tipPercent,
           taxPercent = ctrl.bill.taxPercent;
 
-      splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent);
+      splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent, ctrl.numberPeople);
       ctrl.bill = ctrl.updateMyPage();
+      ctrl.personalTotal.tip = splitcheckService.personalTotals.tip;
 
       splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
   	}
@@ -89,11 +90,12 @@ angular.module('roomApp')
   	}
 
     this.calculateMyTotal = function() {
+      console.log('ctrl', ctrl.numberPeople)
       ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user, ctrl.numberPeople);
     }
 
 	  this.deleteItem = function(index) {
-	  	splitcheckService.deleteItem(index);
+	  	splitcheckService.deleteItem(index, ctrl.numberPeople);
       ctrl.personalTotal = updatePersonalTotal();
       ctrl.updateMyPage();
       splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
