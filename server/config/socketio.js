@@ -82,8 +82,9 @@ function onConnect(socket) {
         socket.broadcast.to(room).emit('timeUpChat', room.roomNumber);
         socket.emit('timeUpChat', room.roomNumber);
       }
-      
+      console.log(geoRoomArr);
       geoRoomArr.forEach(function(el) {
+        console.log("geoRoom to receive timeUp event", el);
         socket.broadcast.to(el).emit('refreshRoomList');
       })
 
@@ -103,11 +104,9 @@ function onConnect(socket) {
 
     for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
       var roomKey = parseInt(Object.keys(roomsObject)[i]);
-      console.log("roomKey: ", roomKey);
       var roomNumber = Object.keys(roomsObject)[i];
       if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
 
-        console.log("roomNumber: ", roomNumber);
         var roomObject = socket.nsp.adapter.rooms[roomNumber];
 
         socket.leave(roomNumber);
