@@ -11,7 +11,7 @@ angular.module('roomApp')
         socket.socket.on('countPeople', function(numberPeople, name, leaving) {
           ctrl.numberPeople = numberPeople;
           console.log(numberPeople, '#')
-          console.log('name', name)
+          console.log('name from socket', name)
           if (leaving && name) {
             namesOfPeople[name] = false;
           } else if (!leaving && name) {

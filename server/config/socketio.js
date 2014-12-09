@@ -20,7 +20,7 @@ function onDisconnect(socket) {
      var roomObject = socket.nsp.adapter.rooms[roomNumber];
      if (typeof roomObject === 'object') {
       socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-      socket.emit('countPeople', Object.keys(roomObject).length);
+      socket.emit('countPeople', Object.keys(roomObject).length, name, true);
     }
    }
  }
@@ -53,6 +53,28 @@ function onConnect(socket) {
     var roomObject = socket.nsp.adapter.rooms[room];
 
     console.log('roomObject', roomObject)
+
+
+
+     for (room in roomObject) {
+
+      console.log('room', room)
+      // console.log(socket[])
+       // var roomKey = parseInt(Object.keys(roomsObject)[i]);
+       // var roomNumber = Object.keys(roomsObject)[i];
+       // if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
+       //   var roomObject = socket.nsp.adapter.rooms[roomNumber];
+
+        }
+       }
+     }
+
+
+
+
+
+
+
 
     if (typeof roomObject === 'object') {
       socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, name);
@@ -123,7 +145,7 @@ function onConnect(socket) {
         socket.leave(roomNumber);
         if (typeof roomObject === 'object') {
           socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-          socket.emit('countPeople', Object.keys(roomObject).length);
+          socket.emit('countPeople', Object.keys(roomObject).length, name, true);
         }
       }
     }
