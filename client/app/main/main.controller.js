@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
+   //geoRoomArrVal is used to make the geoRooms array available to all controllers
    .value('geoRoomArrVal', {geoRooms:[]})
   .controller('MainCtrl', function ($scope, $http, socket,
           $window, geolocationService, roomCreationService, Auth, $state, 
