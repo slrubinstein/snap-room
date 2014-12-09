@@ -4,7 +4,7 @@ angular.module('roomApp')
    .value('geoRoomArrVal', {geoRooms:[]})
   .controller('MainCtrl', function ($scope, $http, socket,
           $window, geolocationService, roomCreationService, Auth, $state, 
-          User, geoRoomArrVal) {
+          User, geoRoomArrVal, nameGeneratorService) {
 
     var ctrl = this;
 
@@ -210,7 +210,7 @@ angular.module('roomApp')
 
     this.usernameIsSet = false;
 
-    this.username = 'random name';
+    this.username = nameGeneratorService.getName();
 
     function setUser(validUser) {
        if (validUser) {
@@ -236,7 +236,9 @@ angular.module('roomApp')
     }
 
     this.setUsername = function() {
-      this.usernameIsSet = !this.usernameIsSet;
+      if(ctrl.username.length > 0) {
+        this.usernameIsSet = !this.usernameIsSet;
+      }
     }
 
   });
