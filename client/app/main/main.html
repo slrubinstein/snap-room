@@ -24,7 +24,6 @@
 
 
     <p class="subheading" ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
-    <p class="subheading" ng-show="main.isLoggedIn">Currently logged in as {{main.username}}</p>
 
     <a ng-hide="main.isLoggedIn"
        class="btn btn-facebook" 
@@ -32,7 +31,15 @@
       <i class="fa fa-facebook"></i> Login with Facebook
     </a> <br>
     
-    <p ng-hide="main.isLoggedIn">Or choose a username: <input type="text" ng-model="main.username"><button ng-click="main.setUsername()">Set name</button></p>
+
+    <p class="subheading" ng-show="main.usernameIsSet">Hello {{main.username}}</p>
+    <p class="subheading" ng-hide="main.usernameIsSet">Or choose a username: <input type="text" ng-model="main.username">
+      <button ng-click="main.setUsername()"
+              ng-hide="main.usernameIsSet">Set name</button>
+
+    </p>
+    <button ng-click="main.setUsername()"
+            ng-show="main.usernameIsSet && !main.isLoggedIn">Change name</button>
 
     <a ng-show="main.isLoggedIn"
        class="btn btn-default" 

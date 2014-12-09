@@ -219,6 +219,7 @@ angular.module('roomApp')
         ctrl.user = User.get({}, function(user) {
           ctrl.username = ctrl.user.facebook.first_name + ' ' + 
                           ctrl.user.facebook.last_name[0] + '.';
+          ctrl.setUsername();
         })
       }
     }
