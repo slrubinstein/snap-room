@@ -57,40 +57,44 @@ function onConnect(socket) {
 
   socket.on('timeUp', function(room, geoRoomArr) {
     Room.findOne({roomNumber:room}, function(err, room) {
+      //console.log("room: " ,room);
+      if (!room.expired) {
+        room.expired = true;
+        room.save(function(err, updatedRoom) {
+          if (updatedRoom.type === 'lunch') {
+            var winner;
+            var maxVotes;
+            if (updatedRoom.choices.length > 0) {
+              winner = [updatedRoom.choices[0].choice];
+              maxVotes = updatedRoom.choices[0].votes;
+              for (var i = 0; i < updatedRoom.choices.length; i++) {
+                if (updatedRoom.choices[i].votes > maxVotes) {
+                  winner[0] = updatedRoom.choices[i].choice;
+                  maxVotes = updatedRoom.choices[i].votes;
+                }
+                else if (updatedRoom.choices[i].votes === maxVotes
+                        && updatedRoom.choices[i].choice !== winner[0]) {
+                  winner.push(updatedRoom.choices[i].choice);
+                }
+              }    
+            }  
+            socket.broadcast.to(room).emit('timeUp', winner, maxVotes, updatedRoom.roomNumber);
+            socket.emit('timeUp', winner, maxVotes, updatedRoom.roomNumber);
+          }
+          else if (updatedRoom.type === 'chat' || updatedRoom.type === 'backgammon') {
+            socket.broadcast.to(room).emit('timeUpChat', updatedRoom.roomNumber);
+            socket.emit('timeUpChat', updatedRoom.roomNumber);
+          }
+          console.log(geoRoomArr);
+          geoRoomArr.forEach(function(el) {
+            console.log("geoRoom to receive timeUp event", el);
+            socket.broadcast.to(el).emit('refreshRoomList');
+          })
 
-      if (room.type === 'lunch') {
-        var winner;
-        var maxVotes;
-        if (room.choices.length > 0) {
-          winner = [room.choices[0].choice];
-          maxVotes = room.choices[0].votes;
-          for (var i = 0; i < room.choices.length; i++) {
-            if (room.choices[i].votes > maxVotes) {
-              winner[0] = room.choices[i].choice;
-              maxVotes = room.choices[i].votes;
-            }
-            else if (room.choices[i].votes === maxVotes
-                    && room.choices[i].choice !== winner[0]) {
-              winner.push(room.choices[i].choice);
-            }
-          }    
-        }  
-        socket.broadcast.to(room).emit('timeUp', winner, maxVotes, room.roomNumber);
-        socket.emit('timeUp', winner, maxVotes, room.roomNumber);
-      }
-      else if (room.type === 'chat' || room.type === 'backgammon') {
-        socket.broadcast.to(room).emit('timeUpChat', room.roomNumber);
-        socket.emit('timeUpChat', room.roomNumber);
-      }
-      console.log(geoRoomArr);
-      geoRoomArr.forEach(function(el) {
-        console.log("geoRoom to receive timeUp event", el);
-        socket.broadcast.to(el).emit('refreshRoomList');
-      })
-
-      socket.emit('refreshRoomList'); 
+          socket.emit('refreshRoomList'); 
+         }) 
+        }
     })
-
   })
 
 

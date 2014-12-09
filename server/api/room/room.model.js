@@ -15,6 +15,7 @@ var RoomSchema = new Schema({
   color: String,
   createdAt: {type: Date},
   ourExpTime: {type: Date},
+  expired: {type: Boolean, default: false},
   lock: String,
   type: String,
   roomName: String,
