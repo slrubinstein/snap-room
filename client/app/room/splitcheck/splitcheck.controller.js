@@ -13,7 +13,7 @@ angular.module('roomApp')
     personCounterService.listen(this, $scope);
 
     // updates bill for late joiners
-  	socket.socket.emit('joinBillRoom', roomNumber)
+  	socket.socket.emit('updateRoom', roomNumber, {event: 'updateMyBill'})
 
     // variables shared with everyone on bill
     // when any of these change, it should change for everyone via socket
@@ -98,14 +98,6 @@ angular.module('roomApp')
       ctrl.personalTotal = updatePersonalTotal();
       ctrl.updateMyPage();
       splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
-	  }
-
-	  this.updateTax = function() {
-	  	ctrl.billSoFar.forEach(function(item) {
-	  		item.itemTax = item.price * ctrl.taxPercent/100;
-	  	});
-	  	ctrl.updateTotals();
-	  	ctrl.updateBillThroughSocket();
 	  }
 
   });

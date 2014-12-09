@@ -41,7 +41,7 @@ angular.module('roomApp')
         bill.billSoFar.push(singleItem)
         updateBillTotals(numberPeople);
 
-        addToMyTotals(singleItem);
+        personalTotals = addToMyTotals(singleItem, personalTotals);
 
       }
 
@@ -82,7 +82,7 @@ angular.module('roomApp')
 
       function deleteItem(index, numberPeople) {
         var item = bill.billSoFar.splice(index, 1)[0]
-        subtractFromMyTotals(item)
+        personalTotals = subtractFromMyTotals(item, personalTotals)
         updateBillTotals(numberPeople);
       }
 
@@ -93,21 +93,22 @@ angular.module('roomApp')
         });
       }
 
-      function addToMyTotals(item) {
-        personalTotals.food += item.price;
-        personalTotals.tax += item.tax;
-        personalTotals.tip = bill.tipPerPerson;
-        personalTotals.total += item.price + item.tax + personalTotals.tip;
+      function addToMyTotals(item, current) {
+        current.food += item.price;
+        current.tax += item.tax;
+        current.tip = bill.tipPerPerson;
+        current.total += item.price + item.tax + personalTotals.tip;
+        return current;
       }
 
-      function subtractFromMyTotals(item) {
-        personalTotals.food -= item.price;
-        personalTotals.tax -= item.tax;
-        personalTotals.total -= (item.price + item.tax);
+      function subtractFromMyTotals(item, current) {
+        current.food -= item.price;
+        current.tax -= item.tax;
+        current.total -= (item.price + item.tax);
+        return current;
       }
 
       function calculateMyTotal(name, numberPeople) {
-        var srvc = this;
         personalTotals = {
           food: 0,
           tax: 0,
@@ -117,7 +118,7 @@ angular.module('roomApp')
         personalTotals.tip = bill.tipPerPerson;
         bill.billSoFar.forEach(function(item) {
           if (item.user===name) {
-            srvc.addToMyTotals(item);
+            personalTotals = addToMyTotals(item, personalTotals);
           }
         });
         return personalTotals;
@@ -174,18 +175,23 @@ angular.module('roomApp')
   .factory('splitcheckSockets', function(socket, splitcheckService) {
     
       function sendBillUpdate(roomNumber, newBill) {
-        socket.socket.emit('updateBill', roomNumber, newBill)
+        console.log(newBill)
+        socket.socket.emit('updateRoom', roomNumber, {event: 'updateBill', newBill: newBill})
       }
     
       function listen(ctrl) {
-        socket.socket.on('updateBill', function(newBill) {
-          splitcheckService.updateFromSocket(newBill);
-          ctrl.bill = ctrl.updateMyPage();
-        })
 
-        socket.socket.on('updateMyBill', function(roomNumber) {
-          var bill = splitcheckService.bill;
-          sendBillUpdate(roomNumber, bill)
+        socket.socket.on('updateRoom', function(roomNumber, data) {
+          console.log('update room', data.event)
+          if (data.event === 'updateMyBill') {
+            var bill = splitcheckService.bill;
+            sendBillUpdate(roomNumber, bill)
+          }
+          if (data.event === 'updateBill') {
+            console.log(data)
+            splitcheckService.updateFromSocket(data.newBill);
+            ctrl.bill = ctrl.updateMyPage();
+          }
         })
 
         socket.socket.on('countPeople', function(numberPeople) {

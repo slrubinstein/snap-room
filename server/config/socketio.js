@@ -118,14 +118,13 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
 
   // Split Check Sockets
 
-  //UPDATE THIS
-  socket.on('joinBillRoom', function(roomNumber) {
-    socket.broadcast.to(roomNumber).emit('updateMyBill', roomNumber)
+
+  socket.on('updateRoom', function(roomNumber, data) {
+    console.log('emitting a', data.event)
+    socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
   })
 
-  socket.on('updateBill', function(roomNumber, newBill) {
-    socket.broadcast.to(roomNumber).emit('updateBill', newBill);
-  })
+  //UPDATE THIS
 
   socket.on('deleteItem', function(roomNumber, index) {
     socket.broadcast.to(roomNumber).emit('deleteItem', index);
