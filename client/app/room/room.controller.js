@@ -83,7 +83,8 @@ angular.module('roomApp')
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
       var type = ctrl.roomType;
-      var name, picture; 
+      var name = 'anonymous';
+      var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
       if (ctrl.user) {
         if (ctrl.user.facebook) {
           name = ctrl.user.facebook.first_name;

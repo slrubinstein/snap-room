@@ -2,7 +2,7 @@
 	<li ng-repeat="message in room.roomData.messages"
 			class="list-group-item">
 		<img ng-src={{message.picture}}/>
-		<span ng-show="message.name">{{message.name}}:</span> 
+		<span ng-show="message.name"><strong>{{message.name}}:</strong></span> 
 		<span>{{message.message}}</span> 
 	</li>
 </ul>

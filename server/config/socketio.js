@@ -93,6 +93,28 @@ function onConnect(socket) {
   })
 
 
+  // Hitting main page or leaving a room
+  socket.on('onMainPage', function() {
+    // console.log('SOCKET', socket)
+    var name = socket.nickname;
+    var roomsObject = socket.nsp.adapter.rooms;
+
+
+    for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
+      var roomKey = parseInt(Object.keys(roomsObject)[i]);
+      if (!isNaN(roomKey)) {
+        var roomNumber = Object.keys(roomsObject)[i];
+        var roomObject = socket.nsp.adapter.rooms[roomNumber];
+
+        socket.leave(roomNumber);
+        socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
+        socket.emit('countPeople', Object.keys(roomObject).length);
+      }
+    }
+
+
+  })
+
 
 
   // Split Check Sockets

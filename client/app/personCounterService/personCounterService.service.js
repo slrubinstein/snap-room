@@ -10,10 +10,11 @@ angular.module('roomApp')
     var listen = function(ctrl, $scope) {
         socket.socket.on('countPeople', function(numberPeople, name, leaving) {
           ctrl.numberPeople = numberPeople;
-          
-          if (leaving) {
+          console.log(numberPeople, '#')
+          console.log('name', name)
+          if (leaving && name) {
             namesOfPeople[name] = false;
-          } else {
+          } else if (!leaving && name) {
             namesOfPeople[name] = true;
           }
 

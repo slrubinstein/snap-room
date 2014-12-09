@@ -44,9 +44,15 @@ angular.module('roomApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $location, Auth, socket) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
+
+      // tapping into state change to alert rooms that someone has left
+      if(next.url === '/') {
+        socket.socket.emit('onMainPage');
+      }
+
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           $location.path('/main');
