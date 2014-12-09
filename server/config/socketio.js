@@ -9,124 +9,115 @@ var Room = require('../api/room/room.model');
 var config = require('./environment');
 
 // When the user disconnects.. perform this
-function onDisconnect(socket) {
+function onDisconnect(socket, findUsernamesInRoom) {
+
+ var roomNumber = socket.roomNumber;
+
  var roomsObject = socket.nsp.adapter.rooms;
  var name = socket.nickname;
- //if user was only in one room when they disconnected:
- for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
-   var roomKey = parseInt(Object.keys(roomsObject)[i]);
-   var roomNumber = Object.keys(roomsObject)[i];
-   if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
-     var roomObject = socket.nsp.adapter.rooms[roomNumber];
-     if (typeof roomObject === 'object') {
-      socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-      socket.emit('countPeople', Object.keys(roomObject).length, name, true);
-    }
-   }
- }
+
+ var nameArray = findUsernamesInRoom(socket, roomNumber)
+ socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
 }
 
 // When the user connects.. perform this
-function onConnect(socket, socketio) {
+function onConnect(socket, socketio, findUsernamesInRoom) {
   // When the client emits 'info', this listens and executes
+  // socket.on('info', function (data) {
+  //   console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
+  // });
 
-  socket.on('info', function (data) {
-    console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
-  });
 
-  socket.on('joinAnteroom', function(geoRoom) {
+  //emitted when user goes to main page
+  socket.on('joinGeoRoom', function(geoRoom) {
     socket.join(geoRoom);
   })
 
-  socket.on('createRoom', function(room, color, geoRoomArr) {
-      socket.join(room);
-      geoRoomArr.forEach(function(el) {
-        socket.broadcast.to(el).emit('refreshRoomList');
-      })
+  //emitted when user goes to main page. If they've navigated
+  //out of a room, remaining users in room will be given an updated
+  //list of users in that room
+  socket.on('onMainPage', function() {
+    //roomObject has all socket rooms that this user is in
+    var roomsObject = socket.nsp.adapter.rooms;
+    //roomNumber will be undefined if user hasn't navigated from a room
+    var roomNumber = socket.roomNumber;
+    socket.leave(roomNumber);
+    var nameArray = findUsernamesInRoom(socket, roomNumber);
+    socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
+  })
+ 
+  //emitted when user creates a new room, after call to database in which
+  //roomNumber is assigned and room document is created
+  socket.on('createRoom', function(roomNumber, geoRoomArr) {
+      socket.join(roomNumber);
+      //to notify all users in geographic area to check database
+      notifyToCheckDatabase(geoRoomArr);
   });
 
-  socket.on('join', function(room, name) {
-    socket.join(room);
+  function notifyToCheckDatabase(geoRoomArr) {
+    geoRoomArr.forEach(function(el) {
+      socket.broadcast.to(el).emit('refreshRoomList');
+    })
+  }
 
+  //emitted when user enters a room
+  socket.on('join', function(roomNumber, name) {
+    socket.join(roomNumber);
     socket.nickname = name;
-    socket.roomNumber = room;
+    socket.roomNumber = roomNumber;
 
-    var roomObject = socket.nsp.adapter.rooms[room];
-
-     
-    if (typeof roomObject === 'object') {
-     var nameArray = []
-     for (var socketID in roomObject) {
-      nameArray.push(socketio.sockets.connected[socketID].nickname);
-      socket.broadcast.to(room).emit('countPeople', nameArray.length, nameArray);
-      socket.emit('countPeople', nameArray.length, nameArray);
-     }
-    }
+    var nameArray = findUsernamesInRoom(socket, roomNumber);
+    socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
+    socket.emit('countPeople', nameArray.length, nameArray);
   })
 
-
   socket.on('timeUp', function(roomNumber, geoRoomArr) {
+    var data;
     Room.findOne({"roomNumber":roomNumber}, function(err, room) {
-      //console.log("room: " ,room);
       if (!room.expired) {
         room.expired = true;
         room.save(function(err, room) {
           if (room.type === 'lunch') {
-            var winner;
-            var maxVotes;
-            if (room.choices.length > 0) {
-              winner = [room.choices[0].choice];
-              maxVotes = room.choices[0].votes;
-              for (var i = 0; i < room.choices.length; i++) {
-                if (room.choices[i].votes > maxVotes) {
-                  winner[0] = room.choices[i].choice;
-                  maxVotes = room.choices[i].votes;
-                }
-                else if (room.choices[i].votes === maxVotes
-                        && room.choices[i].choice !== winner[0]) {
-                  winner.push(room.choices[i].choice);
-                }
-              }    
-            }
+            data = calcWinner(room);
+          }
+          
+          socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
+          socket.emit('timeUp', roomNumber, data);
 
-            socket.broadcast.to(roomNumber).emit('timeUp', winner, maxVotes, roomNumber);
-            socket.emit('timeUp', winner, maxVotes, roomNumber);
-          }
-          else if (room.type === 'chat' || room.type === 'backgammon') {
-            socket.broadcast.to(roomNumber).emit('timeUpChat', room.roomNumber);
-            socket.emit('timeUpChat', roomNumber);
-          }
-          console.log(geoRoomArr);
           geoRoomArr.forEach(function(el) {
-            console.log("geoRoom to receive timeUp event", el);
             socket.broadcast.to(el).emit('refreshRoomList');
-          })
+          });
 
           socket.emit('refreshRoomList'); 
-         }) 
-        }
+        }) 
+      }
     })
   })
 
 
-  // Hitting main page or leaving a room
-  socket.on('onMainPage', function() {
-    //roomObject has all socket rooms that this user is in
-    var roomsObject = socket.nsp.adapter.rooms;
-    var roomNumber = socket.roomNumber;
-    if (typeof roomsObject === 'object' && roomNumber) {
-       socket.leave(roomNumber);
-       var socketIdsInRoom = socket.nsp.adapter.rooms[roomNumber];
-       var nameArray = []
-       for (var socketID in socketIdsInRoom) {
-         //find the name associated with each socketID, and push to nameArray
-         nameArray.push(socketio.sockets.connected[socketID].nickname);
-         socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
-       }
+            //   socket.broadcast.to(roomNumber).emit('timeUp', winner, maxVotes, roomNumber);
+            // socket.emit('timeUp', winner, maxVotes, roomNumber);
+
+  //for any type of room in which there is voting
+  function calcWinner(room) {
+    var winner;
+    var maxVotes;
+    if (room.choices.length > 0) {
+      winner = [room.choices[0].choice];
+      maxVotes = room.choices[0].votes;
+      for (var i = 0; i < room.choices.length; i++) {
+        if (room.choices[i].votes > maxVotes) {
+          winner[0] = room.choices[i].choice;
+          maxVotes = room.choices[i].votes;
+        }
+        else if (room.choices[i].votes === maxVotes
+                && room.choices[i].choice !== winner[0]) {
+          winner.push(room.choices[i].choice);
+        }
+      }
+    return {"winner" : winner, "maxVotes" : maxVotes};      
     }
-  })
-
-
+  }
 
   // Split Check Sockets
 
@@ -173,15 +164,26 @@ module.exports = function (socketio) {
 
     socket.connectedAt = new Date();
 
+    function findUsernamesInRoom(socket, roomNumber) {
+      var socketIdsInRoom = socket.nsp.adapter.rooms[roomNumber];
+      var nameArray = []
+      for (var socketID in socketIdsInRoom) {
+        //find the name associated with each socketID, and push to nameArray
+        nameArray.push(socketio.sockets.connected[socketID].nickname);
+      }
+      return nameArray;
+    } 
+
+
     // Call onDisconnect.
     socket.on('disconnect', function () {
-      onDisconnect(socket);
+      onDisconnect(socket, findUsernamesInRoom);
       console.info('[%s] DISCONNECTED', socket.address);
     });
 
 
     // Call onConnect.
-    onConnect(socket, socketio);
+    onConnect(socket, socketio, findUsernamesInRoom);
     console.info('[%s] CONNECTED', socket.address);
   });
   require('../api/chat/chat.socket').register(socketio);

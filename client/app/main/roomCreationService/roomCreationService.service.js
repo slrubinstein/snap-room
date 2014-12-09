@@ -57,7 +57,7 @@ angular.module('roomApp')
                                 color: color,
                                 geoRoom: geoRoom
                               });
-          socket.socket.emit('createRoom', data.roomNumber, color, geoRoomArr)
+          socket.socket.emit('createRoom', data.roomNumber, geoRoomArr)
           //timerFactory.timerListener();
         })
         .error(function(data){

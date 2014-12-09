@@ -89,7 +89,7 @@ angular.module('roomApp')
       geoRoomArrVal.geoRooms = ctrl.geoRoomArr;
 
       //this statement causes the user to join a geoRoom 
-      socket.socket.emit("joinAnteroom", ctrl.geoRoomArr[0]);
+      socket.socket.emit("joinGeoRoom", ctrl.geoRoomArr[0]);
 
       //getRooms is a promise
       var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])

@@ -6,18 +6,18 @@ angular.module('roomApp')
     return {
 
       listen: function(roomNumber, $scope, ctrl, user) {
-        
-        socket.socket.on('timeUp', function(winner, maxVotes, expiredRoomNumber) {
+        socket.socket.on('timeUp', function(expiredRoomNumber, data) {
+          console.log(expiredRoomNumber)
+          console.log(data);
+          //in case the user is in multiple rooms (which is not supposed to happen)
           if (Number(expiredRoomNumber) === Number(roomNumber)) {
-            ctrl.timeUp = true;
-            ctrl.winner = winner;
-            ctrl.maxVotes = maxVotes;
-          }
-        });
-
-        socket.socket.on('timeUpChat', function(expiredRoomNumber) {
-          if (Number(expiredRoomNumber) === Number(roomNumber)) {
-            ctrl.timeUp = true;
+            ctrl.timeUp = true
+            ////////////////////////////////////
+            if (ctrl.roomType === 'lunch') {
+              ctrl.winner = data.winner;
+              ctrl.maxVotes = data.maxVotes;
+            }
+            ////////////////////////////////////
           }
         });
 
