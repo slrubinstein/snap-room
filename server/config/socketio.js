@@ -49,6 +49,7 @@ function onConnect(socket, socketio) {
     socket.join(room);
 
     socket.nickname = name;
+    socket.roomNumber = room;
 
     var roomObject = socket.nsp.adapter.rooms[room];
 
@@ -57,8 +58,8 @@ function onConnect(socket, socketio) {
      var nameArray = []
      for (var socketID in roomObject) {
       nameArray.push(socketio.sockets.connected[socketID].nickname);
-      socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, nameArray);
-      socket.emit('countPeople', Object.keys(roomObject).length, nameArray);
+      socket.broadcast.to(room).emit('countPeople', nameArray.length, nameArray);
+      socket.emit('countPeople', nameArray.length, nameArray);
      }
     }
   })
@@ -110,28 +111,19 @@ function onConnect(socket, socketio) {
 
   // Hitting main page or leaving a room
   socket.on('onMainPage', function() {
-    // console.log('SOCKET', socket)
-    var name = socket.nickname;
+    //roomObject has all socket rooms that this user is in
     var roomsObject = socket.nsp.adapter.rooms;
-
-   //if roomsObject is an object
-
-    for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
-      var roomKey = parseInt(Object.keys(roomsObject)[i]);
-      var roomNumber = Object.keys(roomsObject)[i];
-      if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
-
-        var roomObject = socket.nsp.adapter.rooms[roomNumber];
-
-        socket.leave(roomNumber);
-        if (typeof roomObject === 'object') {
-          socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-          socket.emit('countPeople', Object.keys(roomObject).length, name, true);
-        }
-      }
+    var roomNumber = socket.roomNumber;
+    if (typeof roomsObject === 'object' && roomNumber) {
+       socket.leave(roomNumber);
+       var socketIdsInRoom = socket.nsp.adapter.rooms[roomNumber];
+       var nameArray = []
+       for (var socketID in socketIdsInRoom) {
+         //find the name associated with each socketID, and push to nameArray
+         nameArray.push(socketio.sockets.connected[socketID].nickname);
+         socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
+       }
     }
-
-
   })
 
 
