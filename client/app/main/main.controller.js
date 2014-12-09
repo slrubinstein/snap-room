@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('roomApp')
-   .value('geoRoomArrVal', {geoRooms:[]})
+  // geoRoomArrVal is used to make the geoRooms arary available to all controllers
+  .value('geoRoomArrVal', {geoRooms:[]})
+  // usernameVal makes username accessible to all controllers
+  .value('usernameVal', {name: ''})
   .controller('MainCtrl', function ($scope, $http, socket,
           $window, geolocationService, roomCreationService, Auth, $state, 
-          User, geoRoomArrVal, nameGeneratorService) {
+          User, geoRoomArrVal, nameGeneratorService, usernameVal) {
 
     var ctrl = this;
 
@@ -209,8 +212,15 @@ angular.module('roomApp')
     //in order to get information about the user from the database
 
     this.usernameIsSet = false;
+console.log('name', this.username)
+console.log('val', usernameVal.name)
+    if (!usernameVal.name) {
+      this.username = nameGeneratorService.getName();
+      usernameVal.name = this.username;
+    } else {
+      this.username = usernameVal.name;
+    }
 
-    this.username = nameGeneratorService.getName();
 
     function setUser(validUser) {
        if (validUser) {
@@ -220,6 +230,7 @@ angular.module('roomApp')
           ctrl.username = ctrl.user.facebook.first_name + ' ' + 
                           ctrl.user.facebook.last_name[0] + '.';
           ctrl.setUsername();
+          usernameVal.name = ctrl.username;
         })
       }
     }
@@ -238,6 +249,7 @@ angular.module('roomApp')
     this.setUsername = function() {
       if(ctrl.username.length > 0) {
         this.usernameIsSet = !this.usernameIsSet;
+        usernameVal.name = this.username;
       }
     }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('roomSocketsService', function (socket, Auth) {
+  .factory('roomSocketsService', function (socket, Auth, usernameVal) {
 
     return {
 
@@ -21,12 +21,13 @@ angular.module('roomApp')
           }
         });
 
-        if (user.hasOwnProperty('facebook')) {
-          var name = user.facebook.first_name + ' ' + user.facebook.last_name[0] + '.';
-        } else {
-          var name = 'anonymous';
-        }
-
+        var name = usernameVal.name;
+        // if (user.hasOwnProperty('facebook')) {
+        //   var name = user.facebook.first_name + ' ' + user.facebook.last_name[0] + '.';
+        // } else {
+        //   var name = 'anonymous';
+        // }
+        console.log('socket service name', name)
         socket.socket.emit('join', roomNumber, name);
         
         socket.socket.on('updateVotes', function(roomData) {

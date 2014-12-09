@@ -18,8 +18,10 @@ function onDisconnect(socket) {
    var roomNumber = Object.keys(roomsObject)[i];
    if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
      var roomObject = socket.nsp.adapter.rooms[roomNumber];
-     socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-     socket.emit('countPeople', Object.keys(roomObject).length);
+     if (typeof roomObject === 'object') {
+      socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
+      socket.emit('countPeople', Object.keys(roomObject).length);
+    }
    }
  }
 }
@@ -50,8 +52,12 @@ function onConnect(socket) {
 
     var roomObject = socket.nsp.adapter.rooms[room];
 
-    socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, name);
-    socket.emit('countPeople', Object.keys(roomObject).length, name);
+    console.log('roomObject', roomObject)
+
+    if (typeof roomObject === 'object') {
+      socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, name);
+      socket.emit('countPeople', Object.keys(roomObject).length, name);
+    }
   })
 
 
@@ -115,8 +121,10 @@ function onConnect(socket) {
         var roomObject = socket.nsp.adapter.rooms[roomNumber];
 
         socket.leave(roomNumber);
-        socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-        socket.emit('countPeople', Object.keys(roomObject).length);
+        if (typeof roomObject === 'object') {
+          socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
+          socket.emit('countPeople', Object.keys(roomObject).length);
+        }
       }
     }
 

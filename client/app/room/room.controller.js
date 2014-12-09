@@ -4,7 +4,7 @@ angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
                                     chatroomService, roomService, Auth, $state,
                                     fourSquareService, roomSocketsService, $window,
-                                    personCounterService, geoRoomArrVal) {
+                                    personCounterService, geoRoomArrVal, usernameVal) {
 
 
     var ctrl = this;
@@ -83,14 +83,14 @@ angular.module('roomApp')
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
       var type = ctrl.roomType;
-      var name = 'anonymous';
+      var name = usernameVal.name;
       var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
-      if (ctrl.user) {
-        if (ctrl.user.facebook) {
-          name = ctrl.user.facebook.first_name;
-          picture = ctrl.user.facebook.picture;
-        }
-      }
+      // if (ctrl.user) {
+      //   if (ctrl.user.facebook) {
+      //     name = ctrl.user.facebook.first_name;
+      //     picture = ctrl.user.facebook.picture;
+      //   }
+      // }
   
       if (ctrl.inputField.length < 100) {
         chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
@@ -112,13 +112,13 @@ angular.module('roomApp')
         ctrl.restaurants.splice(index,1);
       } 
 
-      var name;
+      var name = usernameVal.name;
       //if the user is logged in 
-      if (ctrl.user) {
-        if (ctrl.user.facebook) {
-          name = ctrl.user.facebook.first_name;
-        }
-      }
+      // if (ctrl.user) {
+      //   if (ctrl.user.facebook) {
+      //     name = ctrl.user.facebook.first_name;
+      //   }
+      // }
       chatroomService.submitVote(roomNumber, choice, upOrDown, name);
 
     };
