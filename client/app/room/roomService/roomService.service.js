@@ -9,15 +9,7 @@ angular.module('roomApp')
         var room = {};
         $http.get("/api/room/" + roomNumber)
          .success(function(data){
-
-          // console.log(data)
-
           room = data;
-          // roomData.roomColor = data.color;
-          // roomData.expiresAt = new Date(Date.parse(data.ourExpTime));
-          // roomData.lockedRoom = data.lock;
-          // roomData.type = data.type;
-          // roomData.roomName = data.roomName;
           deferred.resolve(room); 
         }).error(function(data){
            $location.path("/");
@@ -44,7 +36,6 @@ angular.module('roomApp')
               name: name,
               picture: picture})
           .success(function(data) {
-            // console.log(data)
           })
           .error(function(data) {
             console.log('error');

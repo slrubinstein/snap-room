@@ -6,12 +6,6 @@ angular.module('roomApp')
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-      	// console.log('scope', scope)
-      	// var windowHeight = $(window).innerHeight();
-
-      	// console.log('window height', windowHeight)
-
-      	// element.css('min-height', windowHeight)
       	if (scope.room) {
 	      	var roomColor = scope.room.params.color;
 	      	switch(roomColor) {

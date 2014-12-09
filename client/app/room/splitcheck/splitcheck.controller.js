@@ -90,7 +90,6 @@ angular.module('roomApp')
   	}
 
     this.calculateMyTotal = function() {
-      console.log('ctrl', ctrl.numberPeople)
       ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user, ctrl.numberPeople);
     }
 

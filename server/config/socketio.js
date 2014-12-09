@@ -75,12 +75,13 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     var data;
     Room.findOne({"roomNumber":roomNumber}, function(err, room) {
       if (!room.expired) {
+        console.log(room)
+        console.log(room.type)
         room.expired = true;
         room.save(function(err, room) {
           if (room.type === 'lunch') {
             data = calcWinner(room);
           }
-          
           socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
           socket.emit('timeUp', roomNumber, data);
 
@@ -93,10 +94,6 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
       }
     })
   })
-
-
-            //   socket.broadcast.to(roomNumber).emit('timeUp', winner, maxVotes, roomNumber);
-            // socket.emit('timeUp', winner, maxVotes, roomNumber);
 
   //for any type of room in which there is voting
   function calcWinner(room) {
@@ -115,8 +112,8 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
           winner.push(room.choices[i].choice);
         }
       }
-    return {"winner" : winner, "maxVotes" : maxVotes};      
     }
+    return {"winner" : winner, "maxVotes" : maxVotes};
   }
 
   // Split Check Sockets

@@ -125,7 +125,6 @@ angular.module('roomApp')
     //a room is created or expires. It is sent to the members of
     //the relevant geoRoom
     socket.socket.on('refreshRoomList', function() {
-      console.log("refreshRoomList event");
       var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
         .then(function(rooms) {
           ctrl.availableRooms = rooms;
@@ -212,8 +211,7 @@ angular.module('roomApp')
     //in order to get information about the user from the database
 
     this.usernameIsSet = false;
-console.log('name', this.username)
-console.log('val', usernameVal.name)
+
     if (!usernameVal.name) {
       this.username = nameGeneratorService.getName();
       usernameVal.name = this.username;
