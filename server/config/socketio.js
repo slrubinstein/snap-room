@@ -15,8 +15,8 @@ function onDisconnect(socket) {
  //if user was only in one room when they disconnected:
  for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
    var roomKey = parseInt(Object.keys(roomsObject)[i]);
-   if (!isNaN(roomKey)) {
-     var roomNumber = Object.keys(roomsObject)[i];
+   var roomNumber = Object.keys(roomsObject)[i];
+   if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
      var roomObject = socket.nsp.adapter.rooms[roomNumber];
      socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
      socket.emit('countPeople', Object.keys(roomObject).length);
@@ -99,11 +99,15 @@ function onConnect(socket) {
     var name = socket.nickname;
     var roomsObject = socket.nsp.adapter.rooms;
 
+   //if roomsObject is an object
 
     for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
       var roomKey = parseInt(Object.keys(roomsObject)[i]);
-      if (!isNaN(roomKey)) {
-        var roomNumber = Object.keys(roomsObject)[i];
+      console.log("roomKey: ", roomKey);
+      var roomNumber = Object.keys(roomsObject)[i];
+      if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
+
+        console.log("roomNumber: ", roomNumber);
         var roomObject = socket.nsp.adapter.rooms[roomNumber];
 
         socket.leave(roomNumber);
