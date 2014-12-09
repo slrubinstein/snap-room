@@ -18,14 +18,16 @@ function onDisconnect(socket) {
    var roomNumber = Object.keys(roomsObject)[i];
    if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
      var roomObject = socket.nsp.adapter.rooms[roomNumber];
-     socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-     socket.emit('countPeople', Object.keys(roomObject).length);
+     if (typeof roomObject === 'object') {
+      socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
+      socket.emit('countPeople', Object.keys(roomObject).length, name, true);
+    }
    }
  }
 }
 
 // When the user connects.. perform this
-function onConnect(socket) {
+function onConnect(socket, socketio) {
   // When the client emits 'info', this listens and executes
 
   socket.on('info', function (data) {
@@ -47,11 +49,19 @@ function onConnect(socket) {
     socket.join(room);
 
     socket.nickname = name;
+    socket.roomNumber = room;
 
     var roomObject = socket.nsp.adapter.rooms[room];
 
-    socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, name);
-    socket.emit('countPeople', Object.keys(roomObject).length, name);
+     
+    if (typeof roomObject === 'object') {
+     var nameArray = []
+     for (var socketID in roomObject) {
+      nameArray.push(socketio.sockets.connected[socketID].nickname);
+      socket.broadcast.to(room).emit('countPeople', nameArray.length, nameArray);
+      socket.emit('countPeople', nameArray.length, nameArray);
+     }
+    }
   })
 
 
@@ -101,26 +111,19 @@ function onConnect(socket) {
 
   // Hitting main page or leaving a room
   socket.on('onMainPage', function() {
-    // console.log('SOCKET', socket)
-    var name = socket.nickname;
+    //roomObject has all socket rooms that this user is in
     var roomsObject = socket.nsp.adapter.rooms;
-
-   //if roomsObject is an object
-
-    for (var  i = 0; i < Object.keys(roomsObject).length; i++) {
-      var roomKey = parseInt(Object.keys(roomsObject)[i]);
-      var roomNumber = Object.keys(roomsObject)[i];
-      if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
-
-        var roomObject = socket.nsp.adapter.rooms[roomNumber];
-
-        socket.leave(roomNumber);
-        socket.broadcast.to(roomNumber).emit('countPeople', Object.keys(roomObject).length, name, true);
-        socket.emit('countPeople', Object.keys(roomObject).length);
-      }
+    var roomNumber = socket.roomNumber;
+    if (typeof roomsObject === 'object' && roomNumber) {
+       socket.leave(roomNumber);
+       var socketIdsInRoom = socket.nsp.adapter.rooms[roomNumber];
+       var nameArray = []
+       for (var socketID in socketIdsInRoom) {
+         //find the name associated with each socketID, and push to nameArray
+         nameArray.push(socketio.sockets.connected[socketID].nickname);
+         socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
+       }
     }
-
-
   })
 
 
@@ -178,7 +181,7 @@ module.exports = function (socketio) {
 
 
     // Call onConnect.
-    onConnect(socket);
+    onConnect(socket, socketio);
     console.info('[%s] CONNECTED', socket.address);
   });
   require('../api/chat/chat.socket').register(socketio);
