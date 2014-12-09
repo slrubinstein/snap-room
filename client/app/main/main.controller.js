@@ -207,11 +207,20 @@ angular.module('roomApp')
     //a boolean argument indicating whether a user is logged in
     //or not. If a user is logged in, User.get() will be called,
     //in order to get information about the user from the database
+
+    this.usernameIsSet = false;
+
+    this.username = 'random name';
+
     function setUser(validUser) {
        if (validUser) {
         ctrl.isLoggedIn = true;
-        ctrl.user = User.get();
-       }
+        // User.get returns a $resource that takes accepts a callback
+        ctrl.user = User.get({}, function(user) {
+          ctrl.username = ctrl.user.facebook.first_name + ' ' + 
+                          ctrl.user.facebook.last_name[0] + '.';
+        })
+      }
     }
 
     Auth.isLoggedInAsync(setUser);
@@ -223,6 +232,10 @@ angular.module('roomApp')
     this.logout = function() {
       Auth.logout();
       $state.reload();
+    }
+
+    this.setUsername = function() {
+      this.usernameIsSet = !this.usernameIsSet;
     }
 
   });
