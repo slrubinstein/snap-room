@@ -27,7 +27,7 @@ function onDisconnect(socket) {
 }
 
 // When the user connects.. perform this
-function onConnect(socket) {
+function onConnect(socket, socketio) {
   // When the client emits 'info', this listens and executes
 
   socket.on('info', function (data) {
@@ -52,33 +52,14 @@ function onConnect(socket) {
 
     var roomObject = socket.nsp.adapter.rooms[room];
 
-    console.log('roomObject', roomObject)
-
-
-
-     for (room in roomObject) {
-
-      console.log('room', room)
-      // console.log(socket[])
-       // var roomKey = parseInt(Object.keys(roomsObject)[i]);
-       // var roomNumber = Object.keys(roomsObject)[i];
-       // if (!isNaN(roomKey) && roomNumber.indexOf(".") === -1) {
-       //   var roomObject = socket.nsp.adapter.rooms[roomNumber];
-
-        }
-       }
-     }
-
-
-
-
-
-
-
-
+     
     if (typeof roomObject === 'object') {
-      socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, name);
-      socket.emit('countPeople', Object.keys(roomObject).length, name);
+     var nameArray = []
+     for (var socketID in roomObject) {
+      nameArray.push(socketio.sockets.connected[socketID].nickname);
+      socket.broadcast.to(room).emit('countPeople', Object.keys(roomObject).length, nameArray);
+      socket.emit('countPeople', Object.keys(roomObject).length, nameArray);
+     }
     }
   })
 
@@ -208,7 +189,7 @@ module.exports = function (socketio) {
 
 
     // Call onConnect.
-    onConnect(socket);
+    onConnect(socket, socketio);
     console.info('[%s] CONNECTED', socket.address);
   });
   require('../api/chat/chat.socket').register(socketio);

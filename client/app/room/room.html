@@ -6,8 +6,8 @@
 	<div id="overlay" ng-show="room.showUsers">
 
 		<ul>
-			<li ng-repeat="(name, value) in room.namesOfPeople">
-				<span ng-show="value">{{name}}</span>
+			<li ng-repeat="name in room.namesOfPeople track by $index">
+				<span>{{name}}</span>
 			</li>
 
 		</ul>

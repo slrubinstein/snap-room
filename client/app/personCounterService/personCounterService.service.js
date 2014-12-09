@@ -5,22 +5,16 @@ angular.module('roomApp')
 
     var numberPeople;
 
-    var namesOfPeople = {};
+    var namesOfPeople = [];
 
     var listen = function(ctrl, $scope) {
-        socket.socket.on('countPeople', function(numberPeople, name, leaving) {
+        socket.socket.on('countPeople', function(numberPeople, nameArray, leaving) {
           ctrl.numberPeople = numberPeople;
           console.log(numberPeople, '#')
-          console.log('name from socket', name)
-          if (leaving && name) {
-            namesOfPeople[name] = false;
-          } else if (!leaving && name) {
-            namesOfPeople[name] = true;
-          }
-
-          console.log(namesOfPeople)
-
-          ctrl.namesOfPeople = namesOfPeople;
+          console.log('nameArray from socket', nameArray)
+          namesOfPeople = nameArray;
+          ctrl.namesOfPeople = nameArray;
+          console.log(ctrl.namesOfPeople)
           $scope.$apply();
         });
     };
