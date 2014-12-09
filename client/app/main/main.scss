@@ -78,15 +78,15 @@ p.subheading {
   height: 30px;
 }
 
-.panel-heading {
-/*  background-color: #2E4F95; */
-    background-color: #23A8A2;
-    color: white;
-    border-radius: 5px;
-}
+.main-page-buttons {
+  background-color: #23A8A2;
+  color: white;
+  border-radius: 5px; 
+  border: none;
 
-#create-room-button:hover {
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 #nameInput {
