@@ -108,7 +108,7 @@ angular.module('roomApp')
         return current;
       }
 
-      function calculateMyTotal(name, numberPeople) {
+      function calculateMyTotal(name) {
         personalTotals = {
           food: 0,
           tax: 0,
@@ -175,20 +175,17 @@ angular.module('roomApp')
   .factory('splitcheckSockets', function(socket, splitcheckService) {
     
       function sendBillUpdate(roomNumber, newBill) {
-        console.log(newBill)
         socket.socket.emit('updateRoom', roomNumber, {event: 'updateBill', newBill: newBill})
       }
     
       function listen(ctrl) {
 
         socket.socket.on('updateRoom', function(roomNumber, data) {
-          console.log('update room', data.event)
           if (data.event === 'updateMyBill') {
             var bill = splitcheckService.bill;
             sendBillUpdate(roomNumber, bill)
           }
           if (data.event === 'updateBill') {
-            console.log(data)
             splitcheckService.updateFromSocket(data.newBill);
             ctrl.bill = ctrl.updateMyPage();
           }

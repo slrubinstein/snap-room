@@ -124,16 +124,6 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
   })
 
-  //UPDATE THIS
-
-  socket.on('deleteItem', function(roomNumber, index) {
-    socket.broadcast.to(roomNumber).emit('deleteItem', index);
-  })
-
-  socket.on('updateTotals', function(roomNumber, totals) {
-    socket.broadcast.to(roomNumber).emit('updateTotals', totals);
-  })
-
   // Insert sockets below
   require('../api/gameBoard/gameBoard.socket').register(socket);
 }

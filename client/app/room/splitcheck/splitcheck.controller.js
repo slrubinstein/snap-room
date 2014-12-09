@@ -39,11 +39,7 @@ angular.module('roomApp')
 
     var updatePersonalTotal = function() {
       var personalTotal = {};
-      
-      personalTotal.food = splitcheckService.personalTotals.food;
-      personalTotal.tax = splitcheckService.personalTotals.tax;
-      personalTotal.tip = splitcheckService.personalTotals.tip;
-      personalTotal.total = splitcheckService.personalTotals.total;
+      personalTotal = splitcheckService.personalTotals;
       return personalTotal;
     }
 
@@ -90,7 +86,7 @@ angular.module('roomApp')
   	}
 
     this.calculateMyTotal = function() {
-      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user, ctrl.numberPeople);
+      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user);
     }
 
 	  this.deleteItem = function(index) {
