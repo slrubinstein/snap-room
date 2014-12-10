@@ -22,6 +22,26 @@ angular.module('roomApp')
         var name = usernameVal.name;
         socket.socket.emit('join', roomNumber, name);
         
+        socket.socket.on('updateRoom', function(roomNumber, data) {
+          if (data.event==='vote') {
+            if (ctrl.roomData.choices.length !== data.doc.choices.length) {
+              ctrl.roomData.choices.push(data.doc.choices[data.doc.choices.length-1]);
+              $scope.$apply();
+            }
+            else {
+              data.doc.choices.forEach(function(el, index) {
+                if (el.votes !== ctrl.roomData.choices[index].votes) {
+                   ctrl.roomData.choices[index].votes = el.votes;
+                   ctrl.roomData.choices[index].voters = el.voters;
+                }
+              });
+            }
+          }
+        })
+
+
+
+
         socket.socket.on('updateVotes', function(roomData) {
 
           if (ctrl.roomType==='lunch') {
