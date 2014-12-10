@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    chatroomService, Auth, $state,
+                                    roomService, Auth, $state,
                                     fourSquareService, roomSocketsService, $window,
                                     personCounterService, geoRoomArrVal, usernameVal) {
 
@@ -13,11 +13,11 @@ angular.module('roomApp')
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
     this.roomType = this.params.type;
+    this.roomColor = this.params.color;
 
     //roomData, roomType, and roomColor are all assigned in
     //getRoomSuccessCallback
-    this.roomData;
-    this.roomColor;
+    //this.roomData;
 
     // display number of people in room
     this.numberPeople = personCounterService.numberPeople;
@@ -26,22 +26,22 @@ angular.module('roomApp')
 
     this.inputField = ''; //sets the input field to be empty initially
 
-    //getRoom is called whenever a user enters a room. The method call
-    //is just below the function definition. Its purpose is to make available
-    //to the client any info that has already been posted in the room, the
-    //amount of time left before the room expires, and the room color/type,
-    //as well as to start the interval that runs the timer.
-    // this.getRoom = function(roomNumber) {
-    //   var promise = roomService.get(roomNumber, ctrl.roomType)
-    //   .then(getRoomSuccessCallback, getRoomErrorCallback)
-    // };
+    // getRoom is called whenever a user enters a room. The method call
+    // is just below the function definition. Its purpose is to make available
+    // to the client any info that has already been posted in the room, the
+    // amount of time left before the room expires, and the room color/type,
+    // as well as to start the interval that runs the timer.
+    this.getRoom = function(roomNumber) {
+       var promise = roomService.get(roomNumber)
+       .then(getRoomSuccessCallback, getRoomErrorCallback)
+     };
 
-    //this.getRoom(roomNumber);
+     this.getRoom(roomNumber);
 
     function getRoomSuccessCallback(room) {
-        ctrl.roomData = room;
-        ctrl.roomColor = room.color;
-        ctrl.roomType = room.type
+        //ctrl.roomData = room;
+        //ctrl.roomColor = room.color;
+        //ctrl.roomType = room.type
         ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
         ctrl.countDown = $interval(ctrl.runTimer, 1000);
 
@@ -70,30 +70,30 @@ angular.module('roomApp')
 
       if(Number(minutesLeftDecimal) < 0.01) {
         $interval.cancel(ctrl.countDown);
-        socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoomArr);
+        socket.socket.emit('timeUp', roomNumber, geoRoomArr);
       }
     };
     
     //submitInput is called when the user submits the name of a restaurant
     //or a message. It calls chatroomService.submitInput with a number of
     //parameters that varies depending on whether the user is logged in
-    this.submitInput = function() {
-      var type = ctrl.roomType;
-      var name = usernameVal.name;
-      var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
-      // if (ctrl.user) {
-      //   if (ctrl.user.facebook) {
-      //     name = ctrl.user.facebook.first_name;
-      //     picture = ctrl.user.facebook.picture;
-      //   }
-      // }
+    // this.submitInput = function() {
+    //   var type = ctrl.roomType;
+    //   var name = usernameVal.name;
+    //   var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
+    //   // if (ctrl.user) {
+    //   //   if (ctrl.user.facebook) {
+    //   //     name = ctrl.user.facebook.first_name;
+    //   //     picture = ctrl.user.facebook.picture;
+    //   //   }
+    //   // }
    
-      if (ctrl.inputField.length < 100) {
-        chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
-        //to empty the input field:
-        ctrl.inputField = '';
-      }
-    }
+    //   if (ctrl.inputField.length < 100) {
+    //     chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
+    //     //to empty the input field:
+    //     ctrl.inputField = '';
+    //   }
+    // }
 
 
     //facebook login stuff
@@ -101,7 +101,18 @@ angular.module('roomApp')
     this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
+    //roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
+
+    socket.socket.on('timeUp', function(expiredRoomNumber, data) {
+      //in case the user is in multiple rooms (which is not supposed to happen)
+      if (Number(expiredRoomNumber) === Number(roomNumber)) {
+          ctrl.timeUp = true
+        ////////////////////////////////////
+          ctrl.winner = data.winner;
+          ctrl.maxVotes = data.maxVotes;
+        ////////////////////////////////////
+      }
+    });
 
 
     this.backToMain = function() {

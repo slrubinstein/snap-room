@@ -6,20 +6,20 @@ angular.module('roomApp')
      .state('room', {
        url: '/room/:roomNumber/:color',
        templateUrl: 'app/room/room.html',
-       controller: 'ChatroomCtrl',
+       controller: 'RoomCtrl',
        controllerAs: 'room'
      })
      .state('room.lunch', {
        url: '/:type',
        templateUrl: 'app/room/lunch/lunchroom.html',
        controller: 'LunchroomCtrl',
-       controllerAs: 'room'
+       controllerAs: 'lunch'
      })
      .state('room.chat', {
        url: '/chat',
        templateUrl: 'app/room/chat/chatroom.html',
-       controller: 'RoomCtrl',
-       controllerAs: 'room'
+       controller: 'ChatroomCtrl',
+       controllerAs: 'chat'
      })
      .state('room.splitcheck', {
        url: '/splitcheck',

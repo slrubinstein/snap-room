@@ -1,6 +1,6 @@
  <div room-accent 
     		 id="room-body"
-    		 ng-hide="room.timeUp">
+    		 ng-hide="lunch.timeUp">
 
 				<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
 					
@@ -16,19 +16,19 @@
 
 				<form id="inputForm" 
 							name="inputForm"
-							ng-submit="room.submitInput()" 
+							ng-submit="lunch.submitInput()" 
 							novalidate>
 		      <label for="textInput"
 		      			 room-trim-font
 		      			 room-trip>Enter the name of a restaurant:</label>
 		        <br/>
-		        	    <h3 ng-show="room.inputField.length > 49">Restaurant name is too long</h3>
+		        	    <h3 ng-show="lunch.inputField.length > 49">Restaurant name is too long</h3>
 						<input id="textInput" 
 								 name="textInput" 
 								 type="text" 
 								 class="form-control"
-								 ng-model="room.inputField"><br/>
-						<input ng-show="room.inputField" 
+								 ng-model="lunch.inputField"><br/>
+						<input ng-show="lunch.inputField" 
 						   class="btn" 
 						   type="submit"
 						   room-trim room-accent>

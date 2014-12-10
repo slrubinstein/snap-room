@@ -13,16 +13,17 @@ angular.module('roomApp')
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
     this.roomType = this.params.type;
+    this.roomColor = this.params.color;
 
     //roomData, roomType, and roomColor are all assigned in
     //getRoomSuccessCallback
     this.roomData;
-    this.roomColor;
+
 
     // display number of people in room
-    this.numberPeople = personCounterService.numberPeople;
-    this.namesOfPeople = personCounterService.namesOfPeople;
-    personCounterService.listen(this, $scope);
+    // this.numberPeople = personCounterService.numberPeople;
+    // this.namesOfPeople = personCounterService.namesOfPeople;
+    // personCounterService.listen(this, $scope);
 
 
     this.restaurants = []; //assigned to the array of restaurants
@@ -44,39 +45,39 @@ angular.module('roomApp')
 
     function getRoomSuccessCallback(room) {
         ctrl.roomData = room;
-        ctrl.roomColor = room.color;
-        ctrl.roomType = room.type
-        ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
-        ctrl.countDown = $interval(ctrl.runTimer, 1000);
+        // ctrl.roomColor = room.color;
+        // ctrl.roomType = room.type
+        //ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
+        //ctrl.countDown = $interval(ctrl.runTimer, 1000);
 
-        if (ctrl.roomColor === "red") {
-           $("body").css("background-color", "#D46A6A" );
-        }
-        else if (ctrl.roomColor === "green") {
-           $("body").css("background-color","#87FC81" );
-        }
-        else if (ctrl.roomColor === "blue") {
-           $("body").css("background-color", "#8DADF9" );
-        }
+        // if (ctrl.roomColor === "red") {
+        //    $("body").css("background-color", "#D46A6A" );
+        // }
+        // else if (ctrl.roomColor === "green") {
+        //    $("body").css("background-color","#87FC81" );
+        // }
+        // else if (ctrl.roomColor === "blue") {
+        //    $("body").css("background-color", "#8DADF9" );
+        // }
     }
 
     function getRoomErrorCallback(error) {
       
     }
 
-    this.runTimer = function(expiresAt) {
-      $scope.timeNow = new Date().getTime();
-      var minutesLeftDecimal = String((ctrl.expiresAt.getTime() - $scope.timeNow) / 1000 / 60);
-      $scope.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
-      var rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
-      $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
-      if (Number($scope.secondsLeft) < 10) $scope.secondsLeft = "0" + $scope.secondsLeft; 
+    // this.runTimer = function(expiresAt) {
+    //   $scope.timeNow = new Date().getTime();
+    //   var minutesLeftDecimal = String((ctrl.expiresAt.getTime() - $scope.timeNow) / 1000 / 60);
+    //   $scope.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
+    //   var rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
+    //   $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
+    //   if (Number($scope.secondsLeft) < 10) $scope.secondsLeft = "0" + $scope.secondsLeft; 
 
-      if(Number(minutesLeftDecimal) < 0.01) {
-        $interval.cancel(ctrl.countDown);
-        socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoomArr);
-      }
-    };
+    //   if(Number(minutesLeftDecimal) < 0.01) {
+    //     $interval.cancel(ctrl.countDown);
+    //     socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoomArr);
+    //   }
+    // };
     
     //submitInput is called when the user submits the name of a restaurant
     //or a message. It calls lunchRoomService.submitInput with a number of
