@@ -1,15 +1,12 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('roomService', function ($q, $http, $location, personCounterService) {
+  .factory('lunchRoomService', function ($q, $http, $location, personCounterService) {
  
     return {
       get: function (roomNumber, type) {
         var deferred = $q.defer();
         var room = {};
-        console.log("here");
-        if (type === 'lunch') {
-          console.log("here2");
           $http.get("/api/lunchRoom/" + roomNumber)
            .success(function(data){
             console.log("data: ", data)
@@ -21,24 +18,10 @@ angular.module('roomApp')
           });
 
           return deferred.promise;
-        }
-        else {
-          $http.get("/api/room/" + roomNumber)
-           .success(function(data){
-            room = data;
-            deferred.resolve(room); 
-          }).error(function(data){
-             $location.path("/");
-          });
-
-          return deferred.promise;  
-        }
-      
 
       },
 
       submitInput: function(roomNumber, name, picture, type) {
-        if (type === 'lunch') {
           $http.put("/api/lunchRoom/" + roomNumber, 
             {choice : inputForm.textInput.value,
               name : name})
@@ -48,18 +31,6 @@ angular.module('roomApp')
           .error(function(data){
               console.log("error");
           });
-        }
-        else if (type === 'chat') {
-          $http.put('api/chat/' + roomNumber,
-            {message: inputForm.textInput.value,
-              name: name,
-              picture: picture})
-          .success(function(data) {
-          })
-          .error(function(data) {
-            console.log('error');
-          });
-        }
       },
 
       submitVote: function(roomNumber, choice, upOrDown, name) {

@@ -2,9 +2,6 @@
 
 var _ = require('lodash');
 var Room = require('./room.model');
-var request = require('request');
-var foursquareID = process.env.FOURSQUARE_ID;
-var foursquareSecret = process.env.FOURSQUARE_SECRET;
 
 // Get list of rooms
 exports.index = function(req, res) {

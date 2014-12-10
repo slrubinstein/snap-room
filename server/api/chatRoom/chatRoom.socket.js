@@ -4,21 +4,21 @@
 
 'use strict';
 
-var Chat = require('./chat.model');
+var Chatroom = require('./chatRoom.model');
 
 exports.register = function(socket) {
-  Chat.schema.post('save', function (doc) {
+  Chatroom.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Chat.schema.post('remove', function (doc) {
+  Chatroom.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('chat:save', doc);
+  socket.emit('chatRoom:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('chat:remove', doc);
+  socket.emit('chatRoom:remove', doc);
 }

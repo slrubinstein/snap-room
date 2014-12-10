@@ -9,9 +9,10 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/chatRooms', require('./api/chatRoom'));
   app.use('/api/gameBoard', require('./api/gameBoard'));
   app.use('/api/lunchRoom', require('./api/lunchRoom'));
-  app.use('/api/chat', require('./api/chat'));
+  app.use('/api/chatRoom', require('./api/chatRoom'));
   app.use('/yes', require('./api/room'));
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));

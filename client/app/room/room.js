@@ -6,13 +6,13 @@ angular.module('roomApp')
      .state('room', {
        url: '/room/:roomNumber/:color',
        templateUrl: 'app/room/room.html',
-       controller: 'RoomCtrl',
+       controller: 'ChatroomCtrl',
        controllerAs: 'room'
      })
      .state('room.lunch', {
        url: '/:type',
        templateUrl: 'app/room/lunch/lunchroom.html',
-       controller: 'RoomCtrl',
+       controller: 'LunchroomCtrl',
        controllerAs: 'room'
      })
      .state('room.chat', {

@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./chat.controller');
+var controller = require('./chatRoom.controller');
 
 var router = express.Router();
 

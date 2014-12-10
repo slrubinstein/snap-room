@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    chatroomService, Auth, $state,
-                                    fourSquareService, roomSocketsService, $window,
+  .controller('ChatroomCtrl', function ($scope, $stateParams, socket, $http, $interval,
+                                    chatroomService, Auth, $state, roomSocketsService, $window,
                                     personCounterService, geoRoomArrVal, usernameVal) {
 
 
@@ -31,12 +30,12 @@ angular.module('roomApp')
     //to the client any info that has already been posted in the room, the
     //amount of time left before the room expires, and the room color/type,
     //as well as to start the interval that runs the timer.
-    // this.getRoom = function(roomNumber) {
-    //   var promise = roomService.get(roomNumber, ctrl.roomType)
-    //   .then(getRoomSuccessCallback, getRoomErrorCallback)
-    // };
+    this.getRoom = function(roomNumber) {
+      var promise = chatroomService.get(roomNumber, ctrl.roomType)
+      .then(getRoomSuccessCallback, getRoomErrorCallback)
+    };
 
-    //this.getRoom(roomNumber);
+    this.getRoom(roomNumber);
 
     function getRoomSuccessCallback(room) {
         ctrl.roomData = room;
@@ -128,3 +127,4 @@ angular.module('roomApp')
 
 
   });
+

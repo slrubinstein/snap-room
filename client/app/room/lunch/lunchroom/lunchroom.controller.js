@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    chatroomService, Auth, $state,
-                                    fourSquareService, roomSocketsService, $window,
-                                    personCounterService, geoRoomArrVal, usernameVal) {
+  .controller('LunchroomCtrl', function ($scope, $stateParams, socket, $http, 
+  	                    $interval, lunchRoomService, Auth, $state,
+                         fourSquareService, roomSocketsService, $window,
+                         personCounterService, geoRoomArrVal, usernameVal) {
 
 
     var ctrl = this;
@@ -24,6 +24,10 @@ angular.module('roomApp')
     this.namesOfPeople = personCounterService.namesOfPeople;
     personCounterService.listen(this, $scope);
 
+
+    this.restaurants = []; //assigned to the array of restaurants
+    //returned by getFourSquare, if getFourSquare is called
+
     this.inputField = ''; //sets the input field to be empty initially
 
     //getRoom is called whenever a user enters a room. The method call
@@ -31,12 +35,12 @@ angular.module('roomApp')
     //to the client any info that has already been posted in the room, the
     //amount of time left before the room expires, and the room color/type,
     //as well as to start the interval that runs the timer.
-    // this.getRoom = function(roomNumber) {
-    //   var promise = roomService.get(roomNumber, ctrl.roomType)
-    //   .then(getRoomSuccessCallback, getRoomErrorCallback)
-    // };
+    this.getRoom = function(roomNumber) {
+      var promise = lunchRoomService.get(roomNumber, ctrl.roomType)
+      .then(getRoomSuccessCallback, getRoomErrorCallback)
+    };
 
-    //this.getRoom(roomNumber);
+    this.getRoom(roomNumber);
 
     function getRoomSuccessCallback(room) {
         ctrl.roomData = room;
@@ -75,7 +79,7 @@ angular.module('roomApp')
     };
     
     //submitInput is called when the user submits the name of a restaurant
-    //or a message. It calls chatroomService.submitInput with a number of
+    //or a message. It calls lunchRoomService.submitInput with a number of
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
       var type = ctrl.roomType;
@@ -87,13 +91,64 @@ angular.module('roomApp')
       //     picture = ctrl.user.facebook.picture;
       //   }
       // }
-   
+ 
       if (ctrl.inputField.length < 100) {
-        chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
+        lunchRoomService.submitInput(roomNumber, name, picture, type);
         //to empty the input field:
         ctrl.inputField = '';
       }
+  
     }
+
+    //vote is called either by up/downvoting an already-selected
+    //restaurant, or selecting a restaurant from the foursquare list
+    this.vote = function(choice, upOrDown, event, index) {
+      //if called by up/downvoting
+      if (upOrDown) {
+        lunchRoomService.toggleColors(ctrl.roomColor, event)
+      }
+
+      else {
+        $(event.target).parent().addClass('animated fadeOutUp');
+        ctrl.restaurants.splice(index,1);
+      } 
+
+      var name = usernameVal.name;
+      //if the user is logged in 
+      // if (ctrl.user) {
+      //   if (ctrl.user.facebook) {
+      //     name = ctrl.user.facebook.first_name;
+      //   }
+      // }
+      lunchRoomService.submitVote(roomNumber, choice, upOrDown, name);
+
+    };
+
+
+    this.seeVotes = function(event) {
+      $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
+    }
+
+///////////////////////////////////////////////////////////////
+// fourSquare API call, hide, and show functions
+    this.getFourSquare = function() {
+      var promise = fourSquareService.get(roomNumber)
+        .then(function(restaurants) {
+          ctrl.restaurants = restaurants;
+        },
+        function(error) {
+        });
+    };
+
+    this.showFoursquare = function() {
+      fourSquareService.show(event);
+    }
+
+    this.hideFoursquare = function() {
+      fourSquareService.hide(event);
+    }
+
+////////////////////////////////////////////////////////////////
 
 
     //facebook login stuff

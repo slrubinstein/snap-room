@@ -151,6 +151,7 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
   })
 
   // Insert sockets below
+  require('../api/chatRoom/chatRoom.socket').register(socket);
   require('../api/gameBoard/gameBoard.socket').register(socket);
 }
 
@@ -198,7 +199,7 @@ module.exports = function (socketio) {
     onConnect(socket, socketio, findUsernamesInRoom);
     console.info('[%s] CONNECTED', socket.address);
   });
-  require('../api/chat/chat.socket').register(socketio);
+  require('../api/chatRoom/chatRoom.socket').register(socketio);
   require('../api/room/room.socket').register(socketio);
   require('../api/thing/thing.socket').register(socketio);
   require('../api/lunchRoom/lunchRoom.socket').register(socketio);

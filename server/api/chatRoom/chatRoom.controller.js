@@ -1,12 +1,12 @@
 'use strict';
 
 var _ = require('lodash');
-var Chat = require('./chat.model');
+var Chatroom = require('./chatRoom.model');
 var Room = require('../room/room.model');
 
 // Get list of chats
 exports.index = function(req, res) {
-  Chat.find(function (err, chats) {
+  Chatroom.find(function (err, chats) {
     if(err) { return handleError(res, err); }
     return res.json(200, chats);
   });
@@ -14,7 +14,7 @@ exports.index = function(req, res) {
 
 // Get a single chat
 exports.show = function(req, res) {
-  Chat.findById(req.params.id, function (err, chat) {
+  Chatroom.findById(req.params.id, function (err, chat) {
     if(err) { return handleError(res, err); }
     if(!chat) { return res.send(404); }
     return res.json(chat);
@@ -23,7 +23,7 @@ exports.show = function(req, res) {
 
 // Creates a new chat in the DB.
 exports.create = function(req, res) {
-  Chat.create(req.body, function(err, chat) {
+  Chatroom.create(req.body, function(err, chat) {
     if(err) { return handleError(res, err); }
     return res.json(201, chat);
   });
@@ -59,7 +59,7 @@ exports.update = function(req, res) {
 
 // Deletes a chat from the DB.
 exports.destroy = function(req, res) {
-  Chat.findById(req.params.id, function (err, chat) {
+  Chatroom.findById(req.params.id, function (err, chat) {
     if(err) { return handleError(res, err); }
     if(!chat) { return res.send(404); }
     chat.remove(function(err) {

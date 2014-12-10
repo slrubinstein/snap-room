@@ -1,23 +1,25 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('chatroomService', function ($http) {
+  .factory('chatroomService', function ($http, $q) {
 
     return {
-submitInput: function(userInput, roomNumber, name, picture, type) {
-       if (type === 'lunch') {
-         $http.put("/api/room/" + roomNumber, 
-           {choice : userInput,
-             name : name})
-           .success(function(data){
-           // console.log(data);
-         })
-         .error(function(data){
-             console.log("error");
-         });
-       }
-       else if (type === 'chat') {
-         $http.put('api/chat/' + roomNumber,
+
+      get: function (roomNumber, type) {
+        var deferred = $q.defer();
+        var room = {};
+        $http.get("/api/chatRoom/" + roomNumber)
+         .success(function(data){
+          room = data;
+          deferred.resolve(room); 
+        }).error(function(data){
+           $location.path("/");
+        });
+        return deferred.promise;  
+      },
+      
+     submitInput: function(userInput, roomNumber, name, picture, type) {
+         $http.put('api/chatRoom/' + roomNumber,
            {message: inputForm.textInput.value,
              name: name,
              picture: picture})
@@ -27,20 +29,8 @@ submitInput: function(userInput, roomNumber, name, picture, type) {
          .error(function(data) {
            console.log('error');
          });
-       }
      },
 
-     submitVote: function(roomNumber, choice, upOrDown, name) {
-       $http.put("/api/room/" + roomNumber, 
-         {choice : choice,
-           name: name,
-           upOrDown: upOrDown})
-         .success(function(data){
-         })
-         .error(function(data){
-             console.log("error");
-         });
-     },
 
      toggleColors: function(roomColor, event) {
 
