@@ -8,6 +8,8 @@ angular.module('roomApp')
   	var ctrl = this;
   	var roomNumber = $state.params.roomNumber
 
+    this.timeUp = false;
+
     // display number of people in room
     this.numberPeople = personCounterService.numberPeople;
     personCounterService.listen(this, $scope);
@@ -35,7 +37,7 @@ angular.module('roomApp')
     }
 
     // set up socket listeners
-    splitcheckSockets.listen(ctrl);
+    splitcheckSockets.listen(ctrl, roomNumber);
 
     var updatePersonalTotal = function() {
       var personalTotal = {};
