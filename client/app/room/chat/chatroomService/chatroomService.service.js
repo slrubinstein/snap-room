@@ -5,7 +5,7 @@ angular.module('roomApp')
 
     return {
 
-      get: function (roomNumber, type) {
+      get: function (roomNumber) {
         var deferred = $q.defer();
         var room = {};
         $http.get("/api/chatRoom/" + roomNumber)
@@ -18,16 +18,17 @@ angular.module('roomApp')
         return deferred.promise;  
       },
       
-     submitInput: function(userInput, roomNumber, name, picture, type) {
+     submitInput: function(userInput, roomNumber, name, picture) {
          $http.put('api/chatRoom/' + roomNumber,
            {message: inputForm.textInput.value,
              name: name,
              picture: picture})
          .success(function(data) {
+          console.log('submit input success', data)
           // front end model is not being updated on client
           // can either update models in the ctrl, or use a
           // socket.emit on the backend to update ctrl
-          socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
+          socket.socket.emit('updateRoom', roomNumber, {event: 'chat', doc: data})
          })
          .error(function(data) {
            console.log('error');

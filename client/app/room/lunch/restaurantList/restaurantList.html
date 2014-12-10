@@ -14,10 +14,9 @@
 				<span>{{choice.choice}}</span>
 			</div>
 
-			<button class="btn btn-default votes">
+			<button class="btn btn-default votes" ng-click="lunch.seeVotes($event)">
 				<span>{{choice.votes}}</span>
-				<span class="glyphicon glyphicon-user"
-							ng-click="lunch.seeVotes($event)"></span>
+				<span class="glyphicon glyphicon-user"></span>
 			</button>
 			<div class="clearfix"></div>
 

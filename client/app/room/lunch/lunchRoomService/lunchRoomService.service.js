@@ -23,15 +23,15 @@ angular.module('roomApp')
       },
 
       submitInput: function(roomNumber, name, picture, type) {
-          $http.put("/api/lunchRoom/" + roomNumber, 
-            {choice : inputForm.textInput.value,
-              name : name})
-            .success(function(data){
-              console.log("returned from update: " , data);
-          })
-          .error(function(data){
-              console.log("error");
-          });
+        $http.put("/api/lunchRoom/" + roomNumber, 
+          {choice : inputForm.textInput.value,
+            name : name})
+          .success(function(data){
+            socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
+        })
+        .error(function(data){
+            console.log("error");
+        });
       },
 
       submitVote: function(roomNumber, choice, upOrDown, name) {

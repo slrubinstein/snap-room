@@ -11,10 +11,8 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
-    this.roomType = roomCreationService.roomType;
-    console.log(this.roomType);
 
-    //roomData, roomType, and roomColor are all assigned in
+    //roomData, and roomColor are all assigned in
     //getRoomSuccessCallback
     this.roomData;
     this.roomColor;
@@ -32,7 +30,7 @@ angular.module('roomApp')
     //amount of time left before the room expires, and the room color/type,
     //as well as to start the interval that runs the timer.
     this.getRoom = function(roomNumber) {
-      var promise = chatroomService.get(roomNumber, ctrl.roomType)
+      var promise = chatroomService.get(roomNumber)
       .then(getRoomSuccessCallback, getRoomErrorCallback)
     };
 
@@ -41,7 +39,6 @@ angular.module('roomApp')
     function getRoomSuccessCallback(room) {
         ctrl.roomData = room;
         // ctrl.roomColor = room.color;
-        // ctrl.roomType = room.type
         // ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
         // ctrl.countDown = $interval(ctrl.runTimer, 1000);
 
@@ -78,7 +75,6 @@ angular.module('roomApp')
     //or a message. It calls chatroomService.submitInput with a number of
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
-      var type = ctrl.roomType;
       var name = usernameVal.name;
       var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
       // if (ctrl.user) {
@@ -87,9 +83,9 @@ angular.module('roomApp')
       //     picture = ctrl.user.facebook.picture;
       //   }
       // }
-   
+    console.log(name, picture)
       if (ctrl.inputField.length < 100) {
-        chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
+        chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture);
         //to empty the input field:
         ctrl.inputField = '';
       }
@@ -101,7 +97,7 @@ angular.module('roomApp')
     // this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    //roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
+    roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
 
     // socket.socket.on('timeUp', function(expiredRoomNumber, data) {
     //   //in case the user is in multiple rooms (which is not supposed to happen)
