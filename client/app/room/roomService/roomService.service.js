@@ -4,27 +4,46 @@ angular.module('roomApp')
   .factory('roomService', function ($q, $http, $location, personCounterService) {
  
     return {
-      get: function (roomNumber) {
+      get: function (roomNumber, type) {
         var deferred = $q.defer();
         var room = {};
-        $http.get("/api/room/" + roomNumber)
-         .success(function(data){
-          room = data;
-          deferred.resolve(room); 
-        }).error(function(data){
-           $location.path("/");
-        });
+        console.log("here");
+        if (type === 'lunch') {
+          console.log("here2");
+          $http.get("/api/lunchRoom/" + roomNumber)
+           .success(function(data){
+            console.log("data: ", data)
+            room = data.room;
+            room.choices = data.choices;
+            deferred.resolve(room); 
+          }).error(function(data){
+             $location.path("/");
+          });
 
-        return deferred.promise;
+          return deferred.promise;
+        }
+        else {
+          $http.get("/api/room/" + roomNumber)
+           .success(function(data){
+            room = data;
+            deferred.resolve(room); 
+          }).error(function(data){
+             $location.path("/");
+          });
+
+          return deferred.promise;  
+        }
+      
+
       },
 
       submitInput: function(roomNumber, name, picture, type) {
         if (type === 'lunch') {
-          $http.put("/api/room/" + roomNumber, 
+          $http.put("/api/lunchRoom/" + roomNumber, 
             {choice : inputForm.textInput.value,
               name : name})
             .success(function(data){
-            // console.log(data);
+              console.log("returned from update: " , data);
           })
           .error(function(data){
               console.log("error");
@@ -44,7 +63,7 @@ angular.module('roomApp')
       },
 
       submitVote: function(roomNumber, choice, upOrDown, name) {
-        $http.put("/api/room/" + roomNumber, 
+        $http.put("/api/lunchRoom/" + roomNumber, 
           {choice : choice,
             name: name,
             upOrDown: upOrDown})

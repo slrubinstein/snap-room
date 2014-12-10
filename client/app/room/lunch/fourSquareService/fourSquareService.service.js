@@ -7,7 +7,7 @@ angular.module('roomApp')
       get: function(roomNumber) {
         var deferred = $q.defer();
         var restaurants;
-        $http.get('/api/room/' + roomNumber + '/vendor/foursquare')
+        $http.get('/api/lunchRoom/' + roomNumber + '/vendor/foursquare')
           .success(function(data) {
             restaurants = data.response.groups[0].items;
             deferred.resolve(restaurants);

@@ -52,14 +52,31 @@ angular.module('roomApp')
             type = options.type;
 
         $http.post("/api/room", options)
-        .success(function(data){
-          $state.go("room." + type, {roomNumber: data.roomNumber,
-                                color: color,
-                                geoRoom: geoRoom
-                              });
-          socket.socket.emit('createRoom', data.roomNumber, geoRoomArr)
-          //timerFactory.timerListener();
-        })
+        .success(function(data) {
+          var roomNumber = data.roomNumber;
+          if (type !== 'backgammon' && type !== 'splitcheck') {
+            $http.post("/api/" + type + "Room", {"roomNumber" : data.roomNumber})
+            .success(function(data) {   
+              console.log(data);  
+              $state.go("room." + type, {roomNumber: data.roomNumber,
+                                  color: color,
+                                  geoRoom: geoRoom,
+                                  type: type
+                                });
+              socket.socket.emit('createRoom', data.roomNumber, geoRoomArr)
+              //timerFactory.timerListener();
+               })
+            .error(function(error){
+
+            })
+          }
+          else {
+            $state.go("room." + type, {roomNumber: data.roomNumber,
+                      color: color,
+                      geoRoom: geoRoom
+            });
+         }
+        }) 
         .error(function(data){
           console.log("error creating room");
         });  

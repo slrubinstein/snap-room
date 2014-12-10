@@ -5,6 +5,7 @@
 'use strict';
 
 var Room = require('../api/room/room.model');
+var Lunchroom = require('../api/lunchRoom/lunchRoom.model');
 
 var config = require('./environment');
 
@@ -80,42 +81,56 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
         room.expired = true;
         room.save(function(err, room) {
           if (room.type === 'lunch') {
-            data = calcWinner(room);
+            calcWinner(roomNumber, geoRoomArr);
           }
-          socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
-          socket.emit('timeUp', roomNumber, data);
+          else {
+            socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
+            socket.emit('timeUp', roomNumber, data);
 
-          geoRoomArr.forEach(function(el) {
-            socket.broadcast.to(el).emit('refreshRoomList');
-          });
+            geoRoomArr.forEach(function(el) {
+              socket.broadcast.to(el).emit('refreshRoomList');
+            });
 
-          socket.emit('refreshRoomList'); 
+            socket.emit('refreshRoomList');
+          } 
         }) 
       }
     })
   })
 
   //for any type of room in which there is voting
-  function calcWinner(room) {
+  function calcWinner(roomNumber, geoRoomArr) {
     var winner;
     var maxVotes;
-    if (room.choices.length > 0) {
-      winner = [room.choices[0].choice];
-      maxVotes = room.choices[0].votes;
-      for (var i = 0; i < room.choices.length; i++) {
-        if (room.choices[i].votes > maxVotes) {
-          winner[0] = room.choices[i].choice;
-          maxVotes = room.choices[i].votes;
+    Lunchroom.findOne({"roomNumber":roomNumber}, function(err, room) {
+      if (room.choices) {
+        if (room.choices.length > 0) {
+          winner = [room.choices[0].choice];
+          maxVotes = room.choices[0].votes;
+          for (var i = 0; i < room.choices.length; i++) {
+            if (room.choices[i].votes > maxVotes) {
+              winner[0] = room.choices[i].choice;
+              maxVotes = room.choices[i].votes;
+            }
+            else if (room.choices[i].votes === maxVotes
+                    && room.choices[i].choice !== winner[0]) {
+              winner.push(room.choices[i].choice);
+            }
+          }
         }
-        else if (room.choices[i].votes === maxVotes
-                && room.choices[i].choice !== winner[0]) {
-          winner.push(room.choices[i].choice);
-        }
-      }
-    }
-    return {"winner" : winner, "maxVotes" : maxVotes};
-  }
+      } 
+     
+      var data = {"winner" : winner, "maxVotes" : maxVotes};
+      socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
+      socket.emit('timeUp', roomNumber, data);
 
+      geoRoomArr.forEach(function(el) {
+        socket.broadcast.to(el).emit('refreshRoomList');
+      });
+
+      socket.emit('refreshRoomList');
+    })
+  };
   // Split Check Sockets
 
   //UPDATE THIS
@@ -186,4 +201,5 @@ module.exports = function (socketio) {
   require('../api/chat/chat.socket').register(socketio);
   require('../api/room/room.socket').register(socketio);
   require('../api/thing/thing.socket').register(socketio);
+  require('../api/lunchRoom/lunchRoom.socket').register(socketio);
 };

@@ -12,11 +12,11 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
+    this.roomType = this.params.type;
 
     //roomData, roomType, and roomColor are all assigned in
     //getRoomSuccessCallback
     this.roomData;
-    this.roomType;
     this.roomColor;
 
     // display number of people in room
@@ -36,7 +36,7 @@ angular.module('roomApp')
     //amount of time left before the room expires, and the room color/type,
     //as well as to start the interval that runs the timer.
     this.getRoom = function(roomNumber) {
-      var promise = roomService.get(roomNumber)
+      var promise = roomService.get(roomNumber, ctrl.roomType)
       .then(getRoomSuccessCallback, getRoomErrorCallback)
     };
 
@@ -91,8 +91,14 @@ angular.module('roomApp')
       //     picture = ctrl.user.facebook.picture;
       //   }
       // }
+ 
+      if (type === "lunch" && ctrl.inputField.length < 100) {
+        roomService.submitInput(roomNumber, name, picture, type);
+        //to empty the input field:
+        ctrl.inputField = '';
+      }
   
-      if (ctrl.inputField.length < 100) {
+      else if (type === "chat" && ctrl.inputField.length < 100) {
         chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
         //to empty the input field:
         ctrl.inputField = '';
@@ -119,7 +125,7 @@ angular.module('roomApp')
       //     name = ctrl.user.facebook.first_name;
       //   }
       // }
-      chatroomService.submitVote(roomNumber, choice, upOrDown, name);
+      roomService.submitVote(roomNumber, choice, upOrDown, name);
 
     };
 
