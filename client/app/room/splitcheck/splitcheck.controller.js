@@ -13,7 +13,7 @@ angular.module('roomApp')
     personCounterService.listen(this, $scope);
 
     // updates bill for late joiners
-  	socket.socket.emit('updateRoom', roomNumber, {event: 'updateMyBill'})
+  	socket.socket.emit('updateRoomForMe', roomNumber, {event: 'updateMyBill'})
 
     // variables shared with everyone on bill
     // when any of these change, it should change for everyone via socket

@@ -83,64 +83,23 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
           socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
           socket.emit('updateRoom', roomNumber, data);
 
+          geoRoomArr.forEach(function(el) {
+            socket.broadcast.to(el).emit('refreshRoomList');
+          });
 
-          // if (room.type === 'lunch') {
-          //   calcWinner(roomNumber, geoRoomArr);
-          // }
-          // else {
-          //   socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
-          //   socket.emit('timeUp', roomNumber, data);
-
-            geoRoomArr.forEach(function(el) {
-              socket.broadcast.to(el).emit('refreshRoomList');
-            });
-
-            socket.emit('refreshRoomList');
+          socket.emit('refreshRoomList');
           })
         } 
       })
     })
-  // })
-
-  //for any type of room in which there is voting
-  // function calcWinner(roomNumber, geoRoomArr) {
-  //   var winner;
-  //   var maxVotes;
-  //   Lunchroom.findOne({"roomNumber":roomNumber}, function(err, room) {
-  //     if (room.choices) {
-  //       if (room.choices.length > 0) {
-  //         winner = [room.choices[0].choice];
-  //         maxVotes = room.choices[0].votes;
-  //         for (var i = 0; i < room.choices.length; i++) {
-  //           if (room.choices[i].votes > maxVotes) {
-  //             winner[0] = room.choices[i].choice;
-  //             maxVotes = room.choices[i].votes;
-  //           }
-  //           else if (room.choices[i].votes === maxVotes
-  //                   && room.choices[i].choice !== winner[0]) {
-  //             winner.push(room.choices[i].choice);
-  //           }
-  //         }
-  //       }
-  //     } 
-     
-      // var data = {"winner" : winner, "maxVotes" : maxVotes};
-      // socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
-      // socket.emit('timeUp', roomNumber, data);
-
-      // geoRoomArr.forEach(function(el) {
-      //   socket.broadcast.to(el).emit('refreshRoomList');
-      // });
-
-    //   socket.emit('refreshRoomList');
-    // })
-  // };
-  // Split Check Sockets
-
 
   socket.on('updateRoom', function(roomNumber, data) {
     socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
     socket.emit('updateRoom', roomNumber, data);
+  })
+
+  socket.on('updateRoomForMe', function(roomNumber, data) {
+    socket.broadcast.to(roomNumber).emit('updateRoomForMe', roomNumber, data);
   })
 
   // Insert sockets below

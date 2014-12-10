@@ -125,6 +125,8 @@ angular.module('roomApp')
       }
 
       function updateFromSocket(newBill) {
+        console.log('bill', bill)
+        console.log('new bill', newBill)
         bill.billSoFar = newBill.billSoFar;
         bill.taxPercent = newBill.taxPercent;
         bill.tipPercent = newBill.tipPercent;
@@ -181,14 +183,13 @@ angular.module('roomApp')
       function listen(ctrl) {
 
         socket.socket.on('updateRoom', function(roomNumber, data) {
-          if (data.event === 'updateMyBill') {
-            var bill = splitcheckService.bill;
-            sendBillUpdate(roomNumber, bill)
-          }
-          if (data.event === 'updateBill') {
-            splitcheckService.updateFromSocket(data.newBill);
-            ctrl.bill = ctrl.updateMyPage();
-          }
+          splitcheckService.updateFromSocket(data.newBill);
+          ctrl.bill = ctrl.updateMyPage();
+        })
+
+        socket.socket.on('updateRoomForMe', function(roomNumber, data) {
+          var bill = splitcheckService.bill;
+          sendBillUpdate(roomNumber, bill)
         })
 
         socket.socket.on('countPeople', function(numberPeople) {
