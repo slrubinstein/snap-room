@@ -90,8 +90,11 @@ angular.module('roomApp')
     //           }
              }
              if (data.event==='chat') {
-               console.log("data: ", data);
-               ctrl.roomData = data.doc;
+
+               if (Number(expiredRoomNumber) === Number(roomNumber)) {
+                 console.log("data: ", data);
+                 ctrl.roomData = data.doc;
+              }
              }
           });
      }

@@ -94,6 +94,15 @@ angular.module('roomApp')
       //getRooms is a promise
       var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
         .then(getRoomsSuccessCallback, getRoomsErrorCallback);
+     
+     //the refreshRoomList event is emitted by the server whenever
+     //a room is created or expires. It is sent to the members of
+     //the relevant geoRoom
+      socket.socket.on('refreshRoomList', function() {
+        console.log("refreshRoomList");
+        var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
+          .then(getRoomsSuccessCallback, getRoomsErrorCallback);
+      });
 
     }
 
@@ -121,16 +130,7 @@ angular.module('roomApp')
       ctrl.getRoomsCallFailed = true;
     }
 
-    //the refreshRoomList event is emitted by the server whenever
-    //a room is created or expires. It is sent to the members of
-    //the relevant geoRoom
-    socket.socket.on('refreshRoomList', function() {
-      var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
-        .then(function(rooms) {
-          ctrl.availableRooms = rooms;
-          assignRoomColorAndNum(rooms);
-      })
-    });
+
 
     //assignRoomColorAndNum assigns the color and, if there is
     //more than one room for a particular color, the number
