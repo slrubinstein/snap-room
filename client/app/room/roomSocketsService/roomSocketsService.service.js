@@ -7,8 +7,6 @@ angular.module('roomApp')
 
        listen: function(roomNumber, $scope, ctrl, user) {
 
-        console.log('calling room socket service')
-
           var name = usernameVal.name;
 
           socket.socket.emit('join', roomNumber, name);
