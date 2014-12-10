@@ -120,8 +120,8 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
 
 
   socket.on('updateRoom', function(roomNumber, data) {
-    console.log('emitting a', data.event)
     socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
+    socket.emit('updateRoom', roomNumber, data);
   })
 
   // Insert sockets below

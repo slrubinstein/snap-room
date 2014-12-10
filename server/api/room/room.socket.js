@@ -7,9 +7,9 @@
 var Room = require('./room.model');
 
 exports.register = function(socketio) {
-  Room.schema.post('save', function (doc) {
-    onSave(socketio, doc);
-  });
+  // Room.schema.post('save', function (doc) {
+  //   onSave(socketio, doc);
+  // });
   Room.schema.post('remove', function (doc) {
     onRemove(socketio, doc);
   });

@@ -24,11 +24,16 @@ angular.module('roomApp')
         
         socket.socket.on('updateRoom', function(roomNumber, data) {
           if (data.event==='vote') {
+            //refactor into updateVotes()
+            console.log(ctrl.roomData, 'roomData')
+            console.log(data.doc, 'data.doc')
             if (ctrl.roomData.choices.length !== data.doc.choices.length) {
+              console.log('if')
               ctrl.roomData.choices.push(data.doc.choices[data.doc.choices.length-1]);
               $scope.$apply();
             }
             else {
+              console.log('else')
               data.doc.choices.forEach(function(el, index) {
                 if (el.votes !== ctrl.roomData.choices[index].votes) {
                    ctrl.roomData.choices[index].votes = el.votes;
@@ -37,33 +42,21 @@ angular.module('roomApp')
               });
             }
           }
+          if (data.event==='timeUp') {
+
+          }
         })
 
+        function updateVotes(data) {
+
+        }
 
 
-
-        socket.socket.on('updateVotes', function(roomData) {
-
-          if (ctrl.roomType==='lunch') {
-            if (ctrl.roomData.choices.length !== roomData.choices.length) {
-              ctrl.roomData.choices.push(roomData.choices[roomData.choices.length-1]);
-              $scope.$apply();
-            }
-            else {
-              roomData.choices.forEach(function(el, index) {
-                if (el.votes !== ctrl.roomData.choices[index].votes) {
-                   ctrl.roomData.choices[index].votes = el.votes;
-                   ctrl.roomData.choices[index].voters = el.voters;
-                }
-              });
-            }
-          }
-
-          else if (ctrl.roomType==='chat') {
-            ctrl.roomData = roomData;
-            $scope.$apply();
-          }
-        });
+        //   else if (ctrl.roomType==='chat') {
+        //     ctrl.roomData = roomData;
+        //     $scope.$apply();
+        //   }
+        // });
       }
     };
   });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('chatroomService', function ($http) {
+  .factory('chatroomService', function ($http, socket) {
 
     return {
 submitInput: function(userInput, roomNumber, name, picture, type) {
@@ -10,7 +10,11 @@ submitInput: function(userInput, roomNumber, name, picture, type) {
            {choice : userInput,
              name : name})
            .success(function(data){
-           // console.log(data);
+              console.log('submitting', data)
+              // front end model is not being updated on client
+              // can either update models in the ctrl, or use a
+              // socket.emit on the backend to update ctrl
+              socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
          })
          .error(function(data){
              console.log("error");
@@ -36,6 +40,7 @@ submitInput: function(userInput, roomNumber, name, picture, type) {
            name: name,
            upOrDown: upOrDown})
          .success(function(data){
+          socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
          })
          .error(function(data){
              console.log("error");

@@ -18,30 +18,31 @@ angular.module('roomApp')
         return deferred.promise;
       },
 
-      submitInput: function(roomNumber, name, picture, type) {
-        if (type === 'lunch') {
-          $http.put("/api/room/" + roomNumber, 
-            {choice : inputForm.textInput.value,
-              name : name})
-            .success(function(data){
-            // console.log(data);
-          })
-          .error(function(data){
-              console.log("error");
-          });
-        }
-        else if (type === 'chat') {
-          $http.put('api/chat/' + roomNumber,
-            {message: inputForm.textInput.value,
-              name: name,
-              picture: picture})
-          .success(function(data) {
-          })
-          .error(function(data) {
-            console.log('error');
-          });
-        }
-      },
+      // submitInput: function(roomNumber, name, picture, type) {
+      //   if (type === 'lunch') {
+      //     $http.put("/api/room/" + roomNumber, 
+      //       {choice : inputForm.textInput.value,
+      //         name : name})
+      //       .success(function(data){
+      //         console.log('submitting', data)
+      //         socket.socket.emit('updateRoom', roomNumber, data)
+      //     })
+      //     .error(function(data){
+      //         console.log("error");
+      //     });
+      //   }
+      //   else if (type === 'chat') {
+      //     $http.put('api/chat/' + roomNumber,
+      //       {message: inputForm.textInput.value,
+      //         name: name,
+      //         picture: picture})
+      //     .success(function(data) {
+      //     })
+      //     .error(function(data) {
+      //       console.log('error');
+      //     });
+      //   }
+      // },
 
       submitVote: function(roomNumber, choice, upOrDown, name) {
         $http.put("/api/room/" + roomNumber, 
