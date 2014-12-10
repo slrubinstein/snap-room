@@ -5,7 +5,7 @@ angular.module('roomApp')
                                     personCounterService, socket) {
  
     return {
-      get: function (roomNumber, type) {
+      get: function (roomNumber) {
         var deferred = $q.defer();
         var room = {};
           $http.get("/api/lunchRoom/" + roomNumber)
@@ -22,7 +22,7 @@ angular.module('roomApp')
 
       },
 
-      submitInput: function(roomNumber, name, picture, type) {
+      submitInput: function(roomNumber, name, picture) {
         $http.put("/api/lunchRoom/" + roomNumber, 
           {choice : inputForm.textInput.value,
             name : name})

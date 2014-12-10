@@ -12,7 +12,6 @@ console.log("LunchroomCtrl");
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
-    this.roomType = roomCreationService.roomType;
     this.roomColor = this.params.color;
     this.user = usernameVal.name;
     this.maxVotes;
