@@ -139,6 +139,7 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
 
 
   socket.on('updateRoom', function(roomNumber, data) {
+    console.log('UPDATE ROOM!!')
     socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
     socket.emit('updateRoom', roomNumber, data);
   })

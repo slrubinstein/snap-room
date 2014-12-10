@@ -16,10 +16,10 @@ exports.register = function(socketio) {
 }
 
 function onSave(socketio, doc, cb) {
-	console.log("onSave");
-	var roomNumber = doc.roomNumber
-  //socketio.broadcast.to(roomNumber).emit('updateVotes', doc);
-  socketio.to(roomNumber).emit('updateVotes', doc);
+	// console.log("onSave");
+	// var roomNumber = doc.roomNumber
+ //  //socketio.broadcast.to(roomNumber).emit('updateVotes', doc);
+ //  socketio.to(roomNumber).emit('updateVotes', doc);
 }
 
 function onRemove(socketio, doc, cb) {

@@ -156,7 +156,7 @@ console.log("LunchroomCtrl");
     // this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
+    lunchRoomService.listen(roomNumber, $scope, ctrl, this.user);
 
 
     //returnArray is used to display the correct number of dollar signs

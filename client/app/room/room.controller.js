@@ -12,14 +12,12 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
-    //this.roomType = this.params.type;
-    this.roomType = roomCreationService.roomType;
-    console.log(this.roomType);
+    // this.roomType = roomCreationService.roomType;
     this.roomColor = this.params.color;
 
     //roomData, roomType, and roomColor are all assigned in
     //getRoomSuccessCallback
-    //this.roomData;
+    this.roomName = '';
 
     // display number of people in room
     this.numberPeople = personCounterService.numberPeople;
@@ -41,9 +39,7 @@ angular.module('roomApp')
      this.getRoom(roomNumber);
 
     function getRoomSuccessCallback(room) {
-        //ctrl.roomData = room;
-        //ctrl.roomColor = room.color;
-        //ctrl.roomType = room.type
+        ctrl.roomName = room.roomName;
         ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
         ctrl.countDown = $interval(ctrl.runTimer, 1000);
 
@@ -76,45 +72,23 @@ angular.module('roomApp')
       }
     };
     
-    //submitInput is called when the user submits the name of a restaurant
-    //or a message. It calls chatroomService.submitInput with a number of
-    //parameters that varies depending on whether the user is logged in
-    // this.submitInput = function() {
-    //   var type = ctrl.roomType;
-    //   var name = usernameVal.name;
-    //   var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
-    //   // if (ctrl.user) {
-    //   //   if (ctrl.user.facebook) {
-    //   //     name = ctrl.user.facebook.first_name;
-    //   //     picture = ctrl.user.facebook.picture;
-    //   //   }
-    //   // }
-   
-    //   if (ctrl.inputField.length < 100) {
-    //     chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture, type);
-    //     //to empty the input field:
-    //     ctrl.inputField = '';
-    //   }
-    // }
-
-
     //facebook login stuff
     this.user = Auth.getCurrentUser();
     this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    //roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
+    roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
 
-    socket.socket.on('timeUp', function(expiredRoomNumber, data) {
-      //in case the user is in multiple rooms (which is not supposed to happen)
-      if (Number(expiredRoomNumber) === Number(roomNumber)) {
-          ctrl.timeUp = true
-        ////////////////////////////////////
-          ctrl.winner = data.winner;
-          ctrl.maxVotes = data.maxVotes;
-        ////////////////////////////////////
-      }
-    });
+    // socket.socket.on('timeUp', function(expiredRoomNumber, data) {
+    //   //in case the user is in multiple rooms (which is not supposed to happen)
+    //   if (Number(expiredRoomNumber) === Number(roomNumber)) {
+    //       ctrl.timeUp = true
+    //     ////////////////////////////////////
+    //       ctrl.winner = data.winner;
+    //       ctrl.maxVotes = data.maxVotes;
+    //     ////////////////////////////////////
+    //   }
+    // });
 
 
     this.backToMain = function() {

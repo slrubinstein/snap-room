@@ -16,9 +16,9 @@ exports.register = function(socketio) {
 }
 
 function onSave(socketio, doc, cb) {
-	var roomNumber = doc.roomNumber
+	// var roomNumber = doc.roomNumber
   //socketio.broadcast.to(roomNumber).emit('updateVotes', doc);
-  socketio.to(roomNumber).emit('updateRoom', roomNumber, {doc: doc, event: 'vote'});
+  // socketio.to(roomNumber).emit('updateRoom', roomNumber, {doc: doc, event: 'vote'});
 }
 
 function onRemove(socketio, doc, cb) {
