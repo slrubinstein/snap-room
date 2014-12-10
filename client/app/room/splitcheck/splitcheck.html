@@ -1,103 +1,102 @@
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">The Bill</div>
+  <!-- Table -->
+  <table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Item</th>
+				<th>Price</th>
+				<th>Tax</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in split.bill.billSoFar track by $index">
+				<td>
+					<button class="btn btn-danger btn-xs"
+									ng-click="split.deleteItem($index)">X</button></td>
+				<td>{{item.user}}</td>
+				<td>{{item.food}}</td>
+				<td>${{item.price | number:2}}</td>
+				<td>${{item.tax | number:2}}</td>
+			</tr>
+		</tbody>
+	</table>
 
-	<div class="panel panel-default">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading">The Bill</div>
-	  <!-- Table -->
-	  <table class="table">
-			<thead>
-				<tr>
-					<th></th>
-					<th>Name</th>
-					<th>Item</th>
-					<th>Price</th>
-					<th>Tax</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in split.bill.billSoFar track by $index">
-					<td>
-						<button class="btn btn-danger btn-xs"
-										ng-click="split.deleteItem($index)">X</button></td>
-					<td>{{item.user}}</td>
-					<td>{{item.food}}</td>
-					<td>${{item.price | number:2}}</td>
-					<td>${{item.tax | number:2}}</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="panel-footer bill-totals">
 
-		<div class="panel-footer bill-totals">
+		<p>Subtotal from bill:
+			<input class="sub-total" 
+						 type="text" 
+						 ng-model="split.bill.subtotal" 
+						 ng-change="split.updateSubtotal()"/></p>
 
-			<p>Subtotal from bill:
-				<input class="sub-total" 
-							 type="text" 
-							 ng-model="split.bill.subtotal" 
-							 ng-change="split.updateSubtotal()"/></p>
+		<div class="row">
+			<div class="half-col">
 
-			<div class="row">
-				<div class="half-col">
+				<p>
+					<input type="range" 
+								name="tipAmount"
+								class="tip-tax-slider"
+								min=0
+								max=25
+								ng-change="split.updateSubtotal()"
+								ng-model="split.bill.tipPercent" />
+				</p>
 
-					<p>
-						<input type="range" 
-									name="tipAmount"
+				<p>
+					<input type="range" 
+									name="taxAmount"
 									class="tip-tax-slider"
 									min=0
-									max=25
+									max=10
+									step=0.001
 									ng-change="split.updateSubtotal()"
-									ng-model="split.bill.tipPercent" />
-					</p>
-
-					<p>
-						<input type="range" 
-										name="taxAmount"
-										class="tip-tax-slider"
-										min=0
-										max=10
-										step=0.001
-										ng-change="split.updateSubtotal()"
-										ng-model="split.bill.taxPercent" />
-					</p>
-				</div>
-				<div class="half-col">
-					<p>Tip 
-						<input class="sub-total"
-									 type="text"
-									 ng-model="split.bill.tipPercent"
-									 ng-change="split.updateSubtotal()" />
-
-						%: {{split.bill.totalTip | number:2}}</p>
-					
-					<p>
-						Tax: 
-						<input class="sub-total"
-									 type="text"
-									 ng-model="split.bill.taxPercent"
-									 ng-change="split.updateSubtotal()" />
-
-						%: {{split.bill.totalTax | number:3}}</p>
-					<p><strong>Total: {{split.bill.grandTotal | number:2}}</strong></p>
-				</div>
+									ng-model="split.bill.taxPercent" />
+				</p>
 			</div>
-		</div>
+			<div class="half-col">
+				<p>Tip 
+					<input class="sub-total"
+								 type="text"
+								 ng-model="split.bill.tipPercent"
+								 ng-change="split.updateSubtotal()" />
 
-		<div class="panel-body bill-updating-numbers">	
-			<div class="row">
-				<div class="third-col">
-					<p><strong>In the pot: </strong></p>
-					<p>${{split.bill.runningTotal | number:2}}</p>
-				</div>
-				<div class="third-col">
-					<p><strong>Still short: </strong></p>
-					<p ng-class="{negative: split.bill.remainder > 0,
-												positive: split.bill.remainder < 0}"
-						>${{split.bill.remainder | number:2}}</p>
-				</div>
-				<div class="third-col">
-					<p><strong>Splitting tip between {{split.numberPeople}}</strong></p>
-				</div>
+					%: {{split.bill.totalTip | number:2}}</p>
+				
+				<p>
+					Tax: 
+					<input class="sub-total"
+								 type="text"
+								 ng-model="split.bill.taxPercent"
+								 ng-change="split.updateSubtotal()" />
+
+					%: {{split.bill.totalTax | number:3}}</p>
+				<p><strong>Total: {{split.bill.grandTotal | number:2}}</strong></p>
 			</div>
 		</div>
 	</div>
+
+	<div class="panel-body bill-updating-numbers">	
+		<div class="row">
+			<div class="third-col">
+				<p><strong>In the pot: </strong></p>
+				<p>${{split.bill.runningTotal | number:2}}</p>
+			</div>
+			<div class="third-col">
+				<p><strong>Still short: </strong></p>
+				<p ng-class="{negative: split.bill.remainder > 0,
+											positive: split.bill.remainder < 0}"
+					>${{split.bill.remainder | number:2}}</p>
+			</div>
+			<div class="third-col">
+				<p><strong>Splitting tip between {{split.numberPeople}}</strong></p>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="panel panel-default">
 	<div class="panel-heading">Input your bill items below</div>
@@ -125,5 +124,6 @@
          <button ng-click="split.calculateMyTotal()">Calculate My Total</button>
      	</div>
 
-  </div>
+	  </div>
+	</div>
 </div>

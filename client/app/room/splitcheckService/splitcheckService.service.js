@@ -180,11 +180,18 @@ angular.module('roomApp')
         socket.socket.emit('updateRoom', roomNumber, {event: 'updateBill', newBill: newBill})
       }
     
-      function listen(ctrl) {
+      function listen(ctrl, roomNumber) {
 
-        socket.socket.on('updateRoom', function(roomNumber, data) {
-          splitcheckService.updateFromSocket(data.newBill);
-          ctrl.bill = ctrl.updateMyPage();
+        socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
+          if (data.event==='updateBill') {
+            splitcheckService.updateFromSocket(data.newBill);
+            ctrl.bill = ctrl.updateMyPage();
+          }
+           if (data.event==='timeUp') {
+              if (Number(expiredRoomNumber) === Number(roomNumber)) {
+                ctrl.timeUp = true;
+              }
+           }
         })
 
         socket.socket.on('updateRoomForMe', function(roomNumber, data) {
