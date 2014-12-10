@@ -3,9 +3,24 @@
     		 ng-hide="lunch.timeUp">
 
 				<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
-					
-					<restaurant-list room-trim-font>
-					</restaurant-list>
+			    
+			    <div ng-show="lunch.winner" 
+			  		class="col-sm-12 col-md-12 col-lg-12">
+			      <h2 ng-show="lunch.winner.length > 1">Winners:</h2>
+			      <h2 ng-show="lunch.winner.length === 1">Winner:</h2>
+			      <ul class="list-group">
+			  			<li ng-repeat="winner in lunch.winner"
+			  					class="list-group-item">
+
+			  				<span room-trim-font>{{winner}}</span>
+			  				<span class="badge">{{room.maxVotes}}</span>
+
+			  			</li>
+			  	   </ul>
+			  	</div>
+
+				<restaurant-list room-trim-font ng-hide="lunch.winner">
+				</restaurant-list>
 
 				</div>
 

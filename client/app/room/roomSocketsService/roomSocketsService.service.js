@@ -22,7 +22,7 @@ angular.module('roomApp')
         var name = usernameVal.name;
         socket.socket.emit('join', roomNumber, name);
         
-        socket.socket.on('updateRoom', function(roomNumber, data) {
+        socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
           // if (data.event==='vote') {
           //   //refactor into updateVotes()
           //   console.log('ctrl', ctrl.roomData)
@@ -48,7 +48,7 @@ angular.module('roomApp')
           //      });
           //     }
           //   }
-          }
+
           if (data.event==='chat') {
             console.log(data)
             ctrl.roomData = data.doc;

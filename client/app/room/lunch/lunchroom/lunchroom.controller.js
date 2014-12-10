@@ -15,6 +15,8 @@ console.log("LunchroomCtrl");
     this.roomType = roomCreationService.roomType;
     this.roomColor = this.params.color;
     this.user = usernameVal.name;
+    this.maxVotes;
+    this.winner;
 
     //roomData, roomType, and roomColor are all assigned in
     //getRoomSuccessCallback

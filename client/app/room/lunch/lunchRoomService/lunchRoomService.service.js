@@ -70,16 +70,18 @@ angular.module('roomApp')
         },
 
         listen: function(roomNumber, $scope, ctrl, user) {
-          socket.socket.on('updateRoom', function(roomNumber, data) {
-
+          socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
             if (data.event==='timeUp') {
               //in case the user is in multiple rooms (which is not supposed to happen)
+              
+              console.log("roomNumber from server: ", expiredRoomNumber);
+
               if (Number(expiredRoomNumber) === Number(roomNumber)) {
                 ////////////////////////////////////
                 $http.get("/api/lunchRoom/" + roomNumber)
                   .success(function(room){
-                    ctrl.winner;
-                    ctrl.maxVotes;
+                    var winner;
+                    var maxVotes;
                     if (room.choices) {
                       if (room.choices.length > 0) {
                         winner = [room.choices[0].choice];
@@ -103,33 +105,37 @@ angular.module('roomApp')
             }
             if (data.event==='vote') {
             //refactor into updateVotes()
-            console.log('ctrl', ctrl.roomData)
-            if (ctrl.roomData && data.doc) {
-              if (ctrl.roomData.choices.length !== data.doc.choices.length) {
-                ctrl.roomData.choices.push(data.doc.choices[data.doc.choices.length-1]);
-                $scope.$apply();
-              }
-              else {
-                data.doc.choices.forEach(function(el, index) {
-                  if (el.votes !== ctrl.roomData.choices[index].votes) {
-                     ctrl.roomData.choices[index].votes = el.votes;
-                     ctrl.roomData.choices[index].voters = el.voters;
-                  }
-                  else {
-                    data.doc.choices.forEach(function(el, index) {
-                      if (el.votes !== ctrl.roomData.choices[index].votes) {
-                         ctrl.roomData.choices[index].votes = el.votes;
-                         ctrl.roomData.choices[index].voters = el.voters;
-                      }
-                  });
+            console.log("roomNumber from server: ", expiredRoomNumber);
+            if (Number(expiredRoomNumber) === Number(roomNumber)) {
+              console.log('ctrl', ctrl.roomData)
+              if (ctrl.roomData && data.doc) {
+                if (ctrl.roomData.choices.length !== data.doc.choices.length) {
+                  ctrl.roomData.choices.push(data.doc.choices[data.doc.choices.length-1]);
+                  $scope.$apply();
                 }
-               });
+                else {
+                  data.doc.choices.forEach(function(el, index) {
+                    if (el.votes !== ctrl.roomData.choices[index].votes) {
+                       ctrl.roomData.choices[index].votes = el.votes;
+                       ctrl.roomData.choices[index].voters = el.voters;
+                    }
+                    else {
+                      data.doc.choices.forEach(function(el, index) {
+                        if (el.votes !== ctrl.roomData.choices[index].votes) {
+                           ctrl.roomData.choices[index].votes = el.votes;
+                           ctrl.roomData.choices[index].voters = el.voters;
+                        }
+                    });
+                  }
+                 });
+                }
               }
-            }
-          })
+          }
         }
+        })
       }
-  });
+  }
+});
 
 
 

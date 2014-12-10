@@ -73,15 +73,15 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
   })
 
   socket.on('timeUp', function(roomNumber, geoRoomArr) {
-    var data;
+    var data = {event: 'timeUp'};
     Room.findOne({"roomNumber":roomNumber}, function(err, room) {
       if (!room) {return;}
       if (!room.expired) {
         room.expired = true;
         room.save(function(err, room) {
 
-          socket.broadcast.to(roomNumber).emit('timeUp', roomNumber, data);
-          socket.emit('timeUp', roomNumber, data);
+          socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
+          socket.emit('updateRoom', roomNumber, data);
 
 
           // if (room.type === 'lunch') {
@@ -139,7 +139,6 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
 
 
   socket.on('updateRoom', function(roomNumber, data) {
-    console.log('UPDATE ROOM!!')
     socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
     socket.emit('updateRoom', roomNumber, data);
   })
