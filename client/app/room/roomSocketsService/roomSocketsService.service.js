@@ -50,8 +50,8 @@ angular.module('roomApp')
           //   }
 
           if (data.event==='chat') {
-            console.log(data)
-            ctrl.roomData = data.doc;
+
+            //ctrl.roomData = data.doc;
           }
           if (data.event==='timeUp') {
             //in case the user is in multiple rooms (which is not supposed to happen)

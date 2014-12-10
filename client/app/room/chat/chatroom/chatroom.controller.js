@@ -11,10 +11,11 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
+    ctrl.timeUp = false;
 
     //roomData, and roomColor are all assigned in
     //getRoomSuccessCallback
-    this.roomData;
+    this.roomData ={};
     this.roomColor;
 
     // display number of people in room
@@ -97,7 +98,7 @@ angular.module('roomApp')
     // this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
+    chatroomService.listen(roomNumber, $scope, ctrl, this.user);
 
     // socket.socket.on('timeUp', function(expiredRoomNumber, data) {
     //   //in case the user is in multiple rooms (which is not supposed to happen)

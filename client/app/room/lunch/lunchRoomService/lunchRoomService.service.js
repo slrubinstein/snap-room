@@ -73,9 +73,6 @@ angular.module('roomApp')
           socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
             if (data.event==='timeUp') {
               //in case the user is in multiple rooms (which is not supposed to happen)
-              
-              console.log("roomNumber from server: ", expiredRoomNumber);
-
               if (Number(expiredRoomNumber) === Number(roomNumber)) {
                 ////////////////////////////////////
                 $http.get("/api/lunchRoom/" + roomNumber)
@@ -106,6 +103,7 @@ angular.module('roomApp')
             if (data.event==='vote') {
             //refactor into updateVotes()
             console.log("roomNumber from server: ", expiredRoomNumber);
+            //in case the user is in multiple rooms (which is not supposed to happen)
             if (Number(expiredRoomNumber) === Number(roomNumber)) {
               console.log('ctrl', ctrl.roomData)
               if (ctrl.roomData && data.doc) {
