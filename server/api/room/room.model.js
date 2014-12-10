@@ -7,7 +7,6 @@ var RoomSchema = new Schema({
   name: String,
   info: String,
   active: Boolean,
-  choices: [{choice: String, votes: Number, voters: [String]}],
   roomNumber: Number,
   latLonCoords: [String],
   rawLat: Number,
@@ -18,8 +17,7 @@ var RoomSchema = new Schema({
   expired: {type: Boolean, default: false},
   lock: String,
   type: String,
-  roomName: String,
-  messages: [{message: String, name: String, picture: String}]
+  roomName: String
 });
 
 module.exports = mongoose.model('Room', RoomSchema);

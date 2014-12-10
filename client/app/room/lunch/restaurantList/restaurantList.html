@@ -1,15 +1,15 @@
 <ul class="list-group messages">
-	<div ng-repeat="choice in room.roomData.choices">
+	<div ng-repeat="choice in lunch.roomData.choices">
 		<li class="list-group-item">
 
 			<div class="restaurants">
 				<span>
 					<button class="btn btn-default" 
-									ng-click="room.vote(choice.choice, 'up', $event)">+</button>
+									ng-click="lunch.vote(choice.choice, 'up', $event)">+</button>
 				</span>
 				<span>
 					<button class="btn btn-default" 
-									ng-click="room.vote(choice.choice, 'down', $event)">-</button>
+									ng-click="lunch.vote(choice.choice, 'down', $event)">-</button>
 				</span>
 				<span>{{choice.choice}}</span>
 			</div>
@@ -17,12 +17,12 @@
 			<button class="btn btn-default votes">
 				<span>{{choice.votes}}</span>
 				<span class="glyphicon glyphicon-user"
-							ng-click="room.seeVotes($event)"></span>
+							ng-click="lunch.seeVotes($event)"></span>
 			</button>
 			<div class="clearfix"></div>
 
 		</li>
-		<li class="list-group-item voters" ng-show="room.showVoters">
+		<li class="list-group-item voters" ng-show="lunch.showVoters">
 			<span ng-repeat="voter in choice.voters track by $index">{{voter + " "}}  </span>
 		</li>
 	</div>

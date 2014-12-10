@@ -1,27 +1,27 @@
 <button class="foursquareButton" 
-				ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green'}" 
-				ng-if="room.roomType==='lunch'"
-				ng-show="room.restaurants.length===0"
-				ng-click="room.getFourSquare()">Find Local Restaurants From Foursquare</button>
+				ng-class="{redTrim: lunch.roomColor==='red', blueTrim: lunch.roomColor==='blue', greenTrim: lunch.roomColor==='green'}" 
+				ng-if="lunch.roomType==='lunch'"
+				ng-show="lunch.restaurants.length===0"
+				ng-click="lunch.getFourSquare()">Find Local Restaurants From Foursquare</button>
 
-<button ng-show="room.restaurants.length!==0"
+<button ng-show="lunch.restaurants.length!==0"
 				class="foursquareButton"
-				ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green'}" 
-				ng-click="room.hideFoursquare()">Hide Foursquare Restaurants
+				ng-class="{redTrim: lunch.roomColor==='red', blueTrim: lunch.roomColor==='blue', greenTrim: lunch.roomColor==='green'}" 
+				ng-click="lunch.hideFoursquare()">Hide Foursquare Restaurants
 </button>
 
-<button ng-click="room.showFoursquare()"
+<button ng-click="lunch.showFoursquare()"
 				class="foursquareButton ng-hide"
-				ng-class="{redTrim: room.roomColor==='red', blueTrim: room.roomColor==='blue', greenTrim: room.roomColor==='green'}" 
+				ng-class="{redTrim: lunch.roomColor==='red', blueTrim: lunch.roomColor==='blue', greenTrim: lunch.roomColor==='green'}" 
 				>Show Foursquare Restaurants</button>
 
 <div class="foursquareRests"
-		ng-class="{redAccent: room.roomColor==='red', blueAccent: room.roomColor==='blue', greenAccent: room.roomColor==='green'}"> 
-	<div class="animated fadeInDownBig" ng-repeat="restaurant in room.restaurants">
+		ng-class="{redAccent: lunch.roomColor==='red', blueAccent: lunch.roomColor==='blue', greenAccent: lunch.roomColor==='green'}"> 
+	<div class="animated fadeInDownBig" ng-repeat="restaurant in lunch.restaurants">
 		<p>
-			<button class="btn btn-default" ng-click="room.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}
+			<button class="btn btn-default" ng-click="lunch.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}
 			</button>
-      		<span ng-repeat="element in room.returnArray(restaurant.venue.price.tier)">$</span> 
+      		<span ng-repeat="element in lunch.returnArray(restaurant.venue.price.tier)">$</span> 
 			<span>{{restaurant.venue.location.address}}</span> 
 			<a target="_blank" href="{{restaurant.tips[0].canonicalUrl}}">
 				<span class="glyphicon glyphicon-info-sign"></span>

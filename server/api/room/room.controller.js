@@ -2,9 +2,6 @@
 
 var _ = require('lodash');
 var Room = require('./room.model');
-var request = require('request');
-var foursquareID = process.env.FOURSQUARE_ID;
-var foursquareSecret = process.env.FOURSQUARE_SECRET;
 
 // Get list of rooms
 exports.index = function(req, res) {
@@ -115,34 +112,6 @@ exports.destroy = function(req, res) {
   });
 };
 
-exports.foursquare = function(req, res) {
-  Room.findOne({roomNumber:req.params.id}, function (err, room) {
-    if(err) { return handleError(res, err); }
-    if(!room) { return res.status(500).send("not OK"); }
-
-    var lat = room.rawLat;
-    var lon = room.rawLon;
-
-    var url = 'https://api.foursquare.com/v2/venues/explore?' +
-    'll='+ lat + ','+ lon + '&section=food&client_id=' + foursquareID + '&client_secret=' +
-    foursquareSecret + '&v=20141120';
-
-    // var url = 'https://api.foursquare.com/v2/venues/trending?' +
-    // 'll='+ lat + ','+ lon + '&client_id=' + foursquareID + '&client_secret=' +
-    // foursquareSecret + '&v=20141120';
-
-
-    request.get(url, function(err, response, body) {
-      if (err) {
-        return res.send(500);
-      }
-      res.send(body);
-    });
-
-
-    // return res.status(200).send("OK");
-  });
-};
 
 function handleError(res, err) {
   return res.send(500, err);

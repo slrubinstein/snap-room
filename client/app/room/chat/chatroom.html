@@ -10,20 +10,20 @@
 
 		<form id="inputForm" 
 					name="inputForm"
-					ng-submit="room.submitInput()" 
+					ng-submit="chat.submitInput()" 
 					novalidate>
-	      <div ng-hide="room.timeUp">			 
+	      <div ng-hide="chat.timeUp">			 
 	        <label for="textInput"
 	      			 room-trim-font
 	      			 >Enter a message:</label>
 	        <br/>
-	                <h3 ng-show="room.inputField.length > 49">Message is too long</h3>
+	                <h3 ng-show="chat.inputField.length > 49">Message is too long</h3>
 					<input id="textInput" 
 							 name="textInput" 
 							 type="text" 
 							 class="form-control"
-							 ng-model="room.inputField"><br/>
-					<input ng-show="room.inputField" 
+							 ng-model="chat.inputField"><br/>
+					<input ng-show="chat.inputField" 
 					   class="btn" 
 					   type="submit"
 					   room-trim room-accent>

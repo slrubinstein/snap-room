@@ -12,14 +12,14 @@ angular.module('roomApp')
      .state('room.lunch', {
        url: '/lunch',
        templateUrl: 'app/room/lunch/lunchroom.html',
-       controller: 'RoomCtrl',
-       controllerAs: 'room'
+       controller: 'LunchroomCtrl',
+       controllerAs: 'lunch'
      })
      .state('room.chat', {
        url: '/chat',
        templateUrl: 'app/room/chat/chatroom.html',
-       controller: 'RoomCtrl',
-       controllerAs: 'room'
+       controller: 'ChatroomCtrl',
+       controllerAs: 'chat'
      })
      .state('room.splitcheck', {
        url: '/splitcheck',

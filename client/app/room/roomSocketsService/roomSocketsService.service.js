@@ -5,19 +5,19 @@ angular.module('roomApp')
 
     return {
 
-      listen: function(roomNumber, $scope, ctrl, user) {
-        socket.socket.on('timeUp', function(expiredRoomNumber, data) {
-          //in case the user is in multiple rooms (which is not supposed to happen)
-          if (Number(expiredRoomNumber) === Number(roomNumber)) {
-            ctrl.timeUp = true
-            ////////////////////////////////////
-            if (ctrl.roomType === 'lunch') {
-              ctrl.winner = data.winner;
-              ctrl.maxVotes = data.maxVotes;
-            }
-            ////////////////////////////////////
-          }
-        });
+       listen: function(roomNumber, $scope, ctrl, user) {
+      //   socket.socket.on('timeUp', function(expiredRoomNumber, data) {
+      //     //in case the user is in multiple rooms (which is not supposed to happen)
+      //     if (Number(expiredRoomNumber) === Number(roomNumber)) {
+      //       ctrl.timeUp = true
+      //       ////////////////////////////////////
+      //       if (ctrl.roomType === 'lunch') {
+      //         ctrl.winner = data.winner;
+      //         ctrl.maxVotes = data.maxVotes;
+      //       }
+      //       ////////////////////////////////////
+      //     }
+      //   });
 
         var name = usernameVal.name;
         socket.socket.emit('join', roomNumber, name);
@@ -39,7 +39,16 @@ angular.module('roomApp')
                    ctrl.roomData.choices[index].votes = el.votes;
                    ctrl.roomData.choices[index].voters = el.voters;
                 }
-              });
+
+              else {
+                roomData.choices.forEach(function(el, index) {
+                  if (el.votes !== ctrl.roomData.choices[index].votes) {
+                     ctrl.roomData.choices[index].votes = el.votes;
+                     ctrl.roomData.choices[index].voters = el.voters;
+                  }
+                });
+              }
+             }
             }
           }
           if (data.event==='timeUp') {

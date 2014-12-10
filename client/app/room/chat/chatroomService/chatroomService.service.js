@@ -1,49 +1,36 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('chatroomService', function ($http, socket) {
+  .factory('chatroomService', function ($http, socket, $q) {
 
     return {
-submitInput: function(userInput, roomNumber, name, picture, type) {
-       if (type === 'lunch') {
-         $http.put("/api/room/" + roomNumber, 
-           {choice : userInput,
-             name : name})
-           .success(function(data){
-              console.log('submitting', data)
-              // front end model is not being updated on client
-              // can either update models in the ctrl, or use a
-              // socket.emit on the backend to update ctrl
-              socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
-         })
-         .error(function(data){
-             console.log("error");
-         });
-       }
-       else if (type === 'chat') {
-         $http.put('api/chat/' + roomNumber,
+
+      get: function (roomNumber, type) {
+        var deferred = $q.defer();
+        var room = {};
+        $http.get("/api/chatRoom/" + roomNumber)
+         .success(function(data){
+          room = data;
+          deferred.resolve(room); 
+        }).error(function(data){
+           $location.path("/");
+        });
+        return deferred.promise;  
+      },
+      
+     submitInput: function(userInput, roomNumber, name, picture, type) {
+         $http.put('api/chatRoom/' + roomNumber,
            {message: inputForm.textInput.value,
              name: name,
              picture: picture})
          .success(function(data) {
-           // console.log(data)
+          // front end model is not being updated on client
+          // can either update models in the ctrl, or use a
+          // socket.emit on the backend to update ctrl
+          socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
          })
          .error(function(data) {
            console.log('error');
-         });
-       }
-     },
-
-     submitVote: function(roomNumber, choice, upOrDown, name) {
-       $http.put("/api/room/" + roomNumber, 
-         {choice : choice,
-           name: name,
-           upOrDown: upOrDown})
-         .success(function(data){
-          socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
-         })
-         .error(function(data){
-             console.log("error");
          });
      },
 
