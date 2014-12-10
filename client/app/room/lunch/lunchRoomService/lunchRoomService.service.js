@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('lunchRoomService', function ($q, $http, $location, personCounterService) {
+  .factory('lunchRoomService', function ($q, $http, $location, 
+                                    personCounterService, socket) {
  
     return {
       get: function (roomNumber, type) {

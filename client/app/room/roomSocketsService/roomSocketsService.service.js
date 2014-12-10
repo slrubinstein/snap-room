@@ -40,21 +40,21 @@ angular.module('roomApp')
                    ctrl.roomData.choices[index].voters = el.voters;
                 }
 
-              else {
-                roomData.choices.forEach(function(el, index) {
-                  if (el.votes !== ctrl.roomData.choices[index].votes) {
-                     ctrl.roomData.choices[index].votes = el.votes;
-                     ctrl.roomData.choices[index].voters = el.voters;
-                  }
+                else {
+                  data.doc.choices.forEach(function(el, index) {
+                    if (el.votes !== ctrl.roomData.choices[index].votes) {
+                       ctrl.roomData.choices[index].votes = el.votes;
+                       ctrl.roomData.choices[index].voters = el.voters;
+                    }
                 });
               }
-             }
+             });
             }
           }
           if (data.event==='timeUp') {
 
           }
-        })
+        });
 
         function updateVotes(data) {
 
