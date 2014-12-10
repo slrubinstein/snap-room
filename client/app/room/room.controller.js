@@ -7,6 +7,9 @@ angular.module('roomApp')
                                     personCounterService, geoRoomArrVal, usernameVal) {
 
 
+
+
+
     var ctrl = this;
 
     this.params = $stateParams;
@@ -100,8 +103,6 @@ angular.module('roomApp')
     this.toggleUsers = function() {
       ctrl.showUsers = !ctrl.showUsers;
     }
-
-
 
 
   });

@@ -11,13 +11,13 @@ var config = require('./environment');
 
 // When the user disconnects.. perform this
 function onDisconnect(socket, findUsernamesInRoom) {
-
  var roomNumber = socket.roomNumber;
 
  var roomsObject = socket.nsp.adapter.rooms;
  var name = socket.nickname;
 
  var nameArray = findUsernamesInRoom(socket, roomNumber)
+console.log('disconnect room array', nameArray)
  socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
 }
 

@@ -9,6 +9,8 @@ angular.module('roomApp')
 
     var listen = function(ctrl, $scope) {
         socket.socket.on('countPeople', function(numberPeople, nameArray, leaving) {
+          console.log('name array', nameArray)
+          console.log('number', numberPeople)
           ctrl.numberPeople = numberPeople;
           namesOfPeople = nameArray;
           ctrl.namesOfPeople = nameArray;

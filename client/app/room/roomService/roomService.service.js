@@ -10,9 +10,6 @@ return {
         var room = {};
         $http.get("/api/room/" + roomNumber)
          .success(function(data){
-          console.log("data: ", data)
-          //room = data.room;
-          //room.choices = data.choices;
           deferred.resolve(data); 
         }).error(function(data){
            $location.path("/");
