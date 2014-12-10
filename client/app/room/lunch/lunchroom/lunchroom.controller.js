@@ -2,18 +2,19 @@
 
 angular.module('roomApp')
   .controller('LunchroomCtrl', function ($scope, $stateParams, socket, $http, 
-  	                    $interval, lunchRoomService, Auth, $state,
+  	                    $interval, lunchRoomService, Auth, $state, roomCreationService,
                          fourSquareService, roomSocketsService, $window,
                          personCounterService, geoRoomArrVal, usernameVal) {
 
 
     var ctrl = this;
-
+console.log("LunchroomCtrl");
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
-    this.roomType = this.params.type;
+    this.roomType = roomCreationService.roomType;
     this.roomColor = this.params.color;
+    this.user = usernameVal.name;
 
     //roomData, roomType, and roomColor are all assigned in
     //getRoomSuccessCallback
@@ -84,7 +85,6 @@ angular.module('roomApp')
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
       var type = ctrl.roomType;
-      var name = usernameVal.name;
       var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
       // if (ctrl.user) {
       //   if (ctrl.user.facebook) {
@@ -94,7 +94,7 @@ angular.module('roomApp')
       // }
  
       if (ctrl.inputField.length < 100) {
-        lunchRoomService.submitInput(roomNumber, name, picture, type);
+        lunchRoomService.submitInput(roomNumber, this.user, picture, type);
         //to empty the input field:
         ctrl.inputField = '';
       }
@@ -114,14 +114,13 @@ angular.module('roomApp')
         ctrl.restaurants.splice(index,1);
       } 
 
-      var name = usernameVal.name;
       //if the user is logged in 
       // if (ctrl.user) {
       //   if (ctrl.user.facebook) {
       //     name = ctrl.user.facebook.first_name;
       //   }
       // }
-      lunchRoomService.submitVote(roomNumber, choice, upOrDown, name);
+      lunchRoomService.submitVote(roomNumber, choice, upOrDown, this.user);
 
     };
 
@@ -153,16 +152,12 @@ angular.module('roomApp')
 
 
     //facebook login stuff
-    this.user = Auth.getCurrentUser();
-    this.isLoggedIn = Auth.isLoggedIn();
+    // this.user = Auth.getCurrentUser();
+    // this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
     roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
 
-
-    this.backToMain = function() {
-      $state.go("main");
-    }
 
     //returnArray is used to display the correct number of dollar signs
     //for the list of restaurants from foursquare
@@ -173,14 +168,6 @@ angular.module('roomApp')
           }
           return arr;
     };
-
-    this.showUsers = false;
-
-    this.toggleUsers = function() {
-      ctrl.showUsers = !ctrl.showUsers;
-    }
-
-
 
 
   });

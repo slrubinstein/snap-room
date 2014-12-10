@@ -2,7 +2,7 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomService, Auth, $state,
+                                    roomService, Auth, $state, roomCreationService,
                                     fourSquareService, roomSocketsService, $window,
                                     personCounterService, geoRoomArrVal, usernameVal) {
 
@@ -12,7 +12,9 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomNumber = this.params.roomNumber;
     var geoRoomArr = geoRoomArrVal.geoRooms;
-    this.roomType = this.params.type;
+    //this.roomType = this.params.type;
+    this.roomType = roomCreationService.roomType;
+    console.log(this.roomType);
     this.roomColor = this.params.color;
 
     //roomData, roomType, and roomColor are all assigned in
@@ -118,16 +120,6 @@ angular.module('roomApp')
     this.backToMain = function() {
       $state.go("main");
     }
-
-    //returnArray is used to display the correct number of dollar signs
-    //for the list of restaurants from foursquare
-    this.returnArray = function(num) {
-          var arr = []; 
-          for (var i = 0; i < num; i++) {
-            arr.push(i);
-          }
-          return arr;
-    };
 
     this.showUsers = false;
 

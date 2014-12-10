@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Chatroom = require('./chatRoom.model');
 var Room = require('../room/room.model');
 
-// Get list of chats
+// Get list of chatrooms
 exports.index = function(req, res) {
   Chatroom.find(function (err, chats) {
     if(err) { return handleError(res, err); }
@@ -12,24 +12,24 @@ exports.index = function(req, res) {
   });
 };
 
-// Get a single chat
+// Get a single chatroom
 exports.show = function(req, res) {
-  Chatroom.findById(req.params.id, function (err, chat) {
+  Chatroom.findOne({"roomNumber": req.params.id}, function (err, chat) {
     if(err) { return handleError(res, err); }
     if(!chat) { return res.send(404); }
     return res.json(chat);
   });
 };
 
-// Creates a new chat in the DB.
+// Creates a new chatroom in the DB.
 exports.create = function(req, res) {
-  Chatroom.create(req.body, function(err, chat) {
+  Chatroom.create({"roomNumber" : req.body.roomNumber}, function(err, chat) {
     if(err) { return handleError(res, err); }
     return res.json(201, chat);
   });
 };
 
-// Updates an existing chat in the DB.
+// Updates an existing chatroom in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
 
@@ -37,10 +37,7 @@ exports.update = function(req, res) {
   var name = req.body.name;
   var picture = req.body.picture;
 
-  console.log("req.body:", req.body);
-  console.log("picture:", picture);
-
-  Room.findOne({roomNumber:req.params.id}, function (err, room) {
+  Chatroom.findOne({roomNumber:req.params.id}, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
     // var updated = _.merge(chat, req.body);
@@ -52,12 +49,13 @@ exports.update = function(req, res) {
     }
     room.save(function (err) {
       if (err) { return handleError(res, err); }
+      console.log(room);
       return res.json(200, room);
     });
   });
 };
 
-// Deletes a chat from the DB.
+// Deletes a chatroom from the DB.
 exports.destroy = function(req, res) {
   Chatroom.findById(req.params.id, function (err, chat) {
     if(err) { return handleError(res, err); }

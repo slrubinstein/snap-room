@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('roomService', function ($http, $q) {
+  .factory('roomService', function ($http, $q, $location) {
     // AngularJS will instantiate a singleton by calling "new" on this function
  
 return {

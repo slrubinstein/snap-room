@@ -10,7 +10,7 @@ angular.module('roomApp')
        controllerAs: 'room'
      })
      .state('room.lunch', {
-       url: '/:type',
+       url: '/lunch',
        templateUrl: 'app/room/lunch/lunchroom.html',
        controller: 'LunchroomCtrl',
        controllerAs: 'lunch'

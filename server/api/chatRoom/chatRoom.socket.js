@@ -16,7 +16,7 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('chatRoom:save', doc);
+ // socket.emit('chatRoom:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
