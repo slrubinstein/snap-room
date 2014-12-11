@@ -77,14 +77,14 @@ angular.module('roomApp')
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
       var name = usernameVal.name;
-      var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
+      var picture = usernameVal.picture; 
       // if (ctrl.user) {
       //   if (ctrl.user.facebook) {
-      //     name = ctrl.user.facebook.first_name;
+      //     //name = ctrl.user.facebook.first_name;
       //     picture = ctrl.user.facebook.picture;
       //   }
       // }
-    console.log(name, picture)
+      console.log(name, picture)
       if (ctrl.inputField.length < 100) {
         chatroomService.submitInput(ctrl.inputField, roomNumber, name, picture);
         //to empty the input field:
@@ -93,7 +93,7 @@ angular.module('roomApp')
     }
 
 
-    //facebook login stuff
+    // facebook login stuff
     // this.user = Auth.getCurrentUser();
     // this.isLoggedIn = Auth.isLoggedIn();
 

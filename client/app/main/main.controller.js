@@ -4,7 +4,10 @@ angular.module('roomApp')
   // geoRoomArrVal is used to make the geoRooms arary available to all controllers
   .value('geoRoomArrVal', {geoRooms:[]})
   // usernameVal makes username accessible to all controllers
-  .value('usernameVal', {name: ''})
+  .value('usernameVal', {
+           name: '', 
+           picture: 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'})
+
   .controller('MainCtrl', function ($scope, $http, socket,
           $window, geolocationService, roomCreationService, Auth, $state, 
           User, geoRoomArrVal, nameGeneratorService, usernameVal) {
@@ -223,13 +226,20 @@ angular.module('roomApp')
     function setUser(validUser) {
        if (validUser) {
         ctrl.isLoggedIn = true;
-        // User.get returns a $resource that takes accepts a callback
-        ctrl.user = User.get({}, function(user) {
-          ctrl.username = ctrl.user.facebook.first_name + ' ' + 
-                          ctrl.user.facebook.last_name[0] + '.';
+        // User.get returns a $resource that takes a callback
+        User.get({}, function(user) {
+          ctrl.username = user.facebook.first_name + ' ' + 
+                          user.facebook.last_name[0];             
           ctrl.setUsername();
-          usernameVal.name = ctrl.username;
+          usernameVal.picture = user.facebook.picture;  
         })
+      }
+    }
+
+    this.setUsername = function() {
+      if (ctrl.username.length > 0) {
+        this.usernameIsSet = !this.usernameIsSet;
+        usernameVal.name = this.username;
       }
     }
 
@@ -240,15 +250,10 @@ angular.module('roomApp')
     };
 
     this.logout = function() {
+      usernameVal.picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg';
+      usernameVal.name = nameGeneratorService.getName();
       Auth.logout();
       $state.reload();
-    }
-
-    this.setUsername = function() {
-      if(ctrl.username.length > 0) {
-        this.usernameIsSet = !this.usernameIsSet;
-        usernameVal.name = this.username;
-      }
     }
 
   });
