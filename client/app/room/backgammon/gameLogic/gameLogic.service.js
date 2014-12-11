@@ -10,8 +10,9 @@ return {
       if (ctrl.roll[0] === ctrl.roll[1]) {
         ctrl.numberRolls = 4;
       }
-      ctrl.saveGame(ctrl.roomNumber);
+
       ctrl.showRollButton = false;
+      ctrl.saveGame(ctrl.roomNumber);
     },
 
     checkSpacesFromJail : function(color) {
@@ -87,8 +88,7 @@ return {
           this.turn = "green";
           this.showRollButton = true;
        }
-/////////////       
-
+       ctrl.saveGame(ctrl.roomNumber);    
     },
 
     checkSpaces : function(spaceNumber, color) {
@@ -258,8 +258,8 @@ return {
        for (var i = 0; i < ctrl.possibleMove.length; i++) {
          ctrl.possibleMove[i] = 0;
        }
-       ctrl.saveGame(ctrl.roomNumber);
        ctrl.showRollButton = true;
+       ctrl.saveGame(ctrl.roomNumber);
     }
    };
 });
