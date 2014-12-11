@@ -258,4 +258,6 @@ angular.module('roomApp')
       $state.reload();
     }
 
+    
+
   });

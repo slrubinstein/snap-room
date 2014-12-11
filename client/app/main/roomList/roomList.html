@@ -8,8 +8,7 @@
     <span>{{availRoom.roomName}}</span>
 
     <span ng-show="!availRoom.roomName">{{availRoom.colorAndNum}} room</span>
-    <br/>
-    <span>({{availRoom.type}})</span>
+    <span><img class="room-icons" ng-src="assets/images/{{availRoom.type}}.png"></span>
 
     <!-- show if locked & not logged in -->
     <span ng-show="availRoom.lock && !main.isLoggedIn"
