@@ -44,7 +44,7 @@ angular.module('roomApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth, socket, usernameVal, $timeout) {
+  .run(function ($rootScope, $location, Auth, socket, usernameVal) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
 

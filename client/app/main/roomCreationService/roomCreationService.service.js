@@ -92,6 +92,7 @@ angular.module('roomApp')
             })
           }
           else {
+            socket.socket.emit('createRoom', data.roomNumber, geoRoomArr)
             $state.go("room." + type, {roomNumber: data.roomNumber,
                       color: color,
                       geoRoom: geoRoom

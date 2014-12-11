@@ -141,17 +141,17 @@ angular.module('roomApp')
   this.getGame(roomNumber);
 
    socket.socket.on("updateGame", function(doc) {
-            ctrl.turn = doc.turn,
-            ctrl.roll = doc.roll,
-            ctrl.numberRolls = doc.numberRolls,
-            ctrl.pieces = doc.pieces,
-            ctrl.piecesColor = doc.piecesColor, 
-            ctrl.greenHomeNumber = doc.greenHomeNumber,
-            ctrl.blueHomeNumber = doc.blueHomeNumber,
-            ctrl.greenPiecesInJail = doc.greenPiecesInJail,
-            ctrl.bluePiecesInJail = doc.bluePiecesInJail,
-            ctrl.blueScore = doc.blueScore,
-            ctrl.greenScore = doc.greenScore
+       ctrl.turn = doc.turn,
+       ctrl.roll = doc.roll,
+       ctrl.numberRolls = doc.numberRolls,
+       ctrl.pieces = doc.pieces,
+       ctrl.piecesColor = doc.piecesColor, 
+       ctrl.greenHomeNumber = doc.greenHomeNumber,
+       ctrl.blueHomeNumber = doc.blueHomeNumber,
+       ctrl.greenPiecesInJail = doc.greenPiecesInJail,
+       ctrl.bluePiecesInJail = doc.bluePiecesInJail,
+       ctrl.blueScore = doc.blueScore,
+       ctrl.greenScore = doc.greenScore
    });
   })
 
