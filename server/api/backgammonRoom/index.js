@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./gameBoard.controller');
+var controller = require('./backgammonRoom.controller');
 
 var router = express.Router();
 

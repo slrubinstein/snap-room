@@ -3,9 +3,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var GameboardSchema = new Schema({
-    players : [],
-    isActive: Boolean,
+var BackgammonroomSchema = new Schema({
     turn : String,
     roll : {rollArray : [Number]},
     numberRolls : Number,
@@ -20,4 +18,4 @@ var GameboardSchema = new Schema({
     roomNumber : Number
 });
 
-module.exports = mongoose.model('Gameboard', GameboardSchema);
+module.exports = mongoose.model('Backgammonroom', BackgammonroomSchema);
