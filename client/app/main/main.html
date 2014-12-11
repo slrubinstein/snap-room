@@ -1,52 +1,49 @@
-
-
-
-  <div class="myContainer container">
-    
-    <header class="page-header">
-       <h1 class="animated zoomIn">Snaproom</h1>
-       <p class="subheading">
-         <em>Your temporary, location-specific collaboration space</em>
-       </p>
-    </header>
-    
-    <div id="finding-location">
-       <p ng-hide="main.geoData.geoLocated || main.geolocationCallFailed">Finding your location...</p>
-       <h3 class="text-warning" ng-show="main.geolocationCallFailed">Error finding your location</h3>
-    </div>
-
-    <div ng-show="main.geoData.geoLocated">
-       <create-room-panel></create-room-panel>
-      <h3 class="text-warning" ng-show="main.getRoomsCallFailed">Error finding available rooms</h3>
-    </div>
-
-    <room-list> </room-list>
-
-
-    <p class="subheading" ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
-
-    <a ng-hide="main.isLoggedIn"
-       class="btn btn-facebook" 
-       ng-click="main.loginOauth('facebook')">
-      <i class="fa fa-facebook"></i> Login with Facebook
-    </a> <br>
-    
-
-    <p class="subheading" ng-show="main.usernameIsSet">Hello {{main.username}}</p>
-    <p class="subheading" ng-hide="main.usernameIsSet">Or choose a username: 
-      <input type="text" ng-model="main.username" maxlength="20" minlength="1">
-    </p>
-    <button ng-click="main.setUsername()"
-              ng-hide="main.usernameIsSet"
-              class="main-page-buttons">Set name</button>
-
-
-    <button ng-click="main.setUsername()"
-            ng-show="main.usernameIsSet && !main.isLoggedIn"
-            class="main-page-buttons">Change name</button>
-
-    <a ng-show="main.isLoggedIn"
-       class="btn btn-default" 
-       ng-click="main.logout()">Log out</a>
-
+<div class="myContainer container">
+  
+  <header class="page-header">
+     <h1 class="animated zoomIn">Snaproom</h1>
+     <p class="subheading">
+       <em>Your temporary, location-specific collaboration space</em>
+     </p>
+  </header>
+  
+  <div id="finding-location">
+     <p ng-hide="main.geoData.geoLocated || main.geolocationCallFailed">Finding your location...</p>
+     <h3 class="text-warning" ng-show="main.geolocationCallFailed">Error finding your location</h3>
   </div>
+
+  <div ng-show="main.geoData.geoLocated">
+     <create-room-panel></create-room-panel>
+    <h3 class="text-warning" ng-show="main.getRoomsCallFailed">Error finding available rooms</h3>
+  </div>
+
+  <room-list> </room-list>
+
+
+  <p class="subheading" ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
+
+  <a ng-hide="main.isLoggedIn"
+     class="btn btn-facebook" 
+     ng-click="main.loginOauth('facebook')">
+    <i class="fa fa-facebook"></i> Login with Facebook
+  </a> <br>
+  
+
+  <p class="subheading" ng-show="main.usernameIsSet">Hello {{main.username}}</p>
+  <p class="subheading" ng-hide="main.usernameIsSet">Or choose a username: 
+    <input type="text" ng-model="main.username" maxlength="20" minlength="1">
+  </p>
+  <button ng-click="main.setUsername()"
+            ng-hide="main.usernameIsSet"
+            class="main-page-buttons">Set name</button>
+
+
+  <button ng-click="main.setUsername()"
+          ng-show="main.usernameIsSet && !main.isLoggedIn"
+          class="main-page-buttons">Change name</button>
+
+  <a ng-show="main.isLoggedIn"
+     class="btn btn-default" 
+     ng-click="main.logout()">Log out</a>
+
+</div>

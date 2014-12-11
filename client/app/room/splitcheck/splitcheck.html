@@ -111,7 +111,7 @@
 
 			    <div class="clearfix"></div>
       </div>
-			    <p><input type="submit" ng-click="split.submit()" value="Add to bill" /></p>
+			    <p><button class="main-page-buttons" type="submit" ng-click="split.submit()">Add to bill</button></p>
 			  </form>
    	</div>
 
@@ -121,7 +121,7 @@
          <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
          <p>Tip: ${{split.bill.tipPerPerson | number:2}}</p>
          <p>You owe: ${{split.personalTotal.total | number:2}}</p>
-         <button ng-click="split.calculateMyTotal()">Calculate My Total</button>
+         <button class="main-page-buttons" ng-click="split.calculateMyTotal()">Recalculate My Total</button>
      	</div>
 
 	  </div>

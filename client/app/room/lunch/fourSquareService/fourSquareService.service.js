@@ -5,14 +5,11 @@ angular.module('roomApp')
 
     return {
       get: function(roomNumber) {
-        var deferred = $q.defer();
-        var restaurants;
-        $http.get('/api/lunchRoom/' + roomNumber + '/vendor/foursquare')
-          .success(function(data) {
-            restaurants = data.response.groups[0].items;
-            deferred.resolve(restaurants);
+        return $http.get('/api/lunchRoom/' + roomNumber + '/vendor/foursquare')
+          .then(function(resp) {
+            var restaurants = resp.data.response.groups[0].items;
+            return restaurants;
           })
-        return deferred.promise; 
       },
       show: function (event) {
         $(event.target).toggleClass('ng-hide');
