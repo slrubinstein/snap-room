@@ -196,13 +196,15 @@ angular.module('roomApp')
                             timerLength: timerLength});
     };
 
-    this.enterRoom = function(roomNumber, color, type) {
-      if (roomNumber) {
-        roomCreationService.enter({roomNumber: roomNumber, 
-                             color: color, 
+    this.enterRoom = function(availRoom) {
+      if (availRoom.roomNumber) {
+        if (!availRoom.lock || ctrl.isLoggedIn) {
+          roomCreationService.enter({roomNumber: availRoom.roomNumber, 
+                             color: availRoom.color, 
                              geoRoom: ctrl.geoRoom, 
-                             isLoggedIn: Auth.isLoggedIn(),
-                             type: type});
+                             isLoggedIn: ctrl.isLoggedIn,
+                             type: availRoom.type});
+        }
       }
     };
 
@@ -212,7 +214,7 @@ angular.module('roomApp')
     //a boolean argument indicating whether a user is logged in
     //or not. If a user is logged in, User.get() will be called,
     //in order to get information about the user from the database
-
+    
     this.usernameIsSet = false;
 
     if (!usernameVal.name) {
