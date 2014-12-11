@@ -30,61 +30,30 @@ angular.module('roomApp')
         }
 
         stateGo();
-        // $http.get("/api/room" + roomNumber)
-        // .success(function(data) {
-        //   var roomNumber = data.roomNumber;
-        //   if (type !== 'backgammon' && type !== 'splitcheck') {
-        //     $http.post("/api/" + type + "Room", {"roomNumber" : data.roomNumber})
-        //     .success(function(data) {   
-        //       console.log(data);
-        //       ctrl.roomType = type;  
-        //       $state.go("room." + type, {roomNumber: data.roomNumber,
-        //                           color: color,
-        //                           geoRoom: geoRoom,
-        //                           type: type
-        //                         });
-        //       socket.socket.emit('createRoom', data.roomNumber, geoRoomArr)
-        //       //timerFactory.timerListener();
-        //        })
-        //     .error(function(error){
-
-        //     })
-        //   }
-        //   else {
-        //     $state.go("room." + type, {roomNumber: data.roomNumber,
-        //               color: color,
-        //               geoRoom: geoRoom
-        //     });
-        //  }
-        // }) 
-        // .error(function(data){
-        //   console.log("error creating room");
-        // });  
       },
 
-      roomType: "",
-
       create: function(options) {
-        var ctrl = this;
+
         var color = options.color,
             geoRoomArr = options.geoRoomArr,
             geoRoom = options.geoRoomArr[0],
             type = options.type;
 
+        var stateGo = function(roomNumber) {
+          $state.go("room." + type, {roomNumber: roomNumber,
+                                      color: color,
+                                      geoRoom: geoRoom,
+                                    });
+              socket.socket.emit('createRoom', roomNumber, geoRoomArr)
+        }
+
         $http.post("/api/room", options)
         .success(function(data) {
           var roomNumber = data.roomNumber;
           if (type !== 'splitcheck') {
-            $http.post("/api/" + type + "Room", {"roomNumber" : data.roomNumber})
-            .success(function(data) {   
-              console.log(data);
-              ctrl.roomType = type;  
-              $state.go("room." + type, {roomNumber: data.roomNumber,
-                                  color: color,
-                                  geoRoom: geoRoom,
-                                  type: type
-                                });
-              socket.socket.emit('createRoom', data.roomNumber, geoRoomArr)
+            $http.post("/api/" + type + "Room", {"roomNumber" : roomNumber})
+            .success(function() {   
+              stateGo(roomNumber);
               //timerFactory.timerListener();
                })
             .error(function(error){
@@ -92,11 +61,7 @@ angular.module('roomApp')
             })
           }
           else {
-            socket.socket.emit('createRoom', data.roomNumber, geoRoomArr)
-            $state.go("room." + type, {roomNumber: data.roomNumber,
-                      color: color,
-                      geoRoom: geoRoom
-            });
+            stateGo(roomNumber);
          }
         }) 
         .error(function(data){
