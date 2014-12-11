@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 var BackgammonroomSchema = new Schema({
     turn : String,
     roll : {rollArray : [Number]},
+    showRollButton: Boolean,
     numberRolls : Number,
     pieces : {piecesArray: [Number]},
     piecesColor : {piecesColorArr: [String]}, 

@@ -17,8 +17,6 @@ angular.module('roomApp')
     this.showOffBoardBlue = false;
     this.showOffBoardGreen = false;
 
-    this.showRollButton = true;
-
     this.rollFunction = function() {
       gameLogic.rollFunction(ctrl);
     }
@@ -72,7 +70,8 @@ angular.module('roomApp')
       greenPiecesInJail : 0,
       bluePiecesInJail : 0,
       blueScore : 0,
-      greenScore : 0
+      greenScore : 0,
+      showRollButton : true
     })
       .success(function(data) {
         //ctrl.gameID = data._id;
@@ -89,6 +88,7 @@ angular.module('roomApp')
         ctrl.bluePiecesInJail = 0;
         ctrl.blueScore = 0;
         ctrl.greenScore = 0;
+        ctrl.showRollButton = true;
      })
       .error(function(error) {
          console.log(error);
@@ -99,6 +99,7 @@ angular.module('roomApp')
       $http.put("/api/backgammonRoom/" + roomNumber, {
             turn : this.turn,
             roll : this.roll,
+            showRollButton : this.showRollButton,
             numberRolls : this.numberRolls,
             pieces : this.pieces,
             piecesColor : this.piecesColor, 
@@ -122,6 +123,7 @@ angular.module('roomApp')
       .success(function(data) {
         ctrl.turn = data.turn;
         ctrl.roll = data.roll;
+        ctrl.showRollButton = data.showRollButton;
         ctrl.numberRolls = data.numberRolls;
         ctrl.pieces = data.pieces;
         ctrl.piecesColor = data.piecesColor;
@@ -141,17 +143,18 @@ angular.module('roomApp')
   this.getGame(roomNumber);
 
    socket.socket.on("updateGame", function(doc) {
-       ctrl.turn = doc.turn,
-       ctrl.roll = doc.roll,
-       ctrl.numberRolls = doc.numberRolls,
-       ctrl.pieces = doc.pieces,
-       ctrl.piecesColor = doc.piecesColor, 
-       ctrl.greenHomeNumber = doc.greenHomeNumber,
-       ctrl.blueHomeNumber = doc.blueHomeNumber,
-       ctrl.greenPiecesInJail = doc.greenPiecesInJail,
-       ctrl.bluePiecesInJail = doc.bluePiecesInJail,
-       ctrl.blueScore = doc.blueScore,
-       ctrl.greenScore = doc.greenScore
+       ctrl.turn = doc.turn;
+       ctrl.roll = doc.roll;
+       ctrl.showRollButton = doc.showRollButton;
+       ctrl.numberRolls = doc.numberRolls;
+       ctrl.pieces = doc.pieces;
+       ctrl.piecesColor = doc.piecesColor; 
+       ctrl.greenHomeNumber = doc.greenHomeNumber;
+       ctrl.blueHomeNumber = doc.blueHomeNumber;
+       ctrl.greenPiecesInJail = doc.greenPiecesInJail;
+       ctrl.bluePiecesInJail = doc.bluePiecesInJail;
+       ctrl.blueScore = doc.blueScore;
+       ctrl.greenScore = doc.greenScore;
    });
   })
 
