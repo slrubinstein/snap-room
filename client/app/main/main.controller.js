@@ -258,6 +258,9 @@ angular.module('roomApp')
       $state.reload();
     }
 
+    this.goToInfo = function() {
+      $state.go('about');
+    }
     
 
   });

@@ -1,6 +1,4 @@
-.glyphicon-info-sign {
-	color: white;
-}
+
 
 .foursquareButton {
   -webkit-appearance: none;
@@ -12,9 +10,16 @@
 }
 
 .foursquareRests {
-   max-height: 300px;
-   overflow-y: scroll;
-   max-width: 440px;
-   margin-left: auto;
-   margin-right: auto;
+  max-height: 300px;
+  overflow-y: scroll;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .glyphicon-info-sign {
+      color: white;
+      &:hover {
+        color: white;
+      }
+    }
 }
