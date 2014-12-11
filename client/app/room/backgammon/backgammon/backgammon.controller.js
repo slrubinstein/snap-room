@@ -57,7 +57,7 @@ angular.module('roomApp')
     };
 
     this.newGame = function() {
-    $http.post("/api/gameBoard", {
+    $http.post("/api/backgammonRoom", {
 
       roomNumber: roomNumber,
       turn : "blue",
@@ -96,7 +96,7 @@ angular.module('roomApp')
     }
 
     this.saveGame = function(gameId) {
-      $http.put("/api/gameBoard/" + roomNumber, {
+      $http.put("/api/backgammonRoom/" + roomNumber, {
             turn : this.turn,
             roll : this.roll,
             numberRolls : this.numberRolls,
@@ -118,7 +118,7 @@ angular.module('roomApp')
     ctrl.pieces = {piecesArray: []};
 
     this.getGame = function(roomNumber) {
-      $http.get("/api/gameBoard/" + roomNumber)
+      $http.get("/api/backgammonRoom/" + roomNumber)
       .success(function(data) {
         ctrl.turn = data.turn;
         ctrl.roll = data.roll;

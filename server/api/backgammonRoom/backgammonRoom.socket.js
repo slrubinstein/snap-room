@@ -4,20 +4,19 @@
 
 'use strict';
 
-var Gameboard = require('./gameBoard.model');
+var Backgammonroom = require('./backgammonRoom.model');
 
 exports.register = function(socket) {
-  Gameboard.schema.post('save', function (doc) {
+  Backgammonroom.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Gameboard.schema.post('remove', function (doc) {
+  Backgammonroom.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socketio, doc, cb) {
-	var roomNumber = doc.roomNumber
-  //socketio.broadcast.to(roomNumber).emit('updateVotes', doc);
+  var roomNumber = doc.roomNumber
   socketio.to(roomNumber).emit('updateGame', doc);
 }
 
