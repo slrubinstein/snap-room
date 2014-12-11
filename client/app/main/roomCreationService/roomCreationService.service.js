@@ -74,7 +74,7 @@ angular.module('roomApp')
         $http.post("/api/room", options)
         .success(function(data) {
           var roomNumber = data.roomNumber;
-          if (type !== 'backgammon' && type !== 'splitcheck') {
+          if (type !== 'splitcheck') {
             $http.post("/api/" + type + "Room", {"roomNumber" : data.roomNumber})
             .success(function(data) {   
               console.log(data);
