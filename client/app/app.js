@@ -53,7 +53,7 @@ angular.module('roomApp', [
         socket.socket.emit('onMainPage');
       } else {
         if (usernameVal.name==='') {
-          $timeout(function() {$location.path('/main');}, 0);
+          $location.path('/main');
         }
       }
 
