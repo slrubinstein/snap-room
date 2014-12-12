@@ -57,7 +57,7 @@ angular.module('roomApp')
               //timerFactory.timerListener();
                })
             .error(function(error){
-
+              console.log('error creating room')
             })
           }
           else {

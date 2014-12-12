@@ -1,0 +1,53 @@
+ <div room-accent 
+    		 id="room-body"
+    		 ng-hide="movie.timeUp">
+
+				<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
+			    
+			    <div ng-show="movie.winner" 
+			  		class="col-sm-12 col-md-12 col-lg-12">
+			      <h2 ng-show="movie.winner.length > 1">Winners:</h2>
+			      <h2 ng-show="movie.winner.length === 1">Winner:</h2>
+			      <ul class="list-group">
+			  			<li ng-repeat="winner in movie.winner"
+			  					class="list-group-item">
+
+			  				<span room-trim-font>{{winner}}</span>
+			  				<span class="badge">{{movie.maxVotes}}</span>
+
+			  			</li>
+			  	   </ul>
+			  	</div>
+
+				<movie-list room-trim-font ng-hide="movie.winner">
+				</movie-list>
+
+				</div>
+
+				<rotten-tomatoes>
+				</rotten-tomatoes>
+			
+			  <h1 room-trim-font>Or</h1>
+
+				<form id="inputForm" 
+							name="inputForm"
+							ng-submit="movie.submitInput()" 
+							novalidate>
+		      <label for="textInput"
+		      			 room-trim-font
+		      			 room-trip>Enter the name of a movie:</label>
+		        <br/>
+		        	    <h3 ng-show="movie.inputField.length > 49">Movie name is too long</h3>
+						<input id="textInput" 
+								 name="textInput" 
+								 type="text" 
+								 class="form-control"
+								 ng-model="movie.inputField"><br/>
+						<input ng-show="movie.inputField" 
+						   class="btn" 
+						   type="submit"
+						   room-trim room-accent>
+				</form>
+
+  </div> 
+</div>

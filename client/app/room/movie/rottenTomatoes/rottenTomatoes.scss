@@ -1,0 +1,25 @@
+
+
+.rottenTomatoesButton {
+  -webkit-appearance: none;
+  padding: 10px;
+  box-shadow: none;
+  border: none;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.rottenTomatoesMovies {
+  max-height: 300px;
+  overflow-y: scroll;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .glyphicon-info-sign {
+      color: white;
+      &:hover {
+        color: white;
+      }
+    }
+}

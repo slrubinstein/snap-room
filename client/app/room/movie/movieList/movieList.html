@@ -1,0 +1,28 @@
+<ul class="list-group messages">
+	<div ng-repeat="choice in movie.roomData.choices">
+		<li class="list-group-item">
+
+			<div class="movies">
+				<span>
+					<button class="btn btn-default" 
+									ng-click="movie.vote(choice.choice, 'up', $event)">+</button>
+				</span>
+				<span>
+					<button class="btn btn-default" 
+									ng-click="movie.vote(choice.choice, 'down', $event)">-</button>
+				</span>
+				<span>{{choice.choice}}</span>
+			</div>
+
+			<button class="btn btn-default votes" ng-click="movie.seeVotes($event)">
+				<span>{{choice.votes}}</span>
+				<span class="glyphicon glyphicon-user"></span>
+			</button>
+			<div class="clearfix"></div>
+
+		</li>
+		<li class="list-group-item voters" ng-show="movie.showVoters">
+			<span ng-repeat="voter in choice.voters track by $index">{{voter + " "}}  </span>
+		</li>
+	</div>
+</ul>

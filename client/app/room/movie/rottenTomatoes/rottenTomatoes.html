@@ -1,0 +1,30 @@
+<button class="rottenTomatoesButton" 
+				ng-class="{redTrim: movie.roomColor==='red', blueTrim: movie.roomColor==='blue', greenTrim: movie.roomColor==='green'}" 
+				ng-show="movie.movies.length===0"
+				ng-click="movie.getrottenTomatoes()">Find Movies From Rotten Tomatoes</button>
+
+<button ng-show="movie.movies.length!==0"
+				class="rottenTomatoesButton"
+				ng-class="{redTrim: movie.roomColor==='red', blueTrim: movie.roomColor==='blue', greenTrim: movie.roomColor==='green'}" 
+				ng-click="movie.hiderottenTomatoes()">Hide Movies
+</button>
+
+<button ng-click="movie.showrottenTomatoes()"
+				class="rottenTomatoesButton ng-hide"
+				ng-class="{redTrim: movie.roomColor==='red', blueTrim: movie.roomColor==='blue', greenTrim: movie.roomColor==='green'}" 
+				>Show Movies</button>
+
+<div class="rottenTomatoesMovies"
+		ng-class="{redAccent: movie.roomColor==='red', blueAccent: movie.roomColor==='blue', greenAccent: movie.roomColor==='green'}"> 
+	<div class="animated fadeInDownBig" ng-repeat="movie in movie.movies">
+		<p>
+			<button class="btn btn-default" ng-click="movie.vote(movie.venue.name, null, $event, $index)">{{movie.venue.name}}
+			</button>
+      		<span ng-repeat="element in movie.returnArray(movie.venue.price.tier)">$</span> 
+			<span>{{movie.venue.location.address}}</span> 
+			<a target="_blank" href="{{movie.tips[0].canonicalUrl}}">
+				<span class="glyphicon glyphicon-info-sign"></span>
+			</a>
+		</p>
+	</div>	
+</div>

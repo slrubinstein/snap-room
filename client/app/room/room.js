@@ -32,5 +32,10 @@ angular.module('roomApp')
        templateUrl: 'app/room/backgammon/backgammon.html',
        controller: 'BackgammonCtrl',
        controllerAs: 'table'
+     }).state('room.movie', {
+       url: '/movie',
+       templateUrl: 'app/room/movie/movie.html',
+       controller: 'MovieroomCtrl',
+       controllerAs: 'movie'
      });
  });
