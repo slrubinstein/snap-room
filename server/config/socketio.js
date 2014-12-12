@@ -11,14 +11,14 @@ var config = require('./environment');
 
 // When the user disconnects.. perform this
 function onDisconnect(socket, findUsernamesInRoom) {
- var roomNumber = socket.roomNumber;
+ var roomId = socket.roomId;
 
  var roomsObject = socket.nsp.adapter.rooms;
  var name = socket.nickname;
 
- var nameArray = findUsernamesInRoom(socket, roomNumber)
+ var nameArray = findUsernamesInRoom(socket, roomId)
 console.log('disconnect room array', nameArray)
- socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
+ socket.broadcast.to(roomId).emit('countPeople', nameArray.length, nameArray);
 }
 
 // When the user connects.. perform this
@@ -40,17 +40,19 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
   socket.on('onMainPage', function() {
     //roomObject has all socket rooms that this user is in
     var roomsObject = socket.nsp.adapter.rooms;
-    //roomNumber will be undefined if user hasn't navigated from a room
-    var roomNumber = socket.roomNumber;
-    socket.leave(roomNumber);
-    var nameArray = findUsernamesInRoom(socket, roomNumber);
-    socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
+    //roomId will be undefined if user hasn't navigated from a room
+    var roomId = socket.roomId;
+    console.log("ROOM OBJECT", roomsObject);
+    socket.leave(roomId);
+    console.log("ROOM OBJECT AFTER LEAVE METHOD", roomsObject);
+    var nameArray = findUsernamesInRoom(socket, roomId);
+    socket.broadcast.to(roomId).emit('countPeople', nameArray.length, nameArray);
   })
  
   //emitted when user creates a new room, after call to database in which
-  //roomNumber is assigned and room document is created
-  socket.on('createRoom', function(roomNumber, geoRoomArr) {
-      socket.join(roomNumber);
+  //roomId is assigned and room document is created
+  socket.on('createRoom', function(roomId, geoRoomArr) {
+      socket.join(roomId);
       //to notify all users in geographic area to check database
       notifyToCheckDatabase(geoRoomArr);
   });
@@ -62,27 +64,31 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
   }
 
   //emitted when user enters a room
-  socket.on('join', function(roomNumber, name) {
-    socket.join(roomNumber);
+  socket.on('join', function(roomId, name) {
+    socket.join(roomId);
     socket.nickname = name;
-    socket.roomNumber = roomNumber;
+    socket.roomId = roomId;
 
-    var nameArray = findUsernamesInRoom(socket, roomNumber);
-    socket.broadcast.to(roomNumber).emit('countPeople', nameArray.length, nameArray);
+    var nameArray = findUsernamesInRoom(socket, roomId);
+    socket.broadcast.to(roomId).emit('countPeople', nameArray.length, nameArray);
     socket.emit('countPeople', nameArray.length, nameArray);
   })
 
-  socket.on('timeUp', function(roomNumber, geoRoomArr) {
+  socket.on('timeUp', function(roomId, geoRoomArr) {
     var data = {event: 'timeUp'};
-    Room.findOne({"roomNumber":roomNumber}, function(err, room) {
+    Room.findById(roomId, function(err, room) {
+      console.log("roomId", roomId);
+      console.log("roomExpired?", room.expired);
       if (!room) {return;}
       if (!room.expired) {
         room.expired = true;
+         console.log("roomExpired after room.expired?", room.expired);
         room.save(function(err, room) {
 
-          socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
-          socket.emit('updateRoom', roomNumber, data);
+          socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
+          socket.emit('updateRoom', roomId, data);
 
+          console.log("geoRoomArr:", geoRoomArr);
           geoRoomArr.forEach(function(el) {
             socket.broadcast.to(el).emit('refreshRoomList');
           });
@@ -93,13 +99,13 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
       })
     })
 
-  socket.on('updateRoom', function(roomNumber, data) {
-    socket.broadcast.to(roomNumber).emit('updateRoom', roomNumber, data);
-    socket.emit('updateRoom', roomNumber, data);
+  socket.on('updateRoom', function(roomId, data) {
+    socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
+    socket.emit('updateRoom', roomId, data);
   })
 
-  socket.on('updateRoomForMe', function(roomNumber, data) {
-    socket.broadcast.to(roomNumber).emit('updateRoomForMe', roomNumber, data);
+  socket.on('updateRoomForMe', function(roomId, data) {
+    socket.broadcast.to(roomId).emit('updateRoomForMe', roomId, data);
   })
 
   // Insert sockets below
@@ -129,8 +135,8 @@ module.exports = function (socketio) {
 
     socket.connectedAt = new Date();
 
-    function findUsernamesInRoom(socket, roomNumber) {
-      var socketIdsInRoom = socket.nsp.adapter.rooms[roomNumber];
+    function findUsernamesInRoom(socket, roomId) {
+      var socketIdsInRoom = socket.nsp.adapter.rooms[roomId];
       var nameArray = []
       for (var socketID in socketIdsInRoom) {
         //find the name associated with each socketID, and push to nameArray

@@ -13,7 +13,7 @@ angular.module('roomApp')
     var ctrl = this;
 
     this.params = $stateParams;
-    var roomNumber = this.params.roomNumber;
+    var roomId = this.params.roomId;
     var geoRoomArr = geoRoomArrVal.geoRooms;
     // this.roomType = roomCreationService.roomType;
     this.roomColor = this.params.color;
@@ -34,12 +34,12 @@ angular.module('roomApp')
     // to the client any info that has already been posted in the room, the
     // amount of time left before the room expires, and the room color/type,
     // as well as to start the interval that runs the timer.
-    this.getRoom = function(roomNumber) {
-       var promise = roomService.get(roomNumber)
+    this.getRoom = function(roomId) {
+       var promise = roomService.get(roomId)
        .then(getRoomSuccessCallback, getRoomErrorCallback)
      };
 
-     this.getRoom(roomNumber);
+     this.getRoom(roomId);
 
     function getRoomSuccessCallback(room) {
         ctrl.roomName = room.roomName;
@@ -71,7 +71,7 @@ angular.module('roomApp')
 
       if(Number(minutesLeftDecimal) < 0.01) {
         $interval.cancel(ctrl.countDown);
-        socket.socket.emit('timeUp', roomNumber, geoRoomArr);
+        socket.socket.emit('timeUp', roomId, geoRoomArr);
       }
     };
     
@@ -80,18 +80,7 @@ angular.module('roomApp')
     this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    roomSocketsService.listen(roomNumber, $scope, ctrl, this.user);
-
-    // socket.socket.on('timeUp', function(expiredRoomNumber, data) {
-    //   //in case the user is in multiple rooms (which is not supposed to happen)
-    //   if (Number(expiredRoomNumber) === Number(roomNumber)) {
-    //       ctrl.timeUp = true
-    //     ////////////////////////////////////
-    //       ctrl.winner = data.winner;
-    //       ctrl.maxVotes = data.maxVotes;
-    //     ////////////////////////////////////
-    //   }
-    // });
+    roomSocketsService.listen(roomId, $scope, ctrl, this.user);
 
 
     this.backToMain = function() {

@@ -125,18 +125,8 @@ angular.module('roomApp')
       }
 
       function updateFromSocket(newBill) {
-        console.log('bill', bill)
-        console.log('new bill', newBill)
-        bill.billSoFar = newBill.billSoFar;
-        bill.taxPercent = newBill.taxPercent;
-        bill.tipPercent = newBill.tipPercent;
-        bill.runningTotal = newBill.runningTotal;
-        bill.subtotal = newBill.subtotal;
-        bill.remainder = newBill.remainder;
-        bill.totalTip = newBill.totalTip;
-        bill.tipPerPerson = newBill.tipPerPerson;
-        bill.totalTax = newBill.totalTax;
-        bill.grandTotal = newBill.grandTotal;
+        bill = newBill;
+
       }
 
     return {
@@ -176,27 +166,29 @@ angular.module('roomApp')
   })
   .factory('splitcheckSockets', function(socket, splitcheckService) {
     
-      function sendBillUpdate(roomNumber, newBill) {
-        socket.socket.emit('updateRoom', roomNumber, {event: 'updateBill', newBill: newBill})
+      function sendBillUpdate(roomId, newBill) {
+        socket.socket.emit('updateRoom', roomId, {event: 'updateBill', newBill: newBill})
       }
     
-      function listen(ctrl, roomNumber) {
+      function listen(ctrl, roomId) {
 
-        socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
+        socket.socket.on('updateRoom', function(eventRoomId, data) {
           if (data.event==='updateBill') {
-            splitcheckService.updateFromSocket(data.newBill);
-            ctrl.bill = ctrl.updateMyPage();
+            if (eventRoomId === roomId) {
+              splitcheckService.updateFromSocket(data.newBill);
+              ctrl.bill = ctrl.updateMyPage();
+            }
           }
            if (data.event==='timeUp') {
-              if (Number(expiredRoomNumber) === Number(roomNumber)) {
+              if (eventRoomId === roomId) {
                 ctrl.timeUp = true;
               }
            }
         })
 
-        socket.socket.on('updateRoomForMe', function(roomNumber, data) {
+        socket.socket.on('updateRoomForMe', function(roomId, data) {
           var bill = splitcheckService.bill;
-          sendBillUpdate(roomNumber, bill)
+          sendBillUpdate(roomId, bill)
         })
 
         socket.socket.on('countPeople', function(numberPeople) {

@@ -5,12 +5,11 @@ angular.module('roomApp')
                                     personCounterService, socket) {
  
     return {
-      get: function (roomNumber) {
+      get: function (roomId) {
         var deferred = $q.defer();
         var room = {};
-          $http.get("/api/lunchRoom/" + roomNumber)
+          $http.get("/api/lunchRoom/" + roomId)
            .success(function(data){
-            console.log("data: ", data)
             room = data.room;
             room.choices = data.choices;
             deferred.resolve(room); 
@@ -22,25 +21,25 @@ angular.module('roomApp')
 
       },
 
-      submitInput: function(roomNumber, name, picture) {
-        $http.put("/api/lunchRoom/" + roomNumber, 
+      submitInput: function(roomId, name, picture) {
+        $http.put("/api/lunchRoom/" + roomId, 
           {choice : inputForm.textInput.value,
             name : name})
           .success(function(data){
-            socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
+            socket.socket.emit('updateRoom', roomId, {event: 'vote', doc: data})
         })
         .error(function(data){
             console.log("error");
         });
       },
 
-      submitVote: function(roomNumber, choice, upOrDown, name) {
-        $http.put("/api/lunchRoom/" + roomNumber, 
+      submitVote: function(roomId, choice, upOrDown, name) {
+        $http.put("/api/lunchRoom/" + roomId, 
           {choice : choice,
             name: name,
             upOrDown: upOrDown})
           .success(function(data){
-            socket.socket.emit('updateRoom', roomNumber, {event: 'vote', doc: data})
+            socket.socket.emit('updateRoom', roomId, {event: 'vote', doc: data})
           })
           .error(function(data){
               console.log("error");
@@ -69,13 +68,12 @@ angular.module('roomApp')
           }, 100);
         },
 
-        listen: function(roomNumber, $scope, ctrl, user) {
-          socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
+        listen: function(roomId, $scope, ctrl, user) {
+          socket.socket.on('updateRoom', function(eventRoomId, data) {
             if (data.event==='timeUp') {
               //in case the user is in multiple rooms (which is not supposed to happen)
-              if (Number(expiredRoomNumber) === Number(roomNumber)) {
-                ////////////////////////////////////
-                $http.get("/api/lunchRoom/" + roomNumber)
+              if (eventRoomId === roomId) {
+                $http.get("/api/lunchRoom/" + roomId)
                   .success(function(room){
                     var winner;
                     var maxVotes;
@@ -101,12 +99,9 @@ angular.module('roomApp')
               }
             }
             if (data.event==='vote') {
-            //refactor into updateVotes()
-            console.log("roomNumber from server: ", expiredRoomNumber);
             //in case the user is in multiple rooms (which is not supposed to happen)
-            if (Number(expiredRoomNumber) === Number(roomNumber)) {
-              console.log('ctrl', ctrl.roomData)
-              if (ctrl.roomData && data.doc) {
+             if (eventRoomId === roomId) {
+               if (ctrl.roomData && data.doc) {
                 if (ctrl.roomData.choices.length !== data.doc.choices.length) {
                   ctrl.roomData.choices.push(data.doc.choices[data.doc.choices.length-1]);
                   $scope.$apply();

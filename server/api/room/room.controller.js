@@ -11,9 +11,9 @@ exports.index = function(req, res) {
   });
 };
 
-// Get a single room by roomNumber
+// Get a single room by roomId
 exports.show = function(req, res) {
-  Room.findOne({roomNumber:req.params.id}, function (err, room) {
+  Room.findById(req.params.id, function (err, room) {
     if(err) { return handleError(res, err); }
     if(!room) { return res.status(404).send("room doesn't exist");}
     return res.status(200).send(room);
@@ -24,10 +24,12 @@ exports.show = function(req, res) {
 exports.showByGeo = function(req, res) {
   var latLon = req.params.latLon;
   Room.find({'latLonCoords' : {$in: [latLon]} })
-       .find({'ourExpTime': {$gt : new Date().getTime()}})
+       .find({'expired': false})
        .exec(function (err, rooms) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
+    console.log("date: ",  new Date().getTime());
+    console.log("rooms: ", rooms);
     return res.json(200, rooms);
   });
 };
@@ -38,7 +40,7 @@ exports.create = function(req, res) {
   var lon = req.body.lon;
   var latLonCoordsArray = req.body.geoRoomArr; 
   var color = req.body.color;
-  var roomNumber = Math.floor(Math.random()*1000000);
+  //var roomNumber = Math.floor(Math.random()*1000000);
   var createdAt = new Date();
   var timerLength = req.body.timerLength;
   var timerMinutes = timerLength.substring(0, timerLength.indexOf(":"));
@@ -46,8 +48,7 @@ exports.create = function(req, res) {
   var lock = req.body.lock;
   var type = req.body.type;
   var roomName = req.body.roomName;
-  Room.create({roomNumber: roomNumber,
-               latLonCoords: latLonCoordsArray,
+  Room.create({latLonCoords: latLonCoordsArray,
                rawLat: lat,
                rawLon: lon, 
                color: color,
@@ -65,7 +66,7 @@ exports.create = function(req, res) {
 // Updates an existing room in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Room.findOne({roomNumber:req.params.id}, function (err, room) {
+  Room.findById(req.params.id, function (err, room) {
   //Room.findById(req.params.id, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }

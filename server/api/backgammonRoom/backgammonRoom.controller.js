@@ -13,8 +13,7 @@ exports.index = function(req, res) {
 
 // Get a single backgammonRoom
 exports.show = function(req, res) {
-  var roomNumber = req.params.id;
-  Backgammonroom.findOne({roomNumber: roomNumber}, function (err, backgammonRoom) {
+  Backgammonroom.findOne({roomId: req.params.id}, function (err, backgammonRoom) {
     if(err) { return handleError(res, err); }
     if(!backgammonRoom) { return res.send(404); }
     return res.json(backgammonRoom);
@@ -28,7 +27,7 @@ exports.create = function(req, res) {
     if(!backgammonRoom) { return res.send(404); }
     //backgammonRoom.players.push(req.user.name);
     var updated = _.merge(backgammonRoom, req.body);
-    updated.roomNumber = req.body.roomNumber;
+    updated.roomId = req.body.roomId;
     updated.save(function(err, updatedBackgammonRoom){
       if (err) { return handleError(res, err); }
       return res.json(201, updatedBackgammonRoom);
@@ -39,8 +38,7 @@ exports.create = function(req, res) {
 // Updates an existing backgammonRoom in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  var roomNumber = req.params.id;
-  Backgammonroom.findOne({roomNumber: roomNumber}, function (err, backgammonRoom) {
+  Backgammonroom.findOne({roomId: req.params.id}, function (err, backgammonRoom) {
     if (err) { return handleError(res, err); }
     if(!backgammonRoom) { return res.send(404); }
     var updated = _.merge(backgammonRoom, req.body);

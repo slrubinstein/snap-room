@@ -8,7 +8,7 @@ angular.module('roomApp')
     var ctrl = this;
 
     this.params = $stateParams;
-    var roomNumber = this.params.roomNumber;
+    var roomId = this.params.roomId;
 
     this.pieceToMove = null;
    
@@ -39,13 +39,6 @@ angular.module('roomApp')
 
     this.gameList = [];
 
-    // this.seeGames = function() {
-    //   $http.get("/api/gameBoard/show/all").success(function(data) {
-    //      ctrl.gameList = data;
-    //      console.log(ctrl.gameList);
-    //   });
-    // }
-
     this.returnArray = function(num) {
       var arr = []; 
       for (var i = 0; i < num; i++) {
@@ -57,7 +50,7 @@ angular.module('roomApp')
     this.newGame = function() {
     $http.post("/api/backgammonRoom", {
 
-      roomNumber: roomNumber,
+      roomId: roomId,
       turn : "blue",
       roll : [0,0],
       numberRolls : 2,
@@ -96,7 +89,7 @@ angular.module('roomApp')
     }
 
     this.saveGame = function(gameId) {
-      $http.put("/api/backgammonRoom/" + roomNumber, {
+      $http.put("/api/backgammonRoom/" + roomId, {
             turn : this.turn,
             roll : this.roll,
             showRollButton : this.showRollButton,
@@ -118,8 +111,8 @@ angular.module('roomApp')
 
     ctrl.pieces = {piecesArray: []};
 
-    this.getGame = function(roomNumber) {
-      $http.get("/api/backgammonRoom/" + roomNumber)
+    this.getGame = function(roomId) {
+      $http.get("/api/backgammonRoom/" + roomId)
       .success(function(data) {
         ctrl.turn = data.turn;
         ctrl.roll = data.roll;
@@ -140,7 +133,7 @@ angular.module('roomApp')
       });
     };
 
-  this.getGame(roomNumber);
+  this.getGame(roomId);
 
    socket.socket.on("updateGame", function(doc) {
        ctrl.turn = doc.turn;

@@ -17,20 +17,16 @@ exports.index = function(req, res) {
 
 // Get a single lunchRoom
 exports.show = function(req, res) {
-  Lunchroom.findOne({roomNumber:req.params.id}, function (err, lunchRoom) {
+  Lunchroom.findOne({roomId:req.params.id}, function (err, lunchRoom) {
     if(err) { return handleError(res, err); }
     if(!lunchRoom) { return res.send(404); }
-    Room.findOne({roomNumber:req.params.id}, function (err, room) {
-      if(err) { return handleError(res, err); }
-      if(!room) { return res.status(404).send("room doesn't exist");}
-      return res.status(200).send({"room": room, "choices": lunchRoom.choices});
-    });
+    return res.status(200).send({"room": lunchRoom, "choices": lunchRoom.choices});
   });
 };
 
 // Creates a new lunchRoom in the DB.
 exports.create = function(req, res) {
-  Lunchroom.create({roomNumber : req.body.roomNumber}, function(err, lunchRoom) {
+  Lunchroom.create({roomId : req.body.roomId}, function(err, lunchRoom) {
     if(err) { return handleError(res, err); }
     return res.json(201, lunchRoom);
   });
@@ -39,7 +35,7 @@ exports.create = function(req, res) {
 // Updates an existing lunchRoom in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Lunchroom.findOne({roomNumber:req.params.id}, function (err, room) {
+  Lunchroom.findOne({roomId:req.params.id}, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
     var newChoice = true;
@@ -74,7 +70,7 @@ exports.update = function(req, res) {
 };
 
 exports.foursquare = function(req, res) {
-  Room.findOne({roomNumber:req.params.id}, function (err, room) {
+  Room.findById(req.params.id, function (err, room) {
     if(err) { return handleError(res, err); }
     if(!room) { return res.status(500).send("not OK"); }
 

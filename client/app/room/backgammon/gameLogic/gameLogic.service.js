@@ -12,7 +12,7 @@ return {
       }
 
       ctrl.showRollButton = false;
-      ctrl.saveGame(ctrl.roomNumber);
+      ctrl.saveGame(ctrl.roomId);
     },
 
     checkSpacesFromJail : function(color) {
@@ -88,7 +88,7 @@ return {
           this.turn = "green";
           this.showRollButton = true;
        }
-       ctrl.saveGame(ctrl.roomNumber);    
+       ctrl.saveGame(ctrl.roomId);    
     },
 
     checkSpaces : function(spaceNumber, color) {
@@ -244,7 +244,7 @@ return {
           ctrl.turn = "green";
           ctrl.showRollButton = true;
        }
-       ctrl.saveGame(ctrl.roomNumber);
+       ctrl.saveGame(ctrl.roomId);
     },
 
     changeTurn : function(ctrl) {
@@ -259,7 +259,7 @@ return {
          ctrl.possibleMove[i] = 0;
        }
        ctrl.showRollButton = true;
-       ctrl.saveGame(ctrl.roomNumber);
+       ctrl.saveGame(ctrl.roomId);
     }
    };
 });

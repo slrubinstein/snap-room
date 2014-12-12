@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('chatroomService', function ($http, socket, $q) {
+  .factory('chatroomService', function ($http, socket, $q, $location) {
 
     return {
 
-      get: function (roomNumber) {
+      get: function (roomId) {
         var deferred = $q.defer();
         var room = {};
-        $http.get("/api/chatRoom/" + roomNumber)
+        $http.get("/api/chatRoom/" + roomId)
          .success(function(data){
           room = data;
           deferred.resolve(room); 
@@ -18,17 +18,16 @@ angular.module('roomApp')
         return deferred.promise;  
       },
       
-     submitInput: function(userInput, roomNumber, name, picture) {
-         $http.put('api/chatRoom/' + roomNumber,
+     submitInput: function(userInput, roomId, name, picture) {
+         $http.put('api/chatRoom/' + roomId,
            {message: inputForm.textInput.value,
              name: name,
              picture: picture})
          .success(function(data) {
-          console.log('submit input success', data)
           // front end model is not being updated on client
           // can either update models in the ctrl, or use a
           // socket.emit on the backend to update ctrl
-          socket.socket.emit('updateRoom', roomNumber, {event: 'chat', doc: data})
+          socket.socket.emit('updateRoom', roomId, {event: 'chat', doc: data})
          })
          .error(function(data) {
            console.log('error');
@@ -56,19 +55,18 @@ angular.module('roomApp')
            $(event.target).closest('.list-group-item').removeClass(colorClass);
          }, 100);
        },
-     listen: function(roomNumber, $scope, ctrl, user) {
-           socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
+     listen: function(roomId, $scope, ctrl, user) {
+           socket.socket.on('updateRoom', function(eventRoomId, data) {
 
              if (data.event==='timeUp') {
-                if (Number(expiredRoomNumber) === Number(roomNumber)) {
+                if (eventRoomId === roomId) {
                   ctrl.timeUp = true;
                 }
              }
              if (data.event==='chat') {
-               if (Number(expiredRoomNumber) === Number(roomNumber)) {
-                 console.log("data: ", data);
-                 ctrl.roomData = data.doc;
-              }
+                if (eventRoomId === roomId) {
+                  ctrl.roomData = data.doc;
+                }
              }
           });
          }

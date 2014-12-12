@@ -5,10 +5,10 @@ angular.module('roomApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
  
 return {
-        get: function (roomNumber) {
+        get: function (roomId) {
         var deferred = $q.defer();
         var room = {};
-        $http.get("/api/room/" + roomNumber)
+        $http.get("/api/room/" + roomId)
          .success(function(data){
           deferred.resolve(data); 
         }).error(function(data){

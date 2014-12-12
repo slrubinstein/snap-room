@@ -4,8 +4,8 @@ angular.module('roomApp')
   .factory('fourSquareService', function ($q, $http) {
 
     return {
-      get: function(roomNumber) {
-        return $http.get('/api/lunchRoom/' + roomNumber + '/vendor/foursquare')
+      get: function(roomId) {
+        return $http.get('/api/lunchRoom/' + roomId + '/vendor/foursquare')
           .then(function(resp) {
             var restaurants = resp.data.response.groups[0].items;
             return restaurants;

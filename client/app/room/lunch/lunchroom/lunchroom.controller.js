@@ -8,9 +8,8 @@ angular.module('roomApp')
 
 
     var ctrl = this;
-console.log("LunchroomCtrl");
     this.params = $stateParams;
-    var roomNumber = this.params.roomNumber;
+    var roomId = this.params.roomId;
     var geoRoomArr = geoRoomArrVal.geoRooms;
     this.roomColor = this.params.color;
     this.user = usernameVal.name;
@@ -38,12 +37,12 @@ console.log("LunchroomCtrl");
     //to the client any info that has already been posted in the room, the
     //amount of time left before the room expires, and the room color/type,
     //as well as to start the interval that runs the timer.
-    this.getRoom = function(roomNumber) {
-      var promise = lunchRoomService.get(roomNumber, ctrl.roomType)
+    this.getRoom = function(roomId) {
+      var promise = lunchRoomService.get(roomId, ctrl.roomType)
       .then(getRoomSuccessCallback, getRoomErrorCallback)
     };
 
-    this.getRoom(roomNumber);
+    this.getRoom(roomId);
 
     function getRoomSuccessCallback(room) {
         ctrl.roomData = room;
@@ -77,7 +76,7 @@ console.log("LunchroomCtrl");
 
     //   if(Number(minutesLeftDecimal) < 0.01) {
     //     $interval.cancel(ctrl.countDown);
-    //     socket.socket.emit('timeUp', ctrl.roomData.roomNumber, geoRoomArr);
+    //     socket.socket.emit('timeUp', ctrl.roomData.roomId, geoRoomArr);
     //   }
     // };
     
@@ -95,7 +94,7 @@ console.log("LunchroomCtrl");
       // }
  
       if (ctrl.inputField.length < 100) {
-        lunchRoomService.submitInput(roomNumber, this.user, picture, type);
+        lunchRoomService.submitInput(roomId, this.user, picture, type);
         //to empty the input field:
         ctrl.inputField = '';
       }
@@ -121,7 +120,7 @@ console.log("LunchroomCtrl");
       //     name = ctrl.user.facebook.first_name;
       //   }
       // }
-      lunchRoomService.submitVote(roomNumber, choice, upOrDown, this.user);
+      lunchRoomService.submitVote(roomId, choice, upOrDown, this.user);
 
     };
 
@@ -133,7 +132,7 @@ console.log("LunchroomCtrl");
 ///////////////////////////////////////////////////////////////
 // fourSquare API call, hide, and show functions
     this.getFourSquare = function() {
-      var promise = fourSquareService.get(roomNumber)
+      var promise = fourSquareService.get(roomId)
         .then(function(restaurants) {
           ctrl.restaurants = restaurants;
         },
@@ -157,7 +156,7 @@ console.log("LunchroomCtrl");
     // this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    lunchRoomService.listen(roomNumber, $scope, ctrl, this.user);
+    lunchRoomService.listen(roomId, $scope, ctrl, this.user);
 
 
     //returnArray is used to display the correct number of dollar signs

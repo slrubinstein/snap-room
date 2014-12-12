@@ -6,7 +6,7 @@ angular.module('roomApp')
                                           personCounterService) {
 
   	var ctrl = this;
-  	var roomNumber = $state.params.roomNumber
+  	var roomId = $state.params.roomId
 
     this.timeUp = false;
 
@@ -15,29 +15,17 @@ angular.module('roomApp')
     personCounterService.listen(this, $scope);
 
     // updates bill for late joiners
-  	socket.socket.emit('updateRoomForMe', roomNumber, {event: 'updateMyBill'})
+  	socket.socket.emit('updateRoomForMe', roomId, {event: 'updateMyBill'})
 
     // variables shared with everyone on bill
     // when any of these change, it should change for everyone via socket
     ctrl.updateMyPage = function() {
-      var bill = {};
-      
-      bill.billSoFar = splitcheckService.bill.billSoFar;
-      bill.taxPercent = splitcheckService.bill.taxPercent;
-      bill.tipPercent = splitcheckService.bill.tipPercent;
-      bill.runningTotal = splitcheckService.bill.runningTotal;
-      bill.subtotal = splitcheckService.bill.subtotal;
-      bill.remainder = splitcheckService.bill.remainder;
-      bill.totalTip = splitcheckService.bill.totalTip;
-      bill.tipPerPerson = splitcheckService.bill.tipPerPerson;
-      bill.totalTax = splitcheckService.bill.totalTax;
-      bill.grandTotal = splitcheckService.bill.grandTotal;
-
+      var bill = splitcheckService.bill;
       return bill;
     }
 
     // set up socket listeners
-    splitcheckSockets.listen(ctrl, roomNumber);
+    splitcheckSockets.listen(ctrl, roomId);
 
     var updatePersonalTotal = function() {
       var personalTotal = {};
@@ -66,7 +54,7 @@ angular.module('roomApp')
       ctrl.bill = ctrl.updateMyPage();
       ctrl.personalTotal.tip = splitcheckService.personalTotals.tip;
 
-      splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
+      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
   	}
 
   	this.submit = function() {
@@ -83,7 +71,7 @@ angular.module('roomApp')
       // reset page inputs to empty
   		ctrl.food = '';
   		ctrl.price = '';
-      splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
+      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 
   	}
 
@@ -95,7 +83,7 @@ angular.module('roomApp')
 	  	splitcheckService.deleteItem(index, ctrl.numberPeople);
       ctrl.personalTotal = updatePersonalTotal();
       ctrl.updateMyPage();
-      splitcheckSockets.sendBillUpdate(roomNumber, ctrl.bill);
+      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 	  }
 
   });

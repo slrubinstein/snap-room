@@ -7,7 +7,6 @@ var RoomSchema = new Schema({
   name: String,
   info: String,
   active: Boolean,
-  roomNumber: Number,
   latLonCoords: [String],
   rawLat: Number,
   rawLon: Number,

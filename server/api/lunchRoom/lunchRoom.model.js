@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var LunchroomSchema = new Schema({
   choices: [{choice: String, votes: Number, voters: [String]}],
-  roomNumber: Number
+  roomId: String
 });
 
 module.exports = mongoose.model('Lunchroom', LunchroomSchema);

@@ -16,7 +16,7 @@ var BackgammonroomSchema = new Schema({
     bluePiecesInJail : Number,
     blueScore : Number,
     greenScore : Number,
-    roomNumber : Number
+    roomId : String
 });
 
 module.exports = mongoose.model('Backgammonroom', BackgammonroomSchema);

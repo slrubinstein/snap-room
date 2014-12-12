@@ -14,7 +14,7 @@ exports.index = function(req, res) {
 
 // Get a single chatroom
 exports.show = function(req, res) {
-  Chatroom.findOne({"roomNumber": req.params.id}, function (err, chat) {
+  Chatroom.findOne({"roomId": req.params.id}, function (err, chat) {
     if(err) { return handleError(res, err); }
     if(!chat) { return res.send(404); }
     return res.json(chat);
@@ -23,7 +23,7 @@ exports.show = function(req, res) {
 
 // Creates a new chatroom in the DB.
 exports.create = function(req, res) {
-  Chatroom.create({"roomNumber" : req.body.roomNumber}, function(err, chat) {
+  Chatroom.create({"roomId" : req.body.roomId}, function(err, chat) {
     if(err) { return handleError(res, err); }
     return res.json(201, chat);
   });
@@ -37,7 +37,7 @@ exports.update = function(req, res) {
   var name = req.body.name;
   var picture = req.body.picture;
 
-  Chatroom.findOne({roomNumber:req.params.id}, function (err, room) {
+  Chatroom.findOne({roomId:req.params.id}, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
     // var updated = _.merge(chat, req.body);

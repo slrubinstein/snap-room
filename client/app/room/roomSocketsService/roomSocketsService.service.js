@@ -5,19 +5,19 @@ angular.module('roomApp')
 
     return {
 
-       listen: function(roomNumber, $scope, ctrl, user) {
+       listen: function(roomId, $scope, ctrl, user) {
 
           var name = usernameVal.name;
 
-          socket.socket.emit('join', roomNumber, name);
+          socket.socket.emit('join', roomId, name);
           
-          socket.socket.on('updateRoom', function(expiredRoomNumber, data) {
+          socket.socket.on('updateRoom', function(eventRoomId, data) {
 
             if (data.event==='timeUp') {
               //in case the user is in multiple rooms (which is not supposed to happen)
-              if (Number(expiredRoomNumber) === Number(roomNumber)) {
+              if (eventRoomId === roomId) {
                 ctrl.timeUp = true
-          }
+             }
       }
   });
 }

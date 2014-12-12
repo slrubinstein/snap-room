@@ -102,7 +102,6 @@ angular.module('roomApp')
      //a room is created or expires. It is sent to the members of
      //the relevant geoRoom
       socket.socket.on('refreshRoomList', function() {
-        console.log("refreshRoomList");
         var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
           .then(getRoomsSuccessCallback, getRoomsErrorCallback);
       });
@@ -197,9 +196,9 @@ angular.module('roomApp')
     };
 
     this.enterRoom = function(availRoom) {
-      if (availRoom.roomNumber) {
+      if (availRoom._id) {
         if (!availRoom.lock || ctrl.isLoggedIn) {
-          roomCreationService.enter({roomNumber: availRoom.roomNumber, 
+          roomCreationService.enter({roomId: availRoom._id, 
                              color: availRoom.color, 
                              geoRoom: ctrl.geoRoom, 
                              isLoggedIn: ctrl.isLoggedIn,
