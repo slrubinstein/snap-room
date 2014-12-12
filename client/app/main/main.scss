@@ -115,6 +115,20 @@ p.subheading {
   color: #23A8A2;
 }
 
+ #subtitleMobile {
+   display: none;
+ }
+
+
+@media (max-width: 400px) {
+   #subtitleMobile {
+     display: block;
+   }
+   #subtitleDesktop {
+     display: none;
+   }
+}
+
 
 
 

@@ -22,7 +22,10 @@
   <room-list> </room-list>
 
 
-  <p class="subheading" ng-hide="main.isLoggedIn">Log in with facebook to create or enter private rooms</p>
+  <p class="subheading" ng-hide="main.isLoggedIn">
+    <span id="subtitleMobile">Log in with facebook to <br/>create or enter private rooms</span>
+    <span id="subtitleDesktop">Log in with facebook to create or enter private rooms</span>
+  </p>
 
   <a ng-hide="main.isLoggedIn"
      class="btn btn-facebook" 
