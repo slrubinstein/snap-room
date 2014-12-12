@@ -125,9 +125,17 @@ angular.module('roomApp')
       }
 
       function updateFromSocket(newBill) {
-        bill = newBill;
-
-      }
+       bill.billSoFar = newBill.billSoFar;
+       bill.taxPercent = newBill.taxPercent;
+       bill.tipPercent = newBill.tipPercent;
+       bill.runningTotal = newBill.runningTotal;
+       bill.subtotal = newBill.subtotal;
+       bill.remainder = newBill.remainder;
+       bill.totalTip = newBill.totalTip;
+       bill.tipPerPerson = newBill.tipPerPerson;
+       bill.totalTax = newBill.totalTax;
+       bill.grandTotal = newBill.grandTotal;
+     }
 
     return {
 
