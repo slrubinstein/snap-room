@@ -110,10 +110,11 @@ angular.module('roomApp')
         return Number(bill.subtotal) + bill.totalTip + bill.totalTax;
       }
 
-      function deleteItem(index, numberPeople) {
-        var item = bill.billSoFar.splice(index, 1)[0]
-        personalTotals = subtractFromMyTotals(item, personalTotals)
-        updateBillTotals(numberPeople);
+      function deleteItem(index, roomId) {
+        var item = bill.billSoFar.splice(index, 1)[0];
+        updateBill(bill, roomId);
+        // personalTotals = subtractFromMyTotals(item, personalTotals)
+        // updateBillTotals(numberPeople);
       }
 
       function updateTax(billSoFar) {

@@ -103,10 +103,11 @@ angular.module('roomApp')
     }
 
 	  function deleteItem(index) {
-	  	splitcheckService.deleteItem(index, ctrl.numberPeople);
-      ctrl.personalTotal = updatePersonalTotal();
-      ctrl.updateMyPage();
-      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
+
+	  	splitcheckService.deleteItem(index, roomId);
+    //   ctrl.personalTotal = updatePersonalTotal();
+    //   ctrl.updateMyPage();
+    //   splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 	  }
 
   });
