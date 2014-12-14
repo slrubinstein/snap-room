@@ -77,12 +77,9 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
   socket.on('timeUp', function(roomId, geoRoomArr) {
     var data = {event: 'timeUp'};
     Room.findById(roomId, function(err, room) {
-      console.log("roomId", roomId);
-      console.log("roomExpired?", room.expired);
       if (!room) {return;}
       if (!room.expired) {
         room.expired = true;
-         console.log("roomExpired after room.expired?", room.expired);
         room.save(function(err, room) {
 
           socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
@@ -162,4 +159,5 @@ module.exports = function (socketio) {
   require('../api/room/room.socket').register(socketio);
   require('../api/thing/thing.socket').register(socketio);
   require('../api/lunchRoom/lunchRoom.socket').register(socketio);
+  require('../api/splitcheckRoom/splitcheckRoom.socket').register(socketio);
 };

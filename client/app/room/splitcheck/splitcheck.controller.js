@@ -8,37 +8,46 @@ angular.module('roomApp')
   	var ctrl = this;
   	var roomId = $state.params.roomId
 
+    splitcheckService.roomId = roomId;
 
-    this.getRoom = function(roomId) {
+
+
+    this.deleteItem = deleteItem;
+    this.food = '';
+    this.numberPeople = personCounterService.numberPeople;
+    this.price = '';
+    this.submit = submit;
+    this.timeUp = false;
+    this.updateMyPage = updateMyPage;
+    this.updatePersonalTotal = updatePersonalTotal;
+    this.updateSubtotal = updateSubtotal;
+    this.user = '';
+
+    this.calculateMyTotal = calculateMyTotal;
+
+    getRoom(roomId);
+
+    function getRoom(roomId) {
       var promise = splitcheckService.get(roomId)
-      .then(getRoomSuccessCallback, getRoomErrorCallback)
-     };
-
-     this.getRoom(roomId);
-
-    function getRoomSuccessCallback(room) {
-      console.log(room)
-      // ctrl.roomData = room;
-    }
+      .then(function(bill) {
+        ctrl.bill = bill;
+        
+     }, getRoomErrorCallback)
+   }
+    
 
     function getRoomErrorCallback(error) {
       
     }
 
-
-
-    this.timeUp = false;
-
-    // display number of people in room
-    this.numberPeople = personCounterService.numberPeople;
     personCounterService.listen(this, $scope);
 
-    // updates bill for late joiners
-  	socket.socket.emit('updateRoomForMe', roomId, {event: 'updateMyBill'})
+
+    // socket.socket.emit('updateRoomForMe', roomId, {event: 'updateMyBill'})
 
     // variables shared with everyone on bill
     // when any of these change, it should change for everyone via socket
-    ctrl.updateMyPage = function() {
+    function updateMyPage() {
       var bill = splitcheckService.bill;
       return bill;
     }
@@ -46,37 +55,32 @@ angular.module('roomApp')
     // set up socket listeners
     splitcheckSockets.listen(ctrl, roomId);
 
-    var updatePersonalTotal = function() {
+    function updatePersonalTotal() {
       var personalTotal = {};
       personalTotal = splitcheckService.personalTotals;
       return personalTotal;
     }
 
-    // set initial values
-    this.bill = ctrl.updateMyPage();
-
-    // user inputs for single bill item
-  	this.user = '';
-  	this.food = '';
-  	this.price = '';
 
     // set initial values for personal total
     this.personalTotal = updatePersonalTotal();
 
 
-  	this.updateSubtotal = function() {
-      var subtotal = ctrl.bill.subtotal,
-          tipPercent = ctrl.bill.tipPercent,
-          taxPercent = ctrl.bill.taxPercent;
+  	function updateSubtotal() {
 
-      splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent, ctrl.numberPeople);
-      ctrl.bill = ctrl.updateMyPage();
+      ctrl.bill = splitcheckService.updateBill({subtotal: Number(ctrl.bill.subtotal),
+                              tipPercent: ctrl.bill.tipPercent,
+                              taxPercent: ctrl.bill.taxPercent}, roomId
+                            )
+
+      // splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent, ctrl.numberPeople);
+      // ctrl.bill = ctrl.updateMyPage();
       ctrl.personalTotal.tip = splitcheckService.personalTotals.tip;
 
-      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
+      // splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
   	}
 
-  	this.submit = function() {
+  	function submit() {
   		splitcheckService.submit({user: ctrl.user,
                             		food: ctrl.food,
                             		price: Number(ctrl.price),
@@ -94,11 +98,11 @@ angular.module('roomApp')
 
   	}
 
-    this.calculateMyTotal = function() {
+    function calculateMyTotal() {
       ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user);
     }
 
-	  this.deleteItem = function(index) {
+	  function deleteItem(index) {
 	  	splitcheckService.deleteItem(index, ctrl.numberPeople);
       ctrl.personalTotal = updatePersonalTotal();
       ctrl.updateMyPage();

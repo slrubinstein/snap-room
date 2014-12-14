@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('splitcheckService', function ($http, $location) {
+  .factory('splitcheckService', function ($http, $location, personCounterService, socket) {
 
     var bill = {
         billSoFar: [],
@@ -23,24 +23,49 @@ angular.module('roomApp')
         total: 0
       };
 
-    function get(roomId) {
+    var numberPeople = personCounterService.numberPeople;
 
+    function get(roomId) {
       return $http.get("/api/splitcheckRoom/" + roomId)
         .then(function(data){
-          return data; 
+          bill = data.data.bill;
+          return bill; 
         }, function(){
           $location.path("/");
         });
     }
 
+    function updateBill(billData, roomId) {
 
-    function updateSubtotal(newSubtotal, newTip, newTax, numberPeople) {
-        bill.subtotal = newSubtotal;
-        bill.tipPercent = newTip;
-        bill.taxPercent = newTax;
-        updateTax();
-        updateBillTotals(numberPeople);
-      }
+      bill.subtotal = billData.subtotal;
+      bill.tipPercent = billData.tipPercent;
+      bill.taxPercent = billData.taxPercent;
+      bill.billSoFar = updateTax(bill.billSoFar)
+      bill.runningTotal = calculateRunningTotal();
+      bill.totalTip = calculateTip();
+      bill.tipPerPerson = bill.totalTip / numberPeople;
+      bill.totalTax = calculateTax();
+      bill.grandTotal = calculateTotal();
+      bill.remainder = calculateRemainder();
+      postUpdatedBill(bill, roomId);
+      return bill;
+    }
+
+    function postUpdatedBill(bill, roomId) {
+      $http.put("/api/splitcheckRoom/" + roomId, 
+          {roomId: roomId, 
+            bill : bill})
+          .success(function(data){
+            // socket.socket.emit('updateRoom', roomId, {event: 'updateBill', doc: data})
+        })
+        .error(function(data){
+            console.log("error");
+        });
+    }
+
+    // function updateSubtotal(newSubtotal, newTip, newTax, numberPeople) {
+    //     updateBillTotals(numberPeople);
+    //   }
 
       function submit(singleItem, numberPeople) {
         var user = singleItem.user,
@@ -56,13 +81,8 @@ angular.module('roomApp')
       }
 
       function updateBillTotals(numberPeople) {
-        bill.runningTotal = calculateRunningTotal();
-        bill.totalTip = calculateTip();
-        bill.tipPerPerson = bill.totalTip / numberPeople;
+        
         personalTotals.tip = bill.tipPerPerson;
-        bill.totalTax = calculateTax();
-        bill.grandTotal = calculateTotal();
-        bill.remainder = calculateRemainder();
       }
 
       function calculateRunningTotal() {
@@ -96,11 +116,12 @@ angular.module('roomApp')
         updateBillTotals(numberPeople);
       }
 
-      function updateTax() {
+      function updateTax(billSoFar) {
         var taxPercent = bill.taxPercent;
-        bill.billSoFar.forEach(function(item) {
+        billSoFar.forEach(function(item) {
           item.tax = item.price * taxPercent / 100;
         });
+        return billSoFar;
       }
 
       function addToMyTotals(item, current) {
@@ -147,11 +168,13 @@ angular.module('roomApp')
 
       get:get,
 
-      updateSubtotal: updateSubtotal,
+      // updateSubtotal: updateSubtotal,
 
       submit: submit,
 
       updateBillTotals: updateBillTotals,
+
+      updateBill: updateBill,
 
       calculateRunningTotal: calculateRunningTotal,
 
@@ -173,7 +196,9 @@ angular.module('roomApp')
 
       calculateMyTotal: calculateMyTotal,
 
-      updateFromSocket: updateFromSocket
+      updateFromSocket: updateFromSocket,
+
+      postUpdatedBill: postUpdatedBill
     };
   })
   .factory('splitcheckSockets', function(socket, splitcheckService) {
@@ -187,8 +212,9 @@ angular.module('roomApp')
         socket.socket.on('updateRoom', function(eventRoomId, data) {
           if (data.event==='updateBill') {
             if (eventRoomId === roomId) {
-              splitcheckService.updateFromSocket(data.newBill);
-              ctrl.bill = ctrl.updateMyPage();
+              console.log('socket data', data.bill)
+              splitcheckService.updateFromSocket(data.bill);
+              ctrl.bill = data.bill;
             }
           }
            if (data.event==='timeUp') {
@@ -204,8 +230,8 @@ angular.module('roomApp')
         })
 
         socket.socket.on('countPeople', function(numberPeople) {
-          splitcheckService.updateBillTotals(numberPeople);
-          ctrl.bill.tipPerPerson = splitcheckService.bill.tipPerPerson;
+          // splitcheckService.updateBillTotals(numberPeople);
+          // ctrl.bill.tipPerPerson = splitcheckService.bill.tipPerPerson;
         })
       }
 

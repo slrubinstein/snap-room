@@ -16,7 +16,8 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('splitcheckRoom:save', doc);
+	console.log('SOCKET DOC', doc)
+  socket.emit('updateRoom', doc.roomId, {event: 'updateBill', bill: doc.bill});
 }
 
 function onRemove(socket, doc, cb) {

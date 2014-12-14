@@ -16,6 +16,8 @@ exports.show = function(req, res) {
   Splitcheckroom.findOne({roomId: req.params.id}, function (err, splitcheckRoom) {
     if(err) { return handleError(res, err); }
     if(!splitcheckRoom) { return res.send(404); }
+    console.log(req.params.id)
+    console.log(splitcheckRoom)
     return res.json(splitcheckRoom);
   });
 };
@@ -30,8 +32,8 @@ exports.create = function(req, res) {
 
 // Updates an existing splitcheckRoom in the DB.
 exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Splitcheckroom.findById(req.params.id, function (err, splitcheckRoom) {
+  // if(req.body._id) { delete req.body._id; }
+  Splitcheckroom.findOne({roomId: req.body.roomId}, function (err, splitcheckRoom) {
     if (err) { return handleError(res, err); }
     if(!splitcheckRoom) { return res.send(404); }
     var updated = _.merge(splitcheckRoom, req.body);
