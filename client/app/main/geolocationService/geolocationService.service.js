@@ -30,7 +30,7 @@ angular.module('roomApp')
                 break;
             }
           deferred.reject(errorMsg)  
-        });
+        }, {enableHighAccuracy: true});
 
 
 
@@ -39,32 +39,31 @@ angular.module('roomApp')
         return deferred.promise;
       },
       makeGeoRoomArr: function(geoData) {
-        var latString = String(geoData.lat);
-        var lonString = String(geoData.lon);
-        var latToHundrethPlace =  latString.slice(0, latString.indexOf(".") + 3);
-        var lonToHundrethPlace = lonString.slice(0, lonString.indexOf(".") + 3);
+        var latToThousandthPlace = geoData.lat.toFixed(3); 
+        var lonToThousandthPlace = geoData.lon.toFixed(3);
+
         var latLonArr = [];
 
-        var northernLat = String((Number(latToHundrethPlace) + .01).toFixed(2));
-        var southernLat = String((Number(latToHundrethPlace) - .01).toFixed(2));
-        var easternLon = String((Number(lonToHundrethPlace) + .01).toFixed(2));
-        var westernLon = String((Number(lonToHundrethPlace) - .01).toFixed(2));
+        var northernLat = (Number(latToThousandthPlace) + .001).toFixed(3);
+        var southernLat = (Number(latToThousandthPlace) - .001).toFixed(3);
+        var easternLon = (Number(lonToThousandthPlace) + .001).toFixed(3);
+        var westernLon = (Number(lonToThousandthPlace) - .001).toFixed(3);
 
-        latLonArr.push(latToHundrethPlace + lonToHundrethPlace);
+        latLonArr.push(latToThousandthPlace + lonToThousandthPlace);
 
         latLonArr.push(northernLat + westernLon);
 
-        latLonArr.push(northernLat + lonToHundrethPlace);
+        latLonArr.push(northernLat + lonToThousandthPlace);
 
         latLonArr.push(northernLat + easternLon);
 
-        latLonArr.push(latToHundrethPlace + westernLon);
+        latLonArr.push(latToThousandthPlace + westernLon);
 
-        latLonArr.push(latToHundrethPlace + easternLon);
+        latLonArr.push(latToThousandthPlace + easternLon);
 
         latLonArr.push(southernLat + westernLon);
 
-        latLonArr.push(southernLat + lonToHundrethPlace);
+        latLonArr.push(southernLat + lonToThousandthPlace);
 
         latLonArr.push(southernLat + easternLon);
 
