@@ -30,7 +30,7 @@ angular.module('roomApp')
                 break;
             }
           deferred.reject(errorMsg)  
-        }, {enableHighAccuracy: true});
+        });
 
 
 
