@@ -1,8 +1,7 @@
-<ul class="list-group messages">
-	<li ng-repeat="message in chat.roomData.messages"
-			class="list-group-item">
+<div id="chatbox">
+	<p ng-repeat="message in chat.roomData.messages">
 		<img ng-src={{message.picture}}/>
 		<span ng-show="message.name"><strong>{{message.name}}:</strong></span> 
 		<span>{{message.message}}</span> 
-	</li>
-</ul>
+	</p>
+</div>
