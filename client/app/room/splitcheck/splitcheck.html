@@ -11,6 +11,7 @@
 				<th>Item</th>
 				<th>Price</th>
 				<th>Tax</th>
+				<th>Tip</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -22,6 +23,7 @@
 				<td>{{item.food}}</td>
 				<td>${{item.price | number:2}}</td>
 				<td>${{item.tax | number:2}}</td>
+				<td>${{item.tip | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -120,7 +122,7 @@
          <h4>Your Totals</h4>
          <p>Food total: ${{split.personalTotal.food | number:2}}</p>
          <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
-         <p>Tip: ${{split.bill.tipPerPerson | number:2}}</p>
+         <p>Tip: ${{split.personalTotal.tip | number:2}}</p>
          <p>You owe: ${{split.personalTotal.total | number:2}}</p>
          <button class="main-page-buttons" ng-click="split.calculateMyTotal()">Recalculate My Total</button>
      	</div>

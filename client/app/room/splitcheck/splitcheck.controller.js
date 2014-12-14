@@ -19,7 +19,7 @@ angular.module('roomApp')
     this.submit = submit;
     this.timeUp = false;
     this.updateMyPage = updateMyPage;
-    this.updatePersonalTotal = updatePersonalTotal;
+    // this.updatePersonalTotal = updatePersonalTotal;
     this.updateSubtotal = updateSubtotal;
     this.user = '';
 
@@ -55,19 +55,18 @@ angular.module('roomApp')
     // set up socket listeners
     splitcheckSockets.listen(ctrl, roomId);
 
-    function updatePersonalTotal() {
-      var personalTotal = {};
-      personalTotal = splitcheckService.personalTotals;
-      return personalTotal;
-    }
+    // function updatePersonalTotal() {
+    //   var personalTotal = {};
+    //   personalTotal = splitcheckService.personalTotals;
+    //   return personalTotal;
+    // }
 
 
     // set initial values for personal total
-    this.personalTotal = updatePersonalTotal();
+    this.personalTotal = splitcheckService.personalTotals ;
 
 
   	function updateSubtotal() {
-
       ctrl.bill = splitcheckService.updateBill({subtotal: Number(ctrl.bill.subtotal),
                               tipPercent: ctrl.bill.tipPercent,
                               taxPercent: ctrl.bill.taxPercent}, roomId
@@ -75,7 +74,7 @@ angular.module('roomApp')
 
       // splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent, ctrl.numberPeople);
       // ctrl.bill = ctrl.updateMyPage();
-      ctrl.personalTotal.tip = splitcheckService.personalTotals.tip;
+      // ctrl.personalTotal.tip = splitcheckService.personalTotals.tip;
 
       // splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
   	}
@@ -84,12 +83,13 @@ angular.module('roomApp')
   		splitcheckService.submit({user: ctrl.user,
                             		food: ctrl.food,
                             		price: Number(ctrl.price),
-                            		tax: ctrl.price * ctrl.bill.taxPercent/100},
+                            		tax: ctrl.price * ctrl.bill.taxPercent/100,
+                                tip: ctrl.price * ctrl.bill.tipPercent/100},
                                 roomId
       )
 
       // ctrl.bill = ctrl.updateMyPage();
-      // ctrl.personalTotal = updatePersonalTotal();
+      ctrl.personalTotal = splitcheckService.personalTotals;
 
       // reset page inputs to empty
   		ctrl.food = '';
@@ -104,7 +104,7 @@ angular.module('roomApp')
 
 	  function deleteItem(index) {
 
-	  	splitcheckService.deleteItem(index, roomId);
+	  	splitcheckService.deleteItem(index, roomId, this.numberPeople);
     //   ctrl.personalTotal = updatePersonalTotal();
     //   ctrl.updateMyPage();
     //   splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
