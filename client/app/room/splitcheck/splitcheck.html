@@ -7,6 +7,7 @@
 		<thead>
 			<tr>
 				<th></th>
+				<th>Select</th>
 				<th>Name</th>
 				<th>Item</th>
 				<th>Price</th>
@@ -19,6 +20,11 @@
 				<td>
 					<button class="btn btn-danger btn-xs"
 									ng-click="split.deleteItem($index)">X</button></td>
+				<td>
+					<input 
+								 type="checkbox"
+								 ng-model="split.selected[$index]"
+								 ng-change="split.calculateMyTotal()"></td>
 				<td>{{item.user}}</td>
 				<td>{{item.food}}</td>
 				<td>${{item.price | number:2}}</td>
@@ -67,7 +73,7 @@
 								 ng-model="split.bill.tipPercent"
 								 ng-change="split.updateSubtotal()" />
 
-					%: {{split.bill.totalTip | number:2}}</p>
+					%: ${{split.bill.totalTip | number:2}}</p>
 				
 				<p>
 					Tax: 
@@ -76,7 +82,7 @@
 								 ng-model="split.bill.taxPercent"
 								 ng-change="split.updateSubtotal()" />
 
-					%: {{split.bill.totalTax | number:3}}</p>
+					%: ${{split.bill.totalTax | number:2}}</p>
 				<p><strong>Total: {{split.bill.grandTotal | number:2}}</strong></p>
 			</div>
 		</div>
@@ -95,7 +101,7 @@
 					>${{split.bill.remainder | number:2}}</p>
 			</div>
 			<div class="third-col">
-				<p><strong>Splitting tip between {{split.numberPeople}}</strong></p>
+
 			</div>
 		</div>
 	</div>
@@ -119,7 +125,7 @@
    	</div>
 
       <div class="panel panel-default">
-         <h4>Your Totals</h4>
+         <h4>Select items to calculate what you owe</h4>
          <p>Food total: ${{split.personalTotal.food | number:2}}</p>
          <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
          <p>Tip: ${{split.personalTotal.tip | number:2}}</p>

@@ -10,7 +10,7 @@ angular.module('roomApp')
 
     splitcheckService.roomId = roomId;
 
-
+    this.selected = [];
 
     this.deleteItem = deleteItem;
     this.food = '';
@@ -89,7 +89,7 @@ angular.module('roomApp')
       )
 
       // ctrl.bill = ctrl.updateMyPage();
-      ctrl.personalTotal = splitcheckService.personalTotals;
+      // ctrl.personalTotal = splitcheckService.personalTotals;
 
       // reset page inputs to empty
   		ctrl.food = '';
@@ -99,13 +99,13 @@ angular.module('roomApp')
   	}
 
     function calculateMyTotal() {
-      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user);
+      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.selected);
     }
 
 	  function deleteItem(index) {
-
-	  	splitcheckService.deleteItem(index, roomId, this.numberPeople);
-    //   ctrl.personalTotal = updatePersonalTotal();
+      ctrl.selected.splice(index, 1)
+	  	splitcheckService.deleteItem(index, roomId);
+      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.selected);
     //   ctrl.updateMyPage();
     //   splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 	  }

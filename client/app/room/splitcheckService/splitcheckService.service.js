@@ -33,7 +33,7 @@ angular.module('roomApp')
         });
     }
 
-    function updateBill(billData, roomId, numberPeople) {
+    function updateBill(billData, roomId) {
       bill.subtotal = billData.subtotal;
       bill.tipPercent = billData.tipPercent;
       bill.taxPercent = billData.taxPercent;
@@ -65,7 +65,7 @@ angular.module('roomApp')
 
         bill.billSoFar.push(singleItem);
         bill = updateBill(bill, roomId);
-        personalTotals = addToMyTotals(singleItem, personalTotals);
+        // personalTotals = addToMyTotals(singleItem, personalTotals);
       }
 
       function calculateRunningTotal() {
@@ -94,10 +94,10 @@ angular.module('roomApp')
         return Number(bill.subtotal) + bill.totalTip + bill.totalTax;
       }
 
-      function deleteItem(index, roomId, numberPeople) {
-        var item = bill.billSoFar.splice(index, 1)[0];
-        updateBill(bill, roomId, numberPeople);
-        personalTotals = subtractFromMyTotals(item, personalTotals);
+      function deleteItem(index, roomId) {
+        bill.billSoFar.splice(index, 1)[0];
+        updateBill(bill, roomId);
+        // personalTotals = calculateMyTotal(selected);
       }
 
       function updateTax(billSoFar) {
@@ -120,7 +120,7 @@ angular.module('roomApp')
         current.food += item.price;
         current.tax += item.tax;
         current.tip += item.tip;
-        current.total += item.price + item.tax + personalTotals.tip;
+        current.total += item.price + item.tax + item.tip;
         return current;
       }
 
@@ -132,16 +132,16 @@ angular.module('roomApp')
         return current;
       }
 
-      function calculateMyTotal(name) {
+      function calculateMyTotal(selected) {
         personalTotals = {
           food: 0,
           tax: 0,
           tip: 0,
           total: 0
         }
-        bill.billSoFar.forEach(function(item) {
-          if (item.user===name) {
-            personalTotals = addToMyTotals(item, personalTotals);
+        selected.forEach(function(item, index) {
+          if (item===true) {
+            personalTotals = addToMyTotals(bill.billSoFar[index], personalTotals);
           }
         });
         return personalTotals;
