@@ -14,30 +14,26 @@ angular.module('roomApp')
           deferred.resolve(geoData);
         }, 
           function(error) {
-            var errorMsg;
-            switch(error.code) {
-              case error.PERMISSION_DENIED:
-                errorMsg = "User denied the request for Geolocation."
-                break;
-              case error.POSITION_UNAVAILABLE:
-                errorMsg = "Location information is unavailable."
-                break;
-              case error.TIMEOUT:
-                errorMsg = "The request to get user location timed out."
-                break;
-              case error.UNKNOWN_ERROR:
-                errorMsg = "An unknown error occurred."
-                break;
-            }
-          deferred.reject(errorMsg)  
+            // var errorMsg;
+            // switch(error.code) {
+            //   case error.PERMISSION_DENIED:
+            //     errorMsg = "User denied the request for Geolocation."
+            //     break;
+            //   case error.POSITION_UNAVAILABLE:
+            //     errorMsg = "Location information is unavailable."
+            //     break;
+            //   case error.TIMEOUT:
+            //     errorMsg = "The request to get user location timed out."
+            //     break;
+            //   case error.UNKNOWN_ERROR:
+            //     errorMsg = "An unknown error occurred."
+            //     break;
+            // }
+          deferred.reject("error")  
         });
-
-
-
-
-
         return deferred.promise;
       },
+
       makeGeoRoomArr: function(geoData) {
         var latString = String(geoData.lat);
         var lonString = String(geoData.lon);

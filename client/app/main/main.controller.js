@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  // geoRoomArrVal is used to make the geoRooms arary available to all controllers
+  // geoRoomArrVal is used to make the geoRooms array available to all controllers
   .value('geoRoomArrVal', {geoRooms:[]})
   // usernameVal makes username accessible to all controllers
   .value('usernameVal', {
@@ -15,10 +15,11 @@ angular.module('roomApp')
     var ctrl = this;
 
     this.geoData;//if geoSuccessCallback is called, 
-    //geoData will be assigned to an object containing
+    //geoData is assigned to an object containing
     //geolocation information
+
     this.geoRoomArr;//created by geolocationService.makeGeoRoomArr.
-    //The first element is user's lat/lon coordinates (to thousandth's place),
+    //The first element is user's lat/lon coordinates (to hundredth's place),
     //as a string. The next 8 elements are the neighboring lat/lon coordinates
 
     this.availableRooms = [];//availableRooms is assigned in
@@ -28,26 +29,24 @@ angular.module('roomApp')
     //in assignRoomColorAndNum(), and keeps track of how many red, 
     //green, and blue rooms are available in the client's geo area
 
-    this.roomToCreateColor;//setRoomToCreateColor is the color of
+    this.roomToCreateColor;//roomToCreateColor is the color of
     //the room that will be created if this user creates a room
 
-    this.nameInput;//this is attached to the nameInput input element
+    this.nameInput;//attached to the nameInput input element
     //in createRoomOptionsPanel.html. It is used for customizing
     //the name of a room
-    this.fbook = false;//this is toggled when the user checks the
+
+    this.fbook = false;//toggled when the user checks the
     //box (in div.checkbox in createRoomOptionsPanel.html)
     //for making a room open only to facebook users
 
     //the options for the select element in createRoomOptionsPanel.html
-    this.timerOptions = ['1:00', '2:00', '5:00', '10:00', '20:00']
-    //the initial time that the select element in 
-    //createRoomOptionsPanel.html is set to
-    this.timerLength = '2:00'
+    this.timerOptions = ['1:00', '2:00', '5:00', '10:00', '20:00'];
 
-    //when a user navigates to the main page, if they are authenticated
-    //via facebook, user will be assigned to an object containing the
-    //user's name and other info and isLoggedIn will be assigned to true
-    this.user = {};
+
+    this.timerLength = '2:00'; //the initial time that the select element in 
+    //createRoomOptionsPanel.html is set to
+
     this.isLoggedIn = false;
 
     //when geolocationCallFailed or getRoomsCallFailed are true, an error
@@ -65,7 +64,6 @@ angular.module('roomApp')
       ctrl.menuOpen = true;
     }
 
-    $("body").css("background-color", "white");
 
     //getRoomByGeo is called just after the function definition.
     //It runs whenever a user navigates to the main page. Its
@@ -232,9 +230,12 @@ angular.module('roomApp')
           ctrl.username = user.facebook.first_name + ' ' + 
                           user.facebook.last_name[0];             
           ctrl.setUsername();
-          usernameVal.picture = user.facebook.picture;  
+          usernameVal.picture = user.facebook.picture; 
+                    console.log("user", user.facebook)
+    console.log("isLoggedIn", ctrl.isLoggedIn) 
         })
       }
+
     }
 
     this.setUsername = function() {
