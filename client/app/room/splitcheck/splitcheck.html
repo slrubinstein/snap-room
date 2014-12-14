@@ -3,7 +3,7 @@
   <!-- Default panel contents -->
   <div class="panel-heading">The Bill</div>
   <!-- Table -->
-  <table class="table">
+  <table class="table bill-items">
 		<thead>
 			<tr>
 				<th></th>
@@ -130,7 +130,6 @@
          <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
          <p>Tip: ${{split.personalTotal.tip | number:2}}</p>
          <p>You owe: ${{split.personalTotal.total | number:2}}</p>
-         <button class="main-page-buttons" ng-click="split.calculateMyTotal()">Recalculate My Total</button>
      	</div>
 
 	  </div>

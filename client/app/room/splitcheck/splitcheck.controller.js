@@ -10,28 +10,29 @@ angular.module('roomApp')
 
     splitcheckService.roomId = roomId;
 
-    this.selected = [];
-
-    this.deleteItem = deleteItem;
-    this.food = '';
-    this.numberPeople = personCounterService.numberPeople;
-    this.price = '';
-    this.submit = submit;
-    this.timeUp = false;
-    this.updateMyPage = updateMyPage;
-    // this.updatePersonalTotal = updatePersonalTotal;
-    this.updateSubtotal = updateSubtotal;
-    this.user = '';
-
-    this.calculateMyTotal = calculateMyTotal;
+    ctrl.calculateMyTotal = calculateMyTotal;
+    ctrl.deleteItem = deleteItem;
+    ctrl.food = '';
+    ctrl.numberPeople = personCounterService.numberPeople;
+    ctrl.personalTotal = splitcheckService.personalTotals ;
+    ctrl.price = '';
+    ctrl.refreshArray = refreshArray;
+    ctrl.selected = [];
+    ctrl.submit = submit;
+    ctrl.timeUp = false;
+    ctrl.updateSubtotal = updateSubtotal;
+    ctrl.user = '';
 
     getRoom(roomId);
+
+    personCounterService.listen(ctrl, $scope);
+
+    splitcheckSockets.listen(ctrl, roomId);
 
     function getRoom(roomId) {
       var promise = splitcheckService.get(roomId)
       .then(function(bill) {
         ctrl.bill = bill;
-        
      }, getRoomErrorCallback)
    }
     
@@ -40,43 +41,10 @@ angular.module('roomApp')
       console.log(error)
     }
 
-    personCounterService.listen(this, $scope);
-
-
-    // socket.socket.emit('updateRoomForMe', roomId, {event: 'updateMyBill'})
-
-    // variables shared with everyone on bill
-    // when any of these change, it should change for everyone via socket
-    function updateMyPage() {
-      var bill = splitcheckService.bill;
-      return bill;
-    }
-
-    // set up socket listeners
-    splitcheckSockets.listen(ctrl, roomId);
-
-    // function updatePersonalTotal() {
-    //   var personalTotal = {};
-    //   personalTotal = splitcheckService.personalTotals;
-    //   return personalTotal;
-    // }
-
-
-    // set initial values for personal total
-    this.personalTotal = splitcheckService.personalTotals ;
-
-
   	function updateSubtotal() {
       ctrl.bill = splitcheckService.updateBill({subtotal: Number(ctrl.bill.subtotal),
                               tipPercent: ctrl.bill.tipPercent,
-                              taxPercent: ctrl.bill.taxPercent}, roomId
-                            )
-
-      // splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent, ctrl.numberPeople);
-      // ctrl.bill = ctrl.updateMyPage();
-      // ctrl.personalTotal.tip = splitcheckService.personalTotals.tip;
-
-      // splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
+                              taxPercent: ctrl.bill.taxPercent}, roomId)
   	}
 
   	function submit() {
@@ -85,16 +53,9 @@ angular.module('roomApp')
                             		price: Number(ctrl.price),
                             		tax: ctrl.price * ctrl.bill.taxPercent/100,
                                 tip: ctrl.price * ctrl.bill.tipPercent/100},
-                                roomId
-      )
-
-      // ctrl.bill = ctrl.updateMyPage();
-      // ctrl.personalTotal = splitcheckService.personalTotals;
-
-      // reset page inputs to empty
+                                roomId)
   		ctrl.food = '';
   		ctrl.price = '';
-      // splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 
   	}
 
@@ -106,8 +67,12 @@ angular.module('roomApp')
       ctrl.selected.splice(index, 1)
 	  	splitcheckService.deleteItem(index, roomId);
       ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.selected);
-    //   ctrl.updateMyPage();
-    //   splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 	  }
+
+    function refreshArray() {
+      ctrl.selected.length = ctrl.bill.billSoFar.length
+      $scope.$apply()
+      calculateMyTotal();
+    }
 
   });
