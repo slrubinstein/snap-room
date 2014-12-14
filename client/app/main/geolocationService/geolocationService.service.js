@@ -39,31 +39,31 @@ angular.module('roomApp')
         return deferred.promise;
       },
       makeGeoRoomArr: function(geoData) {
-        var latToThousandthPlace = geoData.lat.toFixed(3); 
-        var lonToThousandthPlace = geoData.lon.toFixed(3);
+        var latToHundrethPlace = geoData.lat.toFixed(2); 
+        var lonToHundrethPlace = geoData.lon.toFixed(2);
 
         var latLonArr = [];
 
-        var northernLat = (Number(latToThousandthPlace) + .001).toFixed(3);
-        var southernLat = (Number(latToThousandthPlace) - .001).toFixed(3);
-        var easternLon = (Number(lonToThousandthPlace) + .001).toFixed(3);
-        var westernLon = (Number(lonToThousandthPlace) - .001).toFixed(3);
+        var northernLat = (Number(latToHundrethPlace) + .001).toFixed(2);
+        var southernLat = (Number(latToHundrethPlace) - .001).toFixed(2);
+        var easternLon = (Number(lonToHundrethPlace) + .001).toFixed(2);
+        var westernLon = (Number(lonToHundrethPlace) - .001).toFixed(2);
 
-        latLonArr.push(latToThousandthPlace + lonToThousandthPlace);
+        latLonArr.push(latToHundrethPlace + lonToHundrethPlace);
 
         latLonArr.push(northernLat + westernLon);
 
-        latLonArr.push(northernLat + lonToThousandthPlace);
+        latLonArr.push(northernLat + lonToHundrethPlace);
 
         latLonArr.push(northernLat + easternLon);
 
-        latLonArr.push(latToThousandthPlace + westernLon);
+        latLonArr.push(latToHundrethPlace + westernLon);
 
-        latLonArr.push(latToThousandthPlace + easternLon);
+        latLonArr.push(latToHundrethPlace + easternLon);
 
         latLonArr.push(southernLat + westernLon);
 
-        latLonArr.push(southernLat + lonToThousandthPlace);
+        latLonArr.push(southernLat + lonToHundrethPlace);
 
         latLonArr.push(southernLat + easternLon);
 
