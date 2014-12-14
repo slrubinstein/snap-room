@@ -37,7 +37,7 @@ angular.module('roomApp')
     
 
     function getRoomErrorCallback(error) {
-      
+      console.log(error)
     }
 
     personCounterService.listen(this, $scope);
@@ -85,16 +85,16 @@ angular.module('roomApp')
                             		food: ctrl.food,
                             		price: Number(ctrl.price),
                             		tax: ctrl.price * ctrl.bill.taxPercent/100},
-                                ctrl.numberPeople
+                                roomId
       )
 
-      ctrl.bill = ctrl.updateMyPage();
-      ctrl.personalTotal = updatePersonalTotal();
+      // ctrl.bill = ctrl.updateMyPage();
+      // ctrl.personalTotal = updatePersonalTotal();
 
       // reset page inputs to empty
   		ctrl.food = '';
   		ctrl.price = '';
-      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
+      // splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 
   	}
 

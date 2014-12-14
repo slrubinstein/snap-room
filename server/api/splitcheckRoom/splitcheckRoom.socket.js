@@ -16,7 +16,6 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-	console.log('SOCKET DOC', doc)
   socket.emit('updateRoom', doc.roomId, {event: 'updateBill', bill: doc.bill});
 }
 

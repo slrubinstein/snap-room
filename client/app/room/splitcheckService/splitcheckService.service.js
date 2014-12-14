@@ -67,17 +67,17 @@ angular.module('roomApp')
     //     updateBillTotals(numberPeople);
     //   }
 
-      function submit(singleItem, numberPeople) {
+      function submit(singleItem, roomId) {
         var user = singleItem.user,
             food = singleItem.food,
             price = singleItem.price,
             tax = singleItem.tax;
 
         bill.billSoFar.push(singleItem)
-        updateBillTotals(numberPeople);
+        // updateBillTotals(numberPeople);
 
-        personalTotals = addToMyTotals(singleItem, personalTotals);
-
+        // personalTotals = addToMyTotals(singleItem, personalTotals);
+        bill = updateBill(bill, roomId)
       }
 
       function updateBillTotals(numberPeople) {
@@ -204,7 +204,7 @@ angular.module('roomApp')
   .factory('splitcheckSockets', function(socket, splitcheckService) {
     
       function sendBillUpdate(roomId, newBill) {
-        socket.socket.emit('updateRoom', roomId, {event: 'updateBill', newBill: newBill})
+        // socket.socket.emit('updateRoom', roomId, {event: 'updateBill', newBill: newBill})
       }
     
       function listen(ctrl, roomId) {
@@ -225,8 +225,8 @@ angular.module('roomApp')
         })
 
         socket.socket.on('updateRoomForMe', function(roomId, data) {
-          var bill = splitcheckService.bill;
-          sendBillUpdate(roomId, bill)
+          // var bill = splitcheckService.bill;
+          // sendBillUpdate(roomId, bill)
         })
 
         socket.socket.on('countPeople', function(numberPeople) {

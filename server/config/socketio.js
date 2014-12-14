@@ -101,9 +101,9 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     socket.emit('updateRoom', roomId, data);
   })
 
-  socket.on('updateRoomForMe', function(roomId, data) {
-    socket.broadcast.to(roomId).emit('updateRoomForMe', roomId, data);
-  })
+  // socket.on('updateRoomForMe', function(roomId, data) {
+  //   socket.broadcast.to(roomId).emit('updateRoomForMe', roomId, data);
+  // })
 
   // Insert sockets below
   require('../api/splitcheckRoom/splitcheckRoom.socket').register(socket);
