@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('splitcheckService', function () {
+  .factory('splitcheckService', function ($http, $location) {
 
     var bill = {
         billSoFar: [],
@@ -22,6 +22,16 @@ angular.module('roomApp')
         tip: 0,
         total: 0
       };
+
+    function get(roomId) {
+
+      return $http.get("/api/splitcheckRoom/" + roomId)
+        .then(function(data){
+          return data; 
+        }, function(){
+          $location.path("/");
+        });
+    }
 
 
     function updateSubtotal(newSubtotal, newTip, newTax, numberPeople) {
@@ -134,6 +144,8 @@ angular.module('roomApp')
       bill: bill,
 
       personalTotals: personalTotals,
+
+      get:get,
 
       updateSubtotal: updateSubtotal,
 

@@ -109,6 +109,7 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
   })
 
   // Insert sockets below
+  require('../api/splitcheckRoom/splitcheckRoom.socket').register(socket);
   require('../api/backgammonRoom/backgammonRoom.socket').register(socket);
   require('../api/chatRoom/chatRoom.socket').register(socket);
 }

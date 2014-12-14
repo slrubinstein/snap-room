@@ -8,6 +8,25 @@ angular.module('roomApp')
   	var ctrl = this;
   	var roomId = $state.params.roomId
 
+
+    this.getRoom = function(roomId) {
+      var promise = splitcheckService.get(roomId)
+      .then(getRoomSuccessCallback, getRoomErrorCallback)
+     };
+
+     this.getRoom(roomId);
+
+    function getRoomSuccessCallback(room) {
+      console.log(room)
+      // ctrl.roomData = room;
+    }
+
+    function getRoomErrorCallback(error) {
+      
+    }
+
+
+
     this.timeUp = false;
 
     // display number of people in room
