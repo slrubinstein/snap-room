@@ -20,7 +20,7 @@ angular.module('roomApp')
       
      submitInput: function(userInput, roomId, name, picture) {
          return $http.put('api/chatRoom/' + roomId,
-           {message: inputForm.textInput.value,
+           {message: userInput,
              name: name,
              picture: picture})
      },

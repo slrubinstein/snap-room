@@ -51,17 +51,14 @@ angular.module('roomApp')
     function getRoomErrorCallback(error) {
       
     }
-
     
     //submitInput is called when the user submits the name of a restaurant
     //or a message. It calls lunchRoomService.submitInput with a number of
     //parameters that varies depending on whether the user is logged in
     this.submitInput = function() {
-
-      var picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'; 
  
       if (ctrl.inputField.length < 100) {
-        lunchRoomService.submitInput(roomId, this.user, picture);
+        lunchRoomService.submitInput(ctrl.inputField, roomId, this.user);
         //to empty the input field:
         ctrl.inputField = '';
       }
