@@ -2,6 +2,12 @@
 	 id="chatroom-body">
 
 		<div class="input-list col-sm-12 col-md-12 col-lg-12">
+	    <h3 ng-show="chat.errorUpdatingRoomData">
+	    	Error updating data for this room
+	    </h3>
+	    <h3 ng-show="chat.errorSubmittingMessage">
+	    	Error submitting message
+	    </h3>
 			
 			<chat-list room-trim-font>
 			</chat-list>
