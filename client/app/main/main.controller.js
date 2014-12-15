@@ -63,6 +63,7 @@ angular.module('roomApp')
     //It is toggled by openMenu()
     this.menuOpen = false;
 
+
     //openMenu is called when the user clicks on #create-room-button
     //in createRoomOptionsPanel.html
     this.openMenu = function() {
@@ -192,7 +193,7 @@ angular.module('roomApp')
       var timerLength = ctrl.timerLength;
 
       //first a generic room is created. If that is successful,
-      //the a specific type of room (lunch, chat, etc) is created
+      //then a specific type of room (lunch, chat, etc) is created
       //and $state.go is called     
       var createGeneralRoom = roomCreationService.createGeneral({
                                 lat: ctrl.geoData.lat,
@@ -203,29 +204,35 @@ angular.module('roomApp')
                                 lock: lock,
                                 roomName: roomName,
                                 timerLength: timerLength })
-      .success(function(data) {
-          var roomId = data._id;
+      .then(roomCreateSuccessCb, roomCreateErrorCb);
+    
 
-          var createSpecificRoom = 
-                roomCreationService.createSpecific(type, roomId)
+    function roomCreateSuccessCb(data) {
+      var room = data.data;
 
-          .success(function(data) {
-            
-            socket.socket.emit('createRoom', roomId, ctrl.geoRoomArr);
+      var createSpecificRoom = 
+            roomCreationService.createSpecific(room.type, room._id)
+            .then(specificRoomCreateSuccessCb, specificRoomCreateErrorCb);
 
-            roomCreationService.enter({roomId: roomId, 
-                             color: color, 
-                             type: type});
+      function specificRoomCreateSuccessCb(data) {
+        socket.socket.emit('createRoom', room._id, ctrl.geoRoomArr);
 
-          })
-          .error(function(error) {
-             ctrl.createRoomsCallFailed = true;
-          }) 
-      })
-      .error(function(error) {
+        roomCreationService.enter({roomId: room._id, 
+                         color: room.color, 
+                         type: room.type});
+      }
+
+      function specificRoomCreateErrorCb(error) {
          ctrl.createRoomsCallFailed = true;
-      })
-    };
+      }
+    }
+
+    function roomCreateErrorCb(error) {
+      ctrl.createRoomsCallFailed = true;
+    }
+
+  }
+
 
     this.enterRoom = function(availRoom) {
       if (availRoom._id) {
