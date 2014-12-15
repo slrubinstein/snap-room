@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('roomSocketsService', function (socket, Auth, usernameVal, $http, $state) {
+  .factory('roomSocketsService', function (socket, usernameVal) {
 
     return {
 
-       listen: function(roomId, $scope, ctrl, user) {
+       listen: function(roomId, ctrl) {
 
           var name = usernameVal.name;
 
