@@ -1,25 +1,25 @@
 <div class=" overflow-box">
 	<ul class="list-group messages">
 		<div ng-repeat="choice in lunch.roomData.choices">
-			<li class="list-group-item">
+			<li class="list-group-item restaurants">
 
-				<div class="restaurants">
+				<div class="">
 					<span>
-						<button class="btn btn-default" 
+						<button class="plusMinus btn btn-default" 
 										ng-click="lunch.vote(choice.choice, 'up', $event)">+</button>
 					</span>
 					<span>
-						<button class="btn btn-default" 
+						<button class="plusMinus btn btn-default" 
 										ng-click="lunch.vote(choice.choice, 'down', $event)">-</button>
 					</span>
-					<span>{{choice.choice}}</span>
 				</div>
+
+				<div class="restChoice">{{choice.choice}}</div>
 
 				<button class="btn btn-default votes" ng-click="lunch.seeVotes($event)">
 					<span>{{choice.votes}}</span>
 					<span class="glyphicon glyphicon-user"></span>
 				</button>
-				<div class="clearfix"></div>
 
 			</li>
 			<li class="list-group-item voters" ng-show="lunch.showVoters">
