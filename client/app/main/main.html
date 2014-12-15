@@ -17,6 +17,7 @@
   <div ng-show="main.geoData.geoLocated">
      <create-room-panel></create-room-panel>
     <h3 class="text-warning" ng-show="main.getRoomsCallFailed">Error finding available rooms</h3>
+    <h3 class="text-warning" ng-show="main.createRoomsCallFailed">Error creating room</h3>
   </div>
 
   <room-list> </room-list>

@@ -49,10 +49,12 @@ angular.module('roomApp')
 
     this.isLoggedIn = false;
 
-    //when geolocationCallFailed or getRoomsCallFailed are true, an error
+    //when geolocationCallFailed, getRoomsCallFailed, or 
+    //createRoomsCallFailed = true; are true, an error
     //message is shown to the user
     this.geolocationCallFailed = false;
     this.getRoomsCallFailed = false;
+    this.createRoomsCallFailed = false;
 
     this.usernameIsSet = false; //this is assigned to true by the setUsername
     //function, and determines whether or not to show a hello message to the user
@@ -188,14 +190,41 @@ angular.module('roomApp')
       //Users can adjust this by using the select element in 
       //createRoomOptionsPanel.html
       var timerLength = ctrl.timerLength;
-      roomCreationService.create({lat: ctrl.geoData.lat,
-                            lon: ctrl.geoData.lon, 
-                            color: color, 
-                            geoRoomArr: ctrl.geoRoomArr,
-                            type: type,
-                            lock: lock,
-                            roomName: roomName,
-                            timerLength: timerLength});
+
+      //first a generic room is created. If that is successful,
+      //the a specific type of room (lunch, chat, etc) is created
+      //and $state.go is called     
+      var createGeneralRoom = roomCreationService.createGeneral({
+                                lat: ctrl.geoData.lat,
+                                lon: ctrl.geoData.lon, 
+                                color: color, 
+                                geoRoomArr: ctrl.geoRoomArr,
+                                type: type,
+                                lock: lock,
+                                roomName: roomName,
+                                timerLength: timerLength })
+      .success(function(data) {
+          var roomId = data._id;
+
+          var createSpecificRoom = 
+                roomCreationService.createSpecific(type, roomId)
+
+          .success(function(data) {
+            
+            socket.socket.emit('createRoom', roomId, ctrl.geoRoomArr);
+
+            roomCreationService.enter({roomId: roomId, 
+                             color: color, 
+                             type: type});
+
+          })
+          .error(function(error) {
+             ctrl.createRoomsCallFailed = true;
+          }) 
+      })
+      .error(function(error) {
+         ctrl.createRoomsCallFailed = true;
+      })
     };
 
     this.enterRoom = function(availRoom) {
@@ -203,8 +232,6 @@ angular.module('roomApp')
         if (!availRoom.lock || ctrl.isLoggedIn) {
           roomCreationService.enter({roomId: availRoom._id, 
                              color: availRoom.color, 
-                             geoRoom: ctrl.geoRoom, 
-                             isLoggedIn: ctrl.isLoggedIn,
                              type: availRoom.type});
         }
       }
@@ -260,6 +287,11 @@ angular.module('roomApp')
     this.goToInfo = function() {
       $state.go('about');
     }
-    
+  
+  //when navigating back to the main page from a room,
+  //the background color of the room shows up as the
+  //background color of the main page. This statement
+  //changes the background color to white  
+  $("body").css("background-color","white");
 
   });
