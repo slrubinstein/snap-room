@@ -14,41 +14,36 @@ angular.module('roomApp')
           deferred.resolve(geoData);
         }, 
           function(error) {
-            var errorMsg;
-            switch(error.code) {
-              case error.PERMISSION_DENIED:
-                errorMsg = "User denied the request for Geolocation."
-                break;
-              case error.POSITION_UNAVAILABLE:
-                errorMsg = "Location information is unavailable."
-                break;
-              case error.TIMEOUT:
-                errorMsg = "The request to get user location timed out."
-                break;
-              case error.UNKNOWN_ERROR:
-                errorMsg = "An unknown error occurred."
-                break;
-            }
-          deferred.reject(errorMsg)  
+            // var errorMsg;
+            // switch(error.code) {
+            //   case error.PERMISSION_DENIED:
+            //     errorMsg = "User denied the request for Geolocation."
+            //     break;
+            //   case error.POSITION_UNAVAILABLE:
+            //     errorMsg = "Location information is unavailable."
+            //     break;
+            //   case error.TIMEOUT:
+            //     errorMsg = "The request to get user location timed out."
+            //     break;
+            //   case error.UNKNOWN_ERROR:
+            //     errorMsg = "An unknown error occurred."
+            //     break;
+            // }
+          deferred.reject("error")  
         });
-
-
-
-
-
         return deferred.promise;
       },
+
       makeGeoRoomArr: function(geoData) {
-        var latString = String(geoData.lat);
-        var lonString = String(geoData.lon);
-        var latToHundrethPlace =  latString.slice(0, latString.indexOf(".") + 3);
-        var lonToHundrethPlace = lonString.slice(0, lonString.indexOf(".") + 3);
+        var latToHundrethPlace = geoData.lat.toFixed(2); 
+        var lonToHundrethPlace = geoData.lon.toFixed(2);
+
         var latLonArr = [];
 
-        var northernLat = String((Number(latToHundrethPlace) + .01).toFixed(2));
-        var southernLat = String((Number(latToHundrethPlace) - .01).toFixed(2));
-        var easternLon = String((Number(lonToHundrethPlace) + .01).toFixed(2));
-        var westernLon = String((Number(lonToHundrethPlace) - .01).toFixed(2));
+        var northernLat = (Number(latToHundrethPlace) + .001).toFixed(2);
+        var southernLat = (Number(latToHundrethPlace) - .001).toFixed(2);
+        var easternLon = (Number(lonToHundrethPlace) + .001).toFixed(2);
+        var westernLon = (Number(lonToHundrethPlace) - .001).toFixed(2);
 
         latLonArr.push(latToHundrethPlace + lonToHundrethPlace);
 

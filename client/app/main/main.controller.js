@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  // geoRoomArrVal is used to make the geoRooms arary available to all controllers
+  // geoRoomArrVal is used to make the geoRooms array available to all controllers
   .value('geoRoomArrVal', {geoRooms:[]})
   // usernameVal makes username accessible to all controllers
   .value('usernameVal', {
@@ -15,10 +15,11 @@ angular.module('roomApp')
     var ctrl = this;
 
     this.geoData;//if geoSuccessCallback is called, 
-    //geoData will be assigned to an object containing
+    //geoData is assigned to an object containing
     //geolocation information
+
     this.geoRoomArr;//created by geolocationService.makeGeoRoomArr.
-    //The first element is user's lat/lon coordinates (to thousandth's place),
+    //The first element is user's lat/lon coordinates (to hundredth's place),
     //as a string. The next 8 elements are the neighboring lat/lon coordinates
 
     this.availableRooms = [];//availableRooms is assigned in
@@ -28,36 +29,40 @@ angular.module('roomApp')
     //in assignRoomColorAndNum(), and keeps track of how many red, 
     //green, and blue rooms are available in the client's geo area
 
-    this.roomToCreateColor;//setRoomToCreateColor is the color of
+    this.roomToCreateColor;//roomToCreateColor is the color of
     //the room that will be created if this user creates a room
 
-    this.nameInput;//this is attached to the nameInput input element
+    this.nameInput;//attached to the nameInput input element
     //in createRoomOptionsPanel.html. It is used for customizing
     //the name of a room
-    this.fbook = false;//this is toggled when the user checks the
+
+    this.fbook = false;//toggled when the user checks the
     //box (in div.checkbox in createRoomOptionsPanel.html)
     //for making a room open only to facebook users
 
     //the options for the select element in createRoomOptionsPanel.html
-    this.timerOptions = ['1:00', '2:00', '5:00', '10:00', '20:00']
-    //the initial time that the select element in 
-    //createRoomOptionsPanel.html is set to
-    this.timerLength = '2:00'
+    this.timerOptions = ['1:00', '2:00', '5:00', '10:00', '20:00'];
 
-    //when a user navigates to the main page, if they are authenticated
-    //via facebook, user will be assigned to an object containing the
-    //user's name and other info and isLoggedIn will be assigned to true
-    this.user = {};
+
+    this.timerLength = '2:00'; //the initial time that the select element in 
+    //createRoomOptionsPanel.html is set to
+
     this.isLoggedIn = false;
 
-    //when geolocationCallFailed or getRoomsCallFailed are true, an error
+    //when geolocationCallFailed, getRoomsCallFailed, or 
+    //createRoomsCallFailed = true; are true, an error
     //message is shown to the user
     this.geolocationCallFailed = false;
     this.getRoomsCallFailed = false;
+    this.createRoomsCallFailed = false;
+
+    this.usernameIsSet = false; //this is assigned to true by the setUsername
+    //function, and determines whether or not to show a hello message to the user
 
     //determines whether the menu for creating a room is open or closed.
     //It is toggled by openMenu()
     this.menuOpen = false;
+
 
     //openMenu is called when the user clicks on #create-room-button
     //in createRoomOptionsPanel.html
@@ -65,7 +70,6 @@ angular.module('roomApp')
       ctrl.menuOpen = true;
     }
 
-    $("body").css("background-color", "white");
 
     //getRoomByGeo is called just after the function definition.
     //It runs whenever a user navigates to the main page. Its
@@ -80,21 +84,24 @@ angular.module('roomApp')
     ctrl.getRoomByGeo();
         
     //geoSuccessCallback is called by getRoomByGeo when the 
-    //geolocationService.getLocation() method resolves the deferred that 
-    //the geoGeo promise is associated with     
+    //geolocationService.getLocation() method resolves the 
+    //deferred that the getGeo promise is associated with     
     function geoSuccessCallback (geoData) {
       ctrl.geoData = geoData; //geoData has three properties:
       //latitude, longitude, and geoLocated (a boolean)
 
+      //synchronous method. see above comment about geoRoomArr
       ctrl.geoRoomArr = geolocationService.makeGeoRoomArr(geoData)
       
-      //geoRoomArrVal is an angular value
+      //geoRoomArrVal is an angularJS value (see above)
       geoRoomArrVal.geoRooms = ctrl.geoRoomArr;
 
       //this statement causes the user to join a geoRoom 
       socket.socket.emit("joinGeoRoom", ctrl.geoRoomArr[0]);
 
-      //getRooms is a promise
+      //getRooms is a promise. The purpose of roomCreationService.get 
+      //is to find any rooms that have the user's lat/long pair
+      //included in its array of 9 lat/long pairs 
       var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
         .then(getRoomsSuccessCallback, getRoomsErrorCallback);
      
@@ -172,8 +179,7 @@ angular.module('roomApp')
     }
 
     //createRoom is called when the user clicks on a button to 
-    //create a room (in createRoomOptionsPanel.html). As arguments,
-    //it takes the color of the room and the type of room (lunch, chat)
+    //create a room (in createRoomOptionsPanel.html)
     this.createRoom = function(color, type) {
       //lock will be true when a user has chosen to create a room that
       //is only open to facebook users
@@ -185,27 +191,66 @@ angular.module('roomApp')
       //Users can adjust this by using the select element in 
       //createRoomOptionsPanel.html
       var timerLength = ctrl.timerLength;
-      roomCreationService.create({lat: ctrl.geoData.lat,
-                            lon: ctrl.geoData.lon, 
-                            color: color, 
-                            geoRoomArr: ctrl.geoRoomArr,
-                            type: type,
-                            lock: lock,
-                            roomName: roomName,
-                            timerLength: timerLength});
-    };
+
+      //first a generic room is created. If that is successful,
+      //then a specific type of room (lunch, chat, etc) is created
+      //and $state.go is called     
+      var createGeneralRoom = roomCreationService.createGeneral({
+                                lat: ctrl.geoData.lat,
+                                lon: ctrl.geoData.lon, 
+                                color: color, 
+                                geoRoomArr: ctrl.geoRoomArr,
+                                type: type,
+                                lock: lock,
+                                roomName: roomName,
+                                timerLength: timerLength })
+      .then(roomCreateSuccessCb, roomCreateErrorCb);
+    
+
+    function roomCreateSuccessCb(data) {
+      var room = data.data;
+
+      var createSpecificRoom = 
+            roomCreationService.createSpecific(room.type, room._id)
+            .then(specificRoomCreateSuccessCb, specificRoomCreateErrorCb);
+
+      function specificRoomCreateSuccessCb(data) {
+        socket.socket.emit('createRoom', room._id, ctrl.geoRoomArr);
+
+        roomCreationService.enter({roomId: room._id, 
+                         color: room.color, 
+                         type: room.type});
+      }
+
+      function specificRoomCreateErrorCb(error) {
+         ctrl.createRoomsCallFailed = true;
+      }
+    }
+
+    function roomCreateErrorCb(error) {
+      ctrl.createRoomsCallFailed = true;
+    }
+
+  }
+
 
     this.enterRoom = function(availRoom) {
       if (availRoom._id) {
         if (!availRoom.lock || ctrl.isLoggedIn) {
           roomCreationService.enter({roomId: availRoom._id, 
                              color: availRoom.color, 
-                             geoRoom: ctrl.geoRoom, 
-                             isLoggedIn: ctrl.isLoggedIn,
                              type: availRoom.type});
         }
       }
     };
+
+    if (!usernameVal.name) {
+      //nameGeneratorService.getName generates a random name
+      this.username = nameGeneratorService.getName();
+      usernameVal.name = this.username;
+    } else {
+      this.username = usernameVal.name;
+    }
 
     //setUser is passed as an argument to Auth.isLoggedInAsync, 
     //which is called just after the function definition.
@@ -213,29 +258,20 @@ angular.module('roomApp')
     //a boolean argument indicating whether a user is logged in
     //or not. If a user is logged in, User.get() will be called,
     //in order to get information about the user from the database
-    
-    this.usernameIsSet = false;
-
-    if (!usernameVal.name) {
-      this.username = nameGeneratorService.getName();
-      usernameVal.name = this.username;
-    } else {
-      this.username = usernameVal.name;
-    }
-
-
     function setUser(validUser) {
        if (validUser) {
         ctrl.isLoggedIn = true;
-        // User.get returns a $resource that takes a callback
         User.get({}, function(user) {
           ctrl.username = user.facebook.first_name + ' ' + 
                           user.facebook.last_name[0];             
           ctrl.setUsername();
-          usernameVal.picture = user.facebook.picture;  
+          usernameVal.picture = user.facebook.picture; 
         })
       }
+
     }
+
+    Auth.isLoggedInAsync(setUser);
 
     this.setUsername = function() {
       if (ctrl.username.length > 0) {
@@ -243,8 +279,6 @@ angular.module('roomApp')
         usernameVal.name = this.username;
       }
     }
-
-    Auth.isLoggedInAsync(setUser);
 
     this.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
@@ -260,6 +294,11 @@ angular.module('roomApp')
     this.goToInfo = function() {
       $state.go('about');
     }
-    
+  
+  //when navigating back to the main page from a room,
+  //the background color of the room shows up as the
+  //background color of the main page. This statement
+  //changes the background color to white  
+  $("body").css("background-color","white");
 
   });
