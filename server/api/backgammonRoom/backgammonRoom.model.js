@@ -19,4 +19,6 @@ var BackgammonroomSchema = new Schema({
     roomId : String
 });
 
+BackgammonroomSchema.index( { roomId: 1 } )
+
 module.exports = mongoose.model('Backgammonroom', BackgammonroomSchema);

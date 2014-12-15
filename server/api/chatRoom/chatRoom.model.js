@@ -8,4 +8,8 @@ var ChatroomSchema = new Schema({
   messages: [{message: String, name: String, picture: String}]
 });
 
+
+ChatroomSchema.index( { roomId: 1 } )
+
+
 module.exports = mongoose.model('Chatroom', ChatroomSchema);

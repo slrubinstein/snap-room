@@ -19,4 +19,6 @@ var SplitcheckroomSchema = new Schema({
   roomId: String
 });
 
+SplitcheckroomSchema.index( { roomId: 1 } )
+
 module.exports = mongoose.model('Splitcheckroom', SplitcheckroomSchema);

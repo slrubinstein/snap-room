@@ -8,4 +8,6 @@ var LunchroomSchema = new Schema({
   roomId: String
 });
 
+LunchroomSchema.index( { roomId: 1 } )
+
 module.exports = mongoose.model('Lunchroom', LunchroomSchema);
