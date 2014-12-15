@@ -25,6 +25,10 @@
     <h2 ng-show="room.timeUp && !room.winner && room.roomType !=='lunch'">
         Time expired
     </h2>
+
+    <h2 ng-show="room.showTimerError">
+        Error setting timer
+    </h2>
             
   </div>
 

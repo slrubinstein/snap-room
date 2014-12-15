@@ -2,38 +2,33 @@
 
 angular.module('roomApp')
   .controller('RoomCtrl', function ($scope, $stateParams, socket, $http, $interval,
-                                    roomService, Auth, $state, roomCreationService,
-                                    fourSquareService, roomSocketsService, $window,
-                                    personCounterService, geoRoomArrVal, usernameVal) {
-
-
-
+                                    roomService, Auth, $state, roomSocketsService, 
+                                    personCounterService, geoRoomArrVal) {
 
 
     var ctrl = this;
 
     this.params = $stateParams;
     var roomId = this.params.roomId;
-    var geoRoomArr = geoRoomArrVal.geoRooms;
-    // this.roomType = roomCreationService.roomType;
     this.roomColor = this.params.color;
 
-    //roomData, roomType, and roomColor are all assigned in
-    //getRoomSuccessCallback
-    this.roomName = '';
-
-    // display number of people in room
-    this.numberPeople = personCounterService.numberPeople;
-    this.namesOfPeople = personCounterService.namesOfPeople;
-    personCounterService.listen(this, $scope);
+    var geoRoomArr = geoRoomArrVal.geoRooms;
 
     this.inputField = ''; //sets the input field to be empty initially
 
-    // getRoom is called whenever a user enters a room. The method call
-    // is just below the function definition. Its purpose is to make available
-    // to the client any info that has already been posted in the room, the
-    // amount of time left before the room expires, and the room color/type,
-    // as well as to start the interval that runs the timer.
+    this.roomName = ''; //assigned in getRoomSuccessCallback
+
+    this.showUsers = false; //toggled by this.toggleUsers. When true,
+    //an overlay is displayed with the names of the users in the room
+
+    this.showTimerError = false; //set to false in getRoomErrorCallback,
+    //causes error message to be shown to the user
+
+    //getRoom is called whenever a user enters a room. The method call
+    //is just below the function definition. Its purpose is to make available
+    //to the client the name of the room (if the user created one) and the
+    //amount of time left before the room expires, as well as to start the 
+    //interval that runs the timer.
     this.getRoom = function(roomId) {
        var promise = roomService.get(roomId)
        .then(getRoomSuccessCallback, getRoomErrorCallback)
@@ -45,20 +40,10 @@ angular.module('roomApp')
         ctrl.roomName = room.roomName;
         ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
         ctrl.countDown = $interval(ctrl.runTimer, 1000);
-
-        if (ctrl.roomColor === "red") {
-           $("body").css("background-color", "#D46A6A" );
-        }
-        else if (ctrl.roomColor === "green") {
-           $("body").css("background-color","#87FC81" );
-        }
-        else if (ctrl.roomColor === "blue") {
-           $("body").css("background-color", "#8DADF9" );
-        }
     }
 
     function getRoomErrorCallback(error) {
-      
+        ctrl.showTimerError = true;
     }
 
     this.runTimer = function(expiresAt) {
@@ -80,18 +65,34 @@ angular.module('roomApp')
     this.isLoggedIn = Auth.isLoggedIn();
 
     // set up socket event listeners
-    roomSocketsService.listen(roomId, $scope, ctrl, this.user);
+    roomSocketsService.listen(roomId, ctrl);
+
+    //to instantiate listener for countPeople socket event, 
+    //which sends data for namesOfPeople and numberPeople
+    personCounterService.listen($scope);
+    
+    this.numberPeople = personCounterService.numberPeople;
+    this.namesOfPeople = personCounterService.namesOfPeople;
 
 
     this.backToMain = function() {
       $state.go("main");
     }
 
-    this.showUsers = false;
-
     this.toggleUsers = function() {
       ctrl.showUsers = !ctrl.showUsers;
     }
 
+    //this is to ensure that the entire screen has the
+    //appropriate background color
+    if (ctrl.roomColor === "red") {
+       $("body").css("background-color", "#D46A6A" );
+    }
+    else if (ctrl.roomColor === "green") {
+       $("body").css("background-color","#87FC81" );
+    }
+    else if (ctrl.roomColor === "blue") {
+       $("body").css("background-color", "#8DADF9" );
+    }
 
   });
