@@ -36,7 +36,7 @@
 
   <p class="subheading" ng-show="main.usernameIsSet">Hello {{main.username}}</p>
   <p class="subheading" ng-hide="main.usernameIsSet">Or choose a username: 
-    <input type="text" ng-model="main.username" maxlength="20" minlength="1">
+    <input type="text" ng-model="main.username" maxlength="18" minlength="1">
   </p>
   <button ng-click="main.setUsername()"
             ng-hide="main.usernameIsSet"
