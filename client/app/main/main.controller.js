@@ -54,6 +54,9 @@ angular.module('roomApp')
     this.geolocationCallFailed = false;
     this.getRoomsCallFailed = false;
 
+    this.usernameIsSet = false; //this is assigned to true by the setUsername
+    //function, and determines whether or not to show a hello message to the user
+
     //determines whether the menu for creating a room is open or closed.
     //It is toggled by openMenu()
     this.menuOpen = false;
@@ -78,21 +81,24 @@ angular.module('roomApp')
     ctrl.getRoomByGeo();
         
     //geoSuccessCallback is called by getRoomByGeo when the 
-    //geolocationService.getLocation() method resolves the deferred that 
-    //the geoGeo promise is associated with     
+    //geolocationService.getLocation() method resolves the 
+    //deferred that the getGeo promise is associated with     
     function geoSuccessCallback (geoData) {
       ctrl.geoData = geoData; //geoData has three properties:
       //latitude, longitude, and geoLocated (a boolean)
 
+      //synchronous method. see above comment about geoRoomArr
       ctrl.geoRoomArr = geolocationService.makeGeoRoomArr(geoData)
       
-      //geoRoomArrVal is an angular value
+      //geoRoomArrVal is an angularJS value (see above)
       geoRoomArrVal.geoRooms = ctrl.geoRoomArr;
 
       //this statement causes the user to join a geoRoom 
       socket.socket.emit("joinGeoRoom", ctrl.geoRoomArr[0]);
 
-      //getRooms is a promise
+      //getRooms is a promise. The purpose of roomCreationService.get 
+      //is to find any rooms that have the user's lat/long pair
+      //included in its array of 9 lat/long pairs 
       var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
         .then(getRoomsSuccessCallback, getRoomsErrorCallback);
      
@@ -170,8 +176,7 @@ angular.module('roomApp')
     }
 
     //createRoom is called when the user clicks on a button to 
-    //create a room (in createRoomOptionsPanel.html). As arguments,
-    //it takes the color of the room and the type of room (lunch, chat)
+    //create a room (in createRoomOptionsPanel.html)
     this.createRoom = function(color, type) {
       //lock will be true when a user has chosen to create a room that
       //is only open to facebook users
@@ -205,14 +210,27 @@ angular.module('roomApp')
       }
     };
 
+
     //setUser is passed as an argument to Auth.isLoggedInAsync, 
     //which is called just after the function definition.
     //When it is called by Auth.isLoggedInAsync, it is passed
     //a boolean argument indicating whether a user is logged in
     //or not. If a user is logged in, User.get() will be called,
     //in order to get information about the user from the database
-    
-    this.usernameIsSet = false;
+    function setUser(validUser) {
+       if (validUser) {
+        ctrl.isLoggedIn = true;
+        User.get({}, function(user) {
+          ctrl.username = user.facebook.first_name + ' ' + 
+                          user.facebook.last_name[0];             
+          ctrl.setUsername();
+          usernameVal.picture = user.facebook.picture; 
+        })
+      }
+
+    }
+
+    Auth.isLoggedInAsync(setUser);
 
     if (!usernameVal.name) {
       this.username = nameGeneratorService.getName();
@@ -221,31 +239,12 @@ angular.module('roomApp')
       this.username = usernameVal.name;
     }
 
-
-    function setUser(validUser) {
-       if (validUser) {
-        ctrl.isLoggedIn = true;
-        // User.get returns a $resource that takes a callback
-        User.get({}, function(user) {
-          ctrl.username = user.facebook.first_name + ' ' + 
-                          user.facebook.last_name[0];             
-          ctrl.setUsername();
-          usernameVal.picture = user.facebook.picture; 
-                    console.log("user", user.facebook)
-    console.log("isLoggedIn", ctrl.isLoggedIn) 
-        })
-      }
-
-    }
-
     this.setUsername = function() {
       if (ctrl.username.length > 0) {
         this.usernameIsSet = !this.usernameIsSet;
         usernameVal.name = this.username;
       }
     }
-
-    Auth.isLoggedInAsync(setUser);
 
     this.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
