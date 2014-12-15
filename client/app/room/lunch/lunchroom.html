@@ -1,8 +1,8 @@
  <div room-accent 
-    		 id="room-body"
+    		 id="lunchroom-body"
     		 ng-hide="lunch.timeUp">
 
-				<div id="lunch-list" class="input-list col-sm-6 col-md-6 col-lg-6">
+	 <div id="lunch-list" class="input-list col-sm-6 col-md-6 col-lg-6">
 			    
 			    <div ng-show="lunch.winner" 
 			  		class="col-sm-12 col-md-12 col-lg-12">
@@ -22,10 +22,6 @@
 				<restaurant-list room-trim-font ng-hide="lunch.winner">
 				</restaurant-list>
 
-				</div>
-
-
-				<div class="col-sm-6 col-md-6 col-lg-6" ui-view='nested-view-chat'></div>
 
 				<four-square>
 				</four-square>
@@ -51,6 +47,10 @@
 						   type="submit"
 						   room-trim room-accent>
 				</form>
+
+     </div>
+
+				<div class="col-sm-6 col-md-6 col-lg-6" ui-view='nested-view-chat'></div>
 
   </div> 
 
