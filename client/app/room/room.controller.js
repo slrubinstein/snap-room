@@ -68,10 +68,10 @@ angular.module('roomApp')
     roomSocketsService.listen(roomId, ctrl);
 
     //to instantiate listener for countPeople socket event, 
-    //which sends data for namesOfPeople and numberPeople
-    personCounterService.listen($scope);
+    //which sends data for namesOfPeople and numberOfPeople
+    personCounterService.listen($scope, ctrl);
     
-    this.numberPeople = personCounterService.numberPeople;
+    this.numberOfPeople = personCounterService.numberOfPeople;
     this.namesOfPeople = personCounterService.namesOfPeople;
 
 
