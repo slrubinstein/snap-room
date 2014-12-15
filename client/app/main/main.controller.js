@@ -210,6 +210,13 @@ angular.module('roomApp')
       }
     };
 
+    if (!usernameVal.name) {
+      //nameGeneratorService.getName generates a random name
+      this.username = nameGeneratorService.getName();
+      usernameVal.name = this.username;
+    } else {
+      this.username = usernameVal.name;
+    }
 
     //setUser is passed as an argument to Auth.isLoggedInAsync, 
     //which is called just after the function definition.
@@ -231,13 +238,6 @@ angular.module('roomApp')
     }
 
     Auth.isLoggedInAsync(setUser);
-
-    if (!usernameVal.name) {
-      this.username = nameGeneratorService.getName();
-      usernameVal.name = this.username;
-    } else {
-      this.username = usernameVal.name;
-    }
 
     this.setUsername = function() {
       if (ctrl.username.length > 0) {
