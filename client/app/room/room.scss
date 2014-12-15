@@ -107,10 +107,11 @@ button.greenWall{
 }
 
 
-#input-list {
+.input-list {
   margin-top: 10px;
-  min-height: 200px;
+  margin-bottom: 20px;
   text-align: left;
+  height: 600px;
 
   > div:last-child {
     @extend .fadeInUp;
