@@ -3,14 +3,16 @@
   <!-- Default panel contents -->
   <div class="panel-heading">The Bill</div>
   <!-- Table -->
-  <table class="table">
+  <table class="table bill-items">
 		<thead>
 			<tr>
 				<th></th>
+				<th>Select</th>
 				<th>Name</th>
 				<th>Item</th>
 				<th>Price</th>
 				<th>Tax</th>
+				<th>Tip</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -18,10 +20,16 @@
 				<td>
 					<button class="btn btn-danger btn-xs"
 									ng-click="split.deleteItem($index)">X</button></td>
+				<td>
+					<input 
+								 type="checkbox"
+								 ng-model="split.selected[$index]"
+								 ng-change="split.calculateMyTotal()"></td>
 				<td>{{item.user}}</td>
 				<td>{{item.food}}</td>
 				<td>${{item.price | number:2}}</td>
 				<td>${{item.tax | number:2}}</td>
+				<td>${{item.tip | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -65,7 +73,7 @@
 								 ng-model="split.bill.tipPercent"
 								 ng-change="split.updateSubtotal()" />
 
-					%: {{split.bill.totalTip | number:2}}</p>
+					%: ${{split.bill.totalTip | number:2}}</p>
 				
 				<p>
 					Tax: 
@@ -74,7 +82,7 @@
 								 ng-model="split.bill.taxPercent"
 								 ng-change="split.updateSubtotal()" />
 
-					%: {{split.bill.totalTax | number:3}}</p>
+					%: ${{split.bill.totalTax | number:2}}</p>
 				<p><strong>Total: {{split.bill.grandTotal | number:2}}</strong></p>
 			</div>
 		</div>
@@ -93,7 +101,7 @@
 					>${{split.bill.remainder | number:2}}</p>
 			</div>
 			<div class="third-col">
-				<p><strong>Splitting tip between {{split.numberPeople}}</strong></p>
+
 			</div>
 		</div>
 	</div>
@@ -117,12 +125,11 @@
    	</div>
 
       <div class="panel panel-default">
-         <h4>Your Totals</h4>
+         <h4>Select items to calculate what you owe</h4>
          <p>Food total: ${{split.personalTotal.food | number:2}}</p>
          <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
-         <p>Tip: ${{split.bill.tipPerPerson | number:2}}</p>
+         <p>Tip: ${{split.personalTotal.tip | number:2}}</p>
          <p>You owe: ${{split.personalTotal.total | number:2}}</p>
-         <button class="main-page-buttons" ng-click="split.calculateMyTotal()">Recalculate My Total</button>
      	</div>
 
 	  </div>

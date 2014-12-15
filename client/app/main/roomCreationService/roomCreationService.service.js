@@ -51,18 +51,15 @@ angular.module('roomApp')
         $http.post("/api/room", options)
         .success(function(data) {
           var roomId = data._id;
-          if (type !== 'splitcheck') {
-            $http.post("/api/" + type + "Room", {roomId : roomId})
-            .success(function() {   
-              stateGo(roomId);
-            })
-            .error(function(error){
-
-            })
-          }
-          else {
+          $http.post("/api/" + type + "Room", {roomId : roomId})
+          .success(function() {   
             stateGo(roomId);
-         }
+            //timerFactory.timerListener();
+             })
+          .error(function(error){
+
+          })
+ 
         }) 
         .error(function(data){
           console.log("error creating room");
