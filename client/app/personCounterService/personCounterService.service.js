@@ -3,11 +3,10 @@
 angular.module('roomApp')
   .factory('personCounterService', function (socket) {
 
-    var listen = function($scope, ctrl) {
+    var listen = function(ctrl) {
         socket.socket.on('countPeople', function(numberPeople, nameArray) {
           ctrl.numberOfPeople = numberPeople;
           ctrl.namesOfPeople = nameArray;
-          $scope.$apply();
         });
     };
 

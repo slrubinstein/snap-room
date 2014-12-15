@@ -2,8 +2,7 @@
 
 angular.module('roomApp')
   .controller('SplitcheckCtrl', function ($scope, Auth, socket, $state,
-                                          splitcheckService, splitcheckSockets,
-                                          personCounterService) {
+                                          splitcheckService, splitcheckSockets) {
 
   	var ctrl = this;
   	var roomId = $state.params.roomId
@@ -13,7 +12,6 @@ angular.module('roomApp')
     ctrl.calculateMyTotal = calculateMyTotal;
     ctrl.deleteItem = deleteItem;
     ctrl.food = '';
-    ctrl.numberPeople = personCounterService.numberPeople;
     ctrl.personalTotal = splitcheckService.personalTotals ;
     ctrl.price = '';
     ctrl.refreshArray = refreshArray;
@@ -24,8 +22,6 @@ angular.module('roomApp')
     ctrl.user = '';
 
     getRoom(roomId);
-
-    personCounterService.listen(ctrl, $scope);
 
     splitcheckSockets.listen(ctrl, roomId);
 
