@@ -2,7 +2,7 @@
     		 id="room-body"
     		 ng-hide="lunch.timeUp">
 
-				<div id="input-list" class="col-sm-12 col-md-12 col-lg-12">
+				<div id="input-list" class="col-sm-6 col-md-6 col-lg-6">
 			    
 			    <div ng-show="lunch.winner" 
 			  		class="col-sm-12 col-md-12 col-lg-12">
@@ -24,13 +24,16 @@
 
 				</div>
 
+
+				<div class="col-sm-6 col-md-6 col-lg-6" ui-view='nested-view-chat'></div>
+
 				<four-square>
 				</four-square>
 			
 			  <h1 room-trim-font>Or</h1>
 
 				<form id="inputForm" 
-							name="inputForm"
+							name="lunchForm"
 							ng-submit="lunch.submitInput()" 
 							novalidate>
 		      <label for="textInput"
@@ -50,4 +53,4 @@
 				</form>
 
   </div> 
-</div>
+

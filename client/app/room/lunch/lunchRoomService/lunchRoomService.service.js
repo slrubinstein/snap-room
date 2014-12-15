@@ -23,7 +23,7 @@ angular.module('roomApp')
 
       submitInput: function(roomId, name, picture) {
         $http.put("/api/lunchRoom/" + roomId, 
-          {choice : inputForm.textInput.value,
+          {choice : lunchForm.textInput.value,
             name : name})
           .success(function(data){
             socket.socket.emit('updateRoom', roomId, {event: 'vote', doc: data})

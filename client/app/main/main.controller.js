@@ -217,9 +217,20 @@ angular.module('roomApp')
       function specificRoomCreateSuccessCb(data) {
         socket.socket.emit('createRoom', room._id, ctrl.geoRoomArr);
 
-        roomCreationService.enter({roomId: room._id, 
+        if (room.type === 'lunch') {
+          var createSpecificRoom = 
+            roomCreationService.createSpecific('chat', room._id)
+            .then(function(data) {
+                roomCreationService.enter({roomId: room._id, 
+                     color: room.color, 
+                     type: room.type});
+            }, specificRoomCreateErrorCb);
+        }
+        else {
+          roomCreationService.enter({roomId: room._id, 
                          color: room.color, 
                          type: room.type});
+        }
       }
 
       function specificRoomCreateErrorCb(error) {

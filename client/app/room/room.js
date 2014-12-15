@@ -11,9 +11,14 @@ angular.module('roomApp')
      })
      .state('room.lunch', {
        url: '/lunch',
-       templateUrl: 'app/room/lunch/lunchroom.html',
-       controller: 'LunchroomCtrl',
-       controllerAs: 'lunch'
+       views: {
+        '': {templateUrl: 'app/room/lunch/lunchroom.html',
+             controller: 'LunchroomCtrl',
+             controllerAs: 'lunch'},
+        'nested-view-chat@room.lunch': {templateUrl: 'app/room/chat/chatroom.html',
+                                        controller: 'ChatroomCtrl',
+                                        controllerAs: 'chat'}
+       }
      })
      .state('room.chat', {
        url: '/chat',
