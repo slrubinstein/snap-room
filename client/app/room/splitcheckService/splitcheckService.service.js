@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .factory('splitcheckService', function () {
+  .factory('splitcheckService', function ($http, $location, personCounterService, socket) {
 
     var bill = {
         billSoFar: [],
@@ -11,7 +11,6 @@ angular.module('roomApp')
         subtotal: 0,
         remainder: 0,
         totalTip: 0,
-        tipPerPerson: 0,
         totalTax: 0,
         grandTotal: 0,
       };
@@ -23,36 +22,45 @@ angular.module('roomApp')
         total: 0
       };
 
+    function get(roomId) {
+      return $http.get("/api/splitcheckRoom/" + roomId)
+        .then(function(data){
+          bill = data.data.bill;
+          return bill; 
+        }, function(){
+          $location.path("/");
+        });
+    }
 
-    function updateSubtotal(newSubtotal, newTip, newTax, numberPeople) {
-        bill.subtotal = newSubtotal;
-        bill.tipPercent = newTip;
-        bill.taxPercent = newTax;
-        updateTax();
-        updateBillTotals(numberPeople);
-      }
+    function updateBill(billData, roomId) {
+      bill.subtotal = billData.subtotal;
+      bill.tipPercent = billData.tipPercent;
+      bill.taxPercent = billData.taxPercent;
+      bill.billSoFar = updateTax(bill.billSoFar);
+      bill.billSoFar = updateTip(bill.billSoFar);
+      bill.runningTotal = calculateRunningTotal();
+      bill.totalTip = calculateTip();
+      bill.totalTax = calculateTax();
+      bill.grandTotal = calculateTotal();
+      bill.remainder = calculateRemainder();
+      postUpdatedBill(bill, roomId);
+      return bill;
+    }
 
-      function submit(singleItem, numberPeople) {
-        var user = singleItem.user,
-            food = singleItem.food,
-            price = singleItem.price,
-            tax = singleItem.tax;
+    function postUpdatedBill(bill, roomId) {
+      $http.put("/api/splitcheckRoom/" + roomId, 
+        {roomId: roomId, 
+          bill : bill})
+        .success(function(data){
+      })
+      .error(function(data){
+          console.log("error");
+      });
+    }
 
-        bill.billSoFar.push(singleItem)
-        updateBillTotals(numberPeople);
-
-        personalTotals = addToMyTotals(singleItem, personalTotals);
-
-      }
-
-      function updateBillTotals(numberPeople) {
-        bill.runningTotal = calculateRunningTotal();
-        bill.totalTip = calculateTip();
-        bill.tipPerPerson = bill.totalTip / numberPeople;
-        personalTotals.tip = bill.tipPerPerson;
-        bill.totalTax = calculateTax();
-        bill.grandTotal = calculateTotal();
-        bill.remainder = calculateRemainder();
+      function submit(singleItem, roomId) {
+        bill.billSoFar.push(singleItem);
+        bill = updateBill(bill, roomId);
       }
 
       function calculateRunningTotal() {
@@ -60,6 +68,7 @@ angular.module('roomApp')
           bill.billSoFar.forEach(function(item) {
             runningTotal += Number(item.price);
             runningTotal += Number(item.tax);
+            runningTotal += Number(item.tip);
           })
       return runningTotal;
       }
@@ -80,62 +89,61 @@ angular.module('roomApp')
         return Number(bill.subtotal) + bill.totalTip + bill.totalTax;
       }
 
-      function deleteItem(index, numberPeople) {
-        var item = bill.billSoFar.splice(index, 1)[0]
-        personalTotals = subtractFromMyTotals(item, personalTotals)
-        updateBillTotals(numberPeople);
+      function deleteItem(index, roomId) {
+        bill.billSoFar.splice(index, 1)[0];
+        updateBill(bill, roomId);
       }
 
-      function updateTax() {
+      function updateTax(billSoFar) {
         var taxPercent = bill.taxPercent;
-        bill.billSoFar.forEach(function(item) {
+        billSoFar.forEach(function(item) {
           item.tax = item.price * taxPercent / 100;
         });
+        return billSoFar;
+      }
+
+      function updateTip(billSoFar) {
+        var tipPercent = bill.tipPercent;
+          billSoFar.forEach(function(item) {
+            item.tip = item.price * tipPercent / 100;
+        });
+        return billSoFar;
       }
 
       function addToMyTotals(item, current) {
         current.food += item.price;
         current.tax += item.tax;
-        current.tip = bill.tipPerPerson;
-        current.total += item.price + item.tax + personalTotals.tip;
+        current.tip += item.tip;
+        current.total += item.price + item.tax + item.tip;
         return current;
       }
 
       function subtractFromMyTotals(item, current) {
         current.food -= item.price;
         current.tax -= item.tax;
+        current.tip -= item.tip;
         current.total -= (item.price + item.tax);
         return current;
       }
 
-      function calculateMyTotal(name) {
+      function calculateMyTotal(selected) {
         personalTotals = {
           food: 0,
           tax: 0,
           tip: 0,
           total: 0
         }
-        personalTotals.tip = bill.tipPerPerson;
-        bill.billSoFar.forEach(function(item) {
-          if (item.user===name) {
-            personalTotals = addToMyTotals(item, personalTotals);
+        selected.forEach(function(item, index) {
+          if (item===true) {
+            personalTotals = addToMyTotals(bill.billSoFar[index], personalTotals);
           }
         });
         return personalTotals;
       }
 
       function updateFromSocket(newBill) {
-       bill.billSoFar = newBill.billSoFar;
-       bill.taxPercent = newBill.taxPercent;
-       bill.tipPercent = newBill.tipPercent;
-       bill.runningTotal = newBill.runningTotal;
-       bill.subtotal = newBill.subtotal;
-       bill.remainder = newBill.remainder;
-       bill.totalTip = newBill.totalTip;
-       bill.tipPerPerson = newBill.tipPerPerson;
-       bill.totalTax = newBill.totalTax;
-       bill.grandTotal = newBill.grandTotal;
-     }
+        bill = newBill;
+      }
 
     return {
 
@@ -143,11 +151,11 @@ angular.module('roomApp')
 
       personalTotals: personalTotals,
 
-      updateSubtotal: updateSubtotal,
+      get:get,
 
       submit: submit,
 
-      updateBillTotals: updateBillTotals,
+      updateBill: updateBill,
 
       calculateRunningTotal: calculateRunningTotal,
 
@@ -163,28 +171,29 @@ angular.module('roomApp')
 
       updateTax: updateTax,
 
+      updateTip: updateTip,
+
       addToMyTotals: addToMyTotals,
 
       subtractFromMyTotals: subtractFromMyTotals,
 
       calculateMyTotal: calculateMyTotal,
 
-      updateFromSocket: updateFromSocket
+      updateFromSocket: updateFromSocket,
+
+      postUpdatedBill: postUpdatedBill
     };
   })
   .factory('splitcheckSockets', function(socket, splitcheckService) {
-    
-      function sendBillUpdate(roomId, newBill) {
-        socket.socket.emit('updateRoom', roomId, {event: 'updateBill', newBill: newBill})
-      }
     
       function listen(ctrl, roomId) {
 
         socket.socket.on('updateRoom', function(eventRoomId, data) {
           if (data.event==='updateBill') {
             if (eventRoomId === roomId) {
-              splitcheckService.updateFromSocket(data.newBill);
-              ctrl.bill = ctrl.updateMyPage();
+              splitcheckService.updateFromSocket(data.bill);
+              ctrl.bill = data.bill;
+              ctrl.refreshArray()
             }
           }
            if (data.event==='timeUp') {
@@ -193,20 +202,9 @@ angular.module('roomApp')
               }
            }
         })
-
-        socket.socket.on('updateRoomForMe', function(roomId, data) {
-          var bill = splitcheckService.bill;
-          sendBillUpdate(roomId, bill)
-        })
-
-        socket.socket.on('countPeople', function(numberPeople) {
-          splitcheckService.updateBillTotals(numberPeople);
-          ctrl.bill.tipPerPerson = splitcheckService.bill.tipPerPerson;
-        })
       }
 
     return {
-      sendBillUpdate: sendBillUpdate,
       listen: listen
     }
   });

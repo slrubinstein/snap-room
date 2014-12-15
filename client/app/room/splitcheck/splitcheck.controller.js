@@ -8,82 +8,71 @@ angular.module('roomApp')
   	var ctrl = this;
   	var roomId = $state.params.roomId
 
-    this.timeUp = false;
+    splitcheckService.roomId = roomId;
 
-    // display number of people in room
-    this.numberPeople = personCounterService.numberPeople;
-    personCounterService.listen(this, $scope);
+    ctrl.calculateMyTotal = calculateMyTotal;
+    ctrl.deleteItem = deleteItem;
+    ctrl.food = '';
+    ctrl.numberPeople = personCounterService.numberPeople;
+    ctrl.personalTotal = splitcheckService.personalTotals ;
+    ctrl.price = '';
+    ctrl.refreshArray = refreshArray;
+    ctrl.selected = [];
+    ctrl.submit = submit;
+    ctrl.timeUp = false;
+    ctrl.updateSubtotal = updateSubtotal;
+    ctrl.user = '';
 
-    // updates bill for late joiners
-  	socket.socket.emit('updateRoomForMe', roomId, {event: 'updateMyBill'})
+    getRoom(roomId);
 
-    // variables shared with everyone on bill
-    // when any of these change, it should change for everyone via socket
-    ctrl.updateMyPage = function() {
-      var bill = splitcheckService.bill;
-      return bill;
-    }
+    personCounterService.listen(ctrl, $scope);
 
-    // set up socket listeners
     splitcheckSockets.listen(ctrl, roomId);
 
-    var updatePersonalTotal = function() {
-      var personalTotal = {};
-      personalTotal = splitcheckService.personalTotals;
-      return personalTotal;
+    function getRoom(roomId) {
+      var promise = splitcheckService.get(roomId)
+      .then(function(bill) {
+        ctrl.bill = bill;
+     }, getRoomErrorCallback)
+   }
+    
+
+    function getRoomErrorCallback(error) {
+      console.log(error)
     }
 
-    // set initial values
-    this.bill = ctrl.updateMyPage();
-
-    // user inputs for single bill item
-  	this.user = '';
-  	this.food = '';
-  	this.price = '';
-
-    // set initial values for personal total
-    this.personalTotal = updatePersonalTotal();
-
-
-  	this.updateSubtotal = function() {
-      var subtotal = ctrl.bill.subtotal,
-          tipPercent = ctrl.bill.tipPercent,
-          taxPercent = ctrl.bill.taxPercent;
-
-      splitcheckService.updateSubtotal(subtotal, tipPercent, taxPercent, ctrl.numberPeople);
-      ctrl.bill = ctrl.updateMyPage();
-      ctrl.personalTotal.tip = splitcheckService.personalTotals.tip;
-
-      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
+  	function updateSubtotal() {
+      ctrl.bill = splitcheckService.updateBill({subtotal: Number(ctrl.bill.subtotal),
+                              tipPercent: ctrl.bill.tipPercent,
+                              taxPercent: ctrl.bill.taxPercent}, roomId)
   	}
 
-  	this.submit = function() {
+  	function submit() {
   		splitcheckService.submit({user: ctrl.user,
                             		food: ctrl.food,
                             		price: Number(ctrl.price),
-                            		tax: ctrl.price * ctrl.bill.taxPercent/100},
-                                ctrl.numberPeople
-      )
-
-      ctrl.bill = ctrl.updateMyPage();
-      ctrl.personalTotal = updatePersonalTotal();
-
-      // reset page inputs to empty
+                            		tax: ctrl.price * ctrl.bill.taxPercent/100,
+                                tip: ctrl.price * ctrl.bill.tipPercent/100},
+                                roomId)
   		ctrl.food = '';
   		ctrl.price = '';
-      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
 
   	}
 
-    this.calculateMyTotal = function() {
-      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.user);
+    function calculateMyTotal() {
+      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.selected);
     }
 
-	  this.deleteItem = function(index) {
-	  	splitcheckService.deleteItem(index, ctrl.numberPeople);
-      ctrl.personalTotal = updatePersonalTotal();
-      ctrl.updateMyPage();
-      splitcheckSockets.sendBillUpdate(roomId, ctrl.bill);
+	  function deleteItem(index) {
+      ctrl.selected.splice(index, 1)
+	  	splitcheckService.deleteItem(index, roomId);
+      ctrl.personalTotal = splitcheckService.calculateMyTotal(ctrl.selected);
 	  }
+
+    function refreshArray() {
+      ctrl.selected.length = ctrl.bill.billSoFar.length
+      $scope.$apply()
+      calculateMyTotal();
+    }
 
   });
