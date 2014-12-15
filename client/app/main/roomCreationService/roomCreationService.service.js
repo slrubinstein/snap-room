@@ -4,6 +4,7 @@ angular.module('roomApp')
   .factory('roomCreationService', function ($q, $http, $state, socket) {
 
     return {
+
       get: function (latLong) {
         var deferred = $q.defer();
 
@@ -16,6 +17,7 @@ angular.module('roomApp')
           });
          return deferred.promise;
       },
+      
       enter: function(options) {
 
         var roomId = options.roomId,
@@ -28,7 +30,6 @@ angular.module('roomApp')
                                 color: color
                               });
         }
-
         stateGo();
       },
 
@@ -54,8 +55,7 @@ angular.module('roomApp')
             $http.post("/api/" + type + "Room", {roomId : roomId})
             .success(function() {   
               stateGo(roomId);
-              //timerFactory.timerListener();
-               })
+            })
             .error(function(error){
 
             })
