@@ -17,7 +17,6 @@ function onDisconnect(socket, findUsernamesInRoom) {
  var name = socket.nickname;
 
  var nameArray = findUsernamesInRoom(socket, roomId)
-console.log('disconnect room array', nameArray)
  socket.broadcast.to(roomId).emit('countPeople', nameArray.length, nameArray);
 }
 
@@ -42,9 +41,7 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     var roomsObject = socket.nsp.adapter.rooms;
     //roomId will be undefined if user hasn't navigated from a room
     var roomId = socket.roomId;
-    console.log("ROOM OBJECT", roomsObject);
     socket.leave(roomId);
-    console.log("ROOM OBJECT AFTER LEAVE METHOD", roomsObject);
     var nameArray = findUsernamesInRoom(socket, roomId);
     socket.broadcast.to(roomId).emit('countPeople', nameArray.length, nameArray);
   })
@@ -85,7 +82,6 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
           socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
           socket.emit('updateRoom', roomId, data);
 
-          console.log("geoRoomArr:", geoRoomArr);
           geoRoomArr.forEach(function(el) {
             socket.broadcast.to(el).emit('refreshRoomList');
           });
@@ -97,6 +93,7 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     })
 
   socket.on('updateRoom', function(roomId, data) {
+    console.log(data);
     socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
     socket.emit('updateRoom', roomId, data);
   })
