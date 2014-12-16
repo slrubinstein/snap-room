@@ -10,7 +10,7 @@ angular.module('roomApp')
 
   .controller('MainCtrl', function ($scope, $http, socket,
           $window, geolocationService, roomCreationService, Auth, $state, 
-          User, geoRoomArrVal, nameGeneratorService, usernameVal) {
+          User, geoRoomArrVal, nameGeneratorService, usernameVal, mainService) {
 
     var ctrl = this;
 
@@ -306,10 +306,10 @@ angular.module('roomApp')
       $state.go('about');
     }
   
-  //when navigating back to the main page from a room,
-  //the background color of the room shows up as the
-  //background color of the main page. This statement
-  //changes the background color to white  
-  $("body").css("background-color","white");
+    //Without this method call, when a user navigates back to the main page 
+    //from a room, the background color of the room shows up as the
+    //background color of the main page.
+    mainService.changeBackgroundColor("white");  
+
 
   });
