@@ -46,7 +46,7 @@ angular.module('roomApp')
       }
       return arr;
     };
-
+    // feels like a factory is needed
     this.newGame = function() {
     $http.post("/api/backgammonRoom", {
 

@@ -83,6 +83,9 @@ angular.module('roomApp')
       ctrl.showUsers = !ctrl.showUsers;
     }
 
+//zn if you need to do this, make room a directive and do it in the link phase
+// it would be even better to just have these colors done with ng-class
+
     //this is to ensure that the entire screen has the
     //appropriate background color
     if (ctrl.roomColor === "red") {

@@ -27,6 +27,7 @@ return {
         var space1 = 24 - this.roll[0];
         var space2 = 24 - this.roll[1];
       }
+      //zn these if statements feel like logic could be put in functions with nice names
       if (this.roll[0] !== 0 && (color === this.piecesColor[space1] || this.pieces[space1] < 2)) {
         this.possibleMove[space1] = 1; 
       }

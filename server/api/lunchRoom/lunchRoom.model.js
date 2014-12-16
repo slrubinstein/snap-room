@@ -9,13 +9,15 @@ var mongoose = require('mongoose'),
 
 var LunchroomSchema = new Schema({
   choices: [{choice: String, votes: Number, voters: [String]}],
-  roomId: String
+  //should be mongodb id, right??
+  roomId: String // {type: Schema.Types.ObjectId, ref: 'room'}
 });
 
-LunchroomSchema.index( { roomId: 1 } )
+LunchroomSchema.index( { roomId: 1 } )// you won't need this if you use objectIds
 
 LunchroomSchema.methods.updateVote = function(body, cb) {
-
+  // in general, when using callbacks, I'd pass an actual error object in param one, or null
+  // avoid the string 'error'
 	if (!this.choices) { cb('error', this) }
 
   var newChoice = true;
@@ -45,6 +47,8 @@ LunchroomSchema.methods.updateVote = function(body, cb) {
       rm.choices.push({choice: body.choice, votes: 1});
     }  
   }
+  // is anything async happening in this method?
+  // I don't see any save calls or anything. don't see reason for cb
   cb(null, rm);
 }
 
