@@ -21,6 +21,11 @@ angular.module('roomApp')
 
     this.roomData; //assigned in getRoomSuccessCallback
 
+    this.restaurants = []; //assigned to the array of restaurants
+    //returned by getFourSquare, if getFourSquare is called
+
+    this.inputField = ''; //sets the input field to be empty initially
+
     this.errorUpdatingRoomData = false; //assigned to true when
     //getRoomErrorCallback is called, and causes a message to
     //be shown to the user
@@ -33,10 +38,9 @@ angular.module('roomApp')
     //submitVoteErrorCb is called, and causes a message to
     //be shown to the user
 
-    this.restaurants = []; //assigned to the array of restaurants
-    //returned by getFourSquare, if getFourSquare is called
-
-    this.inputField = ''; //sets the input field to be empty initially
+    this.fourSquareError = false; //assigned to true when
+    //submitVoteErrorCb is called, and causes a message to
+    //be shown to the user
 
     //getRoom is called whenever a user enters a room. The method call
     //is just below the function definition. Its purpose is to make available
@@ -111,17 +115,21 @@ angular.module('roomApp')
       $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
     }
 
-///////////////////////////////////////////////////////////////
-// fourSquare API call, hide, and show functions
+
+    //fourSquare API call
     this.getFourSquare = function() {
       var promise = fourSquareService.get(roomId)
-        .then(function(restaurants) {
-          ctrl.restaurants = restaurants;
-        },
-        function(error) {
-        });
+        .then(fourSquareSuccessCb, fourSquareErrorCb)
     };
 
+    function fourSquareSuccessCb(restaurants) {
+      ctrl.restaurants = restaurants;
+    }
+    
+    function fourSquareErrorCb () {
+      ctrl.fourSquareError = true;
+    }
+        
     this.showFoursquare = function() {
       fourSquareService.show(event);
     }
@@ -130,17 +138,14 @@ angular.module('roomApp')
       fourSquareService.hide(event);
     }
 
-////////////////////////////////////////////////////////////////
-
-
-    //returnArray is used to display the correct number of dollar signs
-    //for the list of restaurants from foursquare
+    //returnArray is used to display the correct number of 
+    //dollar signs for the list of restaurants from foursquare
     this.returnArray = function(num) {
-          var arr = []; 
-          for (var i = 0; i < num; i++) {
-            arr.push(i);
-          }
-          return arr;
+      var arr = []; 
+      for (var i = 0; i < num; i++) {
+        arr.push(i);
+      }
+      return arr;
     };
 
     // set up socket event listeners
