@@ -116,6 +116,9 @@ angular.module('roomApp')
             }//close "if (data.event==='vote')"
 
         })
+      },
+      seeVotes : function(event) {
+        $(event.target).closest('.list-group-item').next().toggleClass('ng-hide');
       }
     }
 });
