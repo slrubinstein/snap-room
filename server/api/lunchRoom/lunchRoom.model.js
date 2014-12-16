@@ -47,6 +47,7 @@ LunchroomSchema.methods.updateVote = function(body, cb) {
 }
 
 LunchroomSchema.statics.fourSquareCall = function(lat, lon, cb) {
+
   var rm = this;
 
   var url = 'https://api.foursquare.com/v2/venues/explore?' +
