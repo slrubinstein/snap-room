@@ -9,10 +9,8 @@ var mongoose = require('mongoose'),
 
 var LunchroomSchema = new Schema({
   choices: [{choice: String, votes: Number, voters: [String]}],
-  roomId: String
+  roomId: {type: Schema.Types.ObjectId, ref: 'Room'}
 });
-
-LunchroomSchema.index( { roomId: 1 } )
 
 LunchroomSchema.methods.updateVote = function(body, cb) {
 

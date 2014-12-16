@@ -16,9 +16,7 @@ var SplitcheckroomSchema = new Schema({
     totalTax: {type: Number, default: 0},
     grandTotal: {type: Number, default: 0},
   },
-  roomId: String
+  roomId: {type: Schema.Types.ObjectId, ref: 'Room'}
 });
-
-SplitcheckroomSchema.index( { roomId: 1 } )
 
 module.exports = mongoose.model('Splitcheckroom', SplitcheckroomSchema);
