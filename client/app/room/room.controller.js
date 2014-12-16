@@ -82,17 +82,12 @@ angular.module('roomApp')
     this.toggleUsers = function() {
       ctrl.showUsers = !ctrl.showUsers;
     }
-
+    
     //this is to ensure that the entire screen has the
     //appropriate background color
-    if (ctrl.roomColor === "red") {
-       $("body").css("background-color", "#D46A6A" );
-    }
-    else if (ctrl.roomColor === "green") {
-       $("body").css("background-color","#87FC81" );
-    }
-    else if (ctrl.roomColor === "blue") {
-       $("body").css("background-color", "#8DADF9" );
-    }
+    roomService.setBackgroundColor(this.roomColor);
+
+
+
 
   });
