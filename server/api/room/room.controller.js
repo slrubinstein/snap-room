@@ -23,6 +23,9 @@ exports.show = function(req, res) {
 // Get a single room by geolocation
 exports.showByGeo = function(req, res) {
   var latLon = req.params.latLon;
+  // this feels like it should be a mongoose static method
+  // reasoning: you might want to find by lat long elsewhere other than this route
+  // you'd care about the same fields
   Room.find({'latLonCoords' : {$in: [latLon]} })
        .find({'expired': false})
        .find({'ourExpTime': {$gt : new Date().getTime()}})
@@ -36,6 +39,7 @@ exports.showByGeo = function(req, res) {
 // Creates a new room in the DB.
 exports.create = function(req, res) {
   req.body.createdAt = new Date();
+  //this fn could be called from pre-save hook, allow you to take it out of the ctrl
   req.body.ourExpTime = Room.makeExpTime(req.body.timerLength)
 
   Room.create(req.body, function(err, room) {

@@ -8,7 +8,9 @@ var BackgammonroomSchema = new Schema({
     roll : {rollArray : [Number]},
     showRollButton: Boolean,
     numberRolls : Number,
+    // why not an array of numbers on its own?
     pieces : {piecesArray: [Number]},
+    // same
     piecesColor : {piecesColorArr: [String]}, 
     greenHomeNumber : Number,
     blueHomeNumber : Number,
