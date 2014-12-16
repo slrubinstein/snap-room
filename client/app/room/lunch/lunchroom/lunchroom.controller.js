@@ -29,6 +29,10 @@ angular.module('roomApp')
     //submitMessageErrorCb is called, and causes a message to
     //be shown to the user
 
+    this.errorSubmittingVote = false; //assigned to true when
+    //submitVoteErrorCb is called, and causes a message to
+    //be shown to the user
+
     this.restaurants = []; //assigned to the array of restaurants
     //returned by getFourSquare, if getFourSquare is called
 
@@ -58,12 +62,22 @@ angular.module('roomApp')
     this.submitInput = function() {
  
       if (ctrl.inputField.length < 100) {
-        lunchRoomService.submitInput(ctrl.inputField, roomId, this.user);
+        var submitRestName = lunchRoomService.submitInput(ctrl.inputField, 
+          roomId, this.user)
+        .then(submitMessageSuccessCb, submitMessageErrorCb);
         //to empty the input field:
         ctrl.inputField = '';
       }
-  
     }
+
+    function submitMessageSuccessCb(data) {
+       socket.socket.emit('updateRoom', roomId, {event: 'vote', doc: data})
+    }
+
+    function submitMessageErrorCb() {
+       ctrl.errorSubmittingRest = true; 
+    }
+
 
     //vote is called either by up/downvoting an already-selected
     //restaurant, or selecting a restaurant from the foursquare list
@@ -78,11 +92,21 @@ angular.module('roomApp')
         ctrl.restaurants.splice(index,1);
       } 
 
-      lunchRoomService.submitVote(roomId, choice, upOrDown, this.user);
+      var submitRestVote = lunchRoomService.submitVote(roomId, choice, upOrDown, this.user)
+        .then(submitVoteSuccessCb, submitVoteErrorCb)
 
     };
 
+    function submitVoteSuccessCb(data) {
+      socket.socket.emit('updateRoom', roomId, {event: 'vote', doc: data})
+    }
 
+    function submitVoteErrorCb() {
+      ctrl.errorSubmittingVote = true; 
+    }
+
+
+    //to see the usernames of voters for each restaurant
     this.seeVotes = function(event) {
       $(event.target).closest('.list-group-item').next().toggleClass('ng-hide')
     }
