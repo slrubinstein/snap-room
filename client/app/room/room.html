@@ -3,10 +3,10 @@
   
 	<room-banner room-accent></room-banner> 
 
-	<div id="overlay" ng-show="room.showUsers">
+	<div id="overlay" class="animate-show" ng-show="room.showUsers">
 
 		<ul>
-			<li ng-repeat="name in room.namesOfPeople track by $index">
+			<li class="animate-repeat" ng-repeat="name in room.namesOfPeople track by $index">
 				<span>{{name}}</span>
 			</li>
 		</ul>
