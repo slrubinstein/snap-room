@@ -60,63 +60,58 @@ angular.module('roomApp')
           socket.socket.on('updateRoom', function(eventRoomId, data) {
             if (data.event==='timeUp') {
               //in case the user is in multiple rooms (which is not supposed to happen)
-              if (eventRoomId === roomId) {
-                $http.get("/api/lunchRoom/" + roomId)
-                  .success(function(room){
-                    var winner;
-                    var maxVotes;
-                    if (room.choices) {
-                      if (room.choices.length > 0) {
-                        winner = [room.choices[0].choice];
-                        maxVotes = room.choices[0].votes;
-                        for (var i = 0; i < room.choices.length; i++) {
-                          if (room.choices[i].votes > maxVotes) {
-                            winner[0] = room.choices[i].choice;
-                            maxVotes = room.choices[i].votes;
-                          }
-                          else if (room.choices[i].votes === maxVotes
-                                  && room.choices[i].choice !== winner[0]) {
-                            winner.push(room.choices[i].choice);
-                          }
-                        }
-                      ctrl.winner = winner
-                      ctrl.maxVotes = maxVotes
-                      }
+              if (eventRoomId !== roomId) return;
+              $http.get("/api/lunchRoom/" + roomId)
+                .success(function(room) {
+                  if (!room.choices) return;
+                  if (room.choices.length === 0) return;
+                  ctrl.winner = [room.choices[0].choice];
+                  ctrl.maxVotes = room.choices[0].votes;
+                  for (var i = 0; i < room.choices.length; i++) {
+                    if (room.choices[i].votes > ctrl.maxVotes) {
+                      ctrl.winner[0] = room.choices[i].choice;
+                      ctrl.maxVotes = room.choices[i].votes;
                     }
-                  })
-              }
-            }
+                    else if (room.choices[i].votes === ctrl.maxVotes
+                            && room.choices[i].choice !== ctrl.winner[0]) {
+                      ctrl.winner.push(room.choices[i].choice);
+                    }
+                  }
+                })
+                ,error(function(error){
+
+                })
+            } //close "if (data.event==='timeUp')"
             if (data.event==='vote') {
             //in case the user is in multiple rooms (which is not supposed to happen)
-             if (eventRoomId === roomId) {
-               if (!data.doc) return;
-               if (ctrl.roomData && data.doc.data) {
-                 console.log(data.doc.data)
-                if (ctrl.roomData.choices && data.doc.data.choices) {
-                  if (ctrl.roomData.choices.length !== data.doc.data.choices.length) {
-                    ctrl.roomData.choices.push(data.doc.data.choices[data.doc.data.choices.length-1]);
-                    $scope.$apply();
+              if (eventRoomId !== roomId) return;
+              if (!data.doc) return;
+              if (!ctrl.roomData || !data.doc.data) return;
+              var roomData = ctrl.roomData;
+              var data = data.doc.data; 
+              if (!roomData.choices || !data.choices) return;
+              if (roomData.choices.length !== data.choices.length) {
+                roomData.choices.push(data.choices[data.choices.length-1]);
+                 $scope.$apply();
+              }
+              else {
+                data.choices.forEach(function(el, index) {
+                  if (el.votes !== roomData.choices[index].votes) {
+                     roomData.choices[index].votes = el.votes;
+                     roomData.choices[index].voters = el.voters;
                   }
                   else {
-                    data.doc.data.choices.forEach(function(el, index) {
-                      if (el.votes !== ctrl.roomData.choices[index].votes) {
-                         ctrl.roomData.choices[index].votes = el.votes;
-                         ctrl.roomData.choices[index].voters = el.voters;
-                      }
-                      else {
-                        data.doc.data.choices.forEach(function(el, index) {
-                          if (el.votes !== ctrl.roomData.choices[index].votes) {
-                             ctrl.roomData.choices[index].votes = el.votes;
-                             ctrl.roomData.choices[index].voters = el.voters;
-                          }
-                        });
+                    data.choices.forEach(function(el, index) {
+                      if (el.votes !== roomData.choices[index].votes) {
+                         roomData.choices[index].votes = el.votes;
+                         roomData.choices[index].voters = el.voters;
                       }
                     });
                   }
-                }
-              }
-            }
-          }
+                });
+              }  
+            }//close "if (data.event==='vote')"
+
         })
       }
     }
