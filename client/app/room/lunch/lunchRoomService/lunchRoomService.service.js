@@ -59,8 +59,10 @@ angular.module('roomApp')
         listen: function(roomId, $scope, ctrl, user) {
           socket.socket.on('updateRoom', function(eventRoomId, data) {
             if (data.event==='timeUp') {
-              //in case the user is in multiple rooms (which is not supposed to happen)
+              //to prevent events in a different room 
+              //from affecting this room
               if (eventRoomId !== roomId) return;
+
               $http.get("/api/lunchRoom/" + roomId)
                 .success(function(room) {
                   if (!room.choices) return;
@@ -83,8 +85,10 @@ angular.module('roomApp')
                 })
             } //close "if (data.event==='timeUp')"
             if (data.event==='vote') {
-            //in case the user is in multiple rooms (which is not supposed to happen)
+              //to prevent events in a different room 
+              //from affecting this room
               if (eventRoomId !== roomId) return;
+              
               if (!data.doc) return;
               if (!ctrl.roomData || !data.doc.data) return;
               var roomData = ctrl.roomData;

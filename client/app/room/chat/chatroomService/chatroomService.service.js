@@ -28,11 +28,15 @@ angular.module('roomApp')
      listen: function(roomId, $scope, ctrl, user) {
          socket.socket.on('updateRoom', function(eventRoomId, data) {
            if (data.event==='timeUp') {
+              //to prevent events in a different room 
+              //from affecting this room
               if (eventRoomId === roomId) {
                 ctrl.timeUp = true;
               }
            }
            if (data.event==='chat') {
+              //to prevent events in a different room 
+              //from affecting this room
               if (eventRoomId === roomId) {
                 ctrl.roomData = data.doc.data;
               }
