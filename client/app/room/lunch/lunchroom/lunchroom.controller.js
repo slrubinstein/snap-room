@@ -133,14 +133,6 @@ angular.module('roomApp')
 ////////////////////////////////////////////////////////////////
 
 
-    //facebook login stuff
-    // this.user = Auth.getCurrentUser();
-    // this.isLoggedIn = Auth.isLoggedIn();
-
-    // set up socket event listeners
-    lunchRoomService.listen(roomId, $scope, ctrl, this.user);
-
-
     //returnArray is used to display the correct number of dollar signs
     //for the list of restaurants from foursquare
     this.returnArray = function(num) {
@@ -150,6 +142,9 @@ angular.module('roomApp')
           }
           return arr;
     };
+
+    // set up socket event listeners
+    lunchRoomService.listen(roomId, $scope, ctrl, this.user);
 
 
   });
