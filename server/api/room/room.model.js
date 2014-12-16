@@ -16,22 +16,9 @@ var RoomSchema = new Schema({
   roomName: String
 });
 
-
-RoomSchema.methods.fourSquareCall = function(cb) {
-  var lat = this.rawLat;
-  var lon = this.rawLon;
-  var rm = this;
-
-  var url = 'https://api.foursquare.com/v2/venues/explore?' +
-  'll='+ lat + ','+ lon + '&section=food&client_id=' + foursquareID + '&client_secret=' +
-  foursquareSecret + '&v=20141120';
-
-  request.get(url, function(err, body) {
-    if (err) {
-      cb('error with fourSquare call', null);
-    }
-    cb(null, body);
-  });
+RoomSchema.statics.makeExpTime = function(timerLength) {
+  var timerMinutes = timerLength.substring(0, timerLength.indexOf(":"));
+  return new Date(new Date().getTime() + (60000 * Number(timerMinutes)) );
 }
 
 

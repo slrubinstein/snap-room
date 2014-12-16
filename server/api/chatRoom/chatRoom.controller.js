@@ -33,23 +33,15 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
 
-  var message = req.body.message;
-  var name = req.body.name;
-  var picture = req.body.picture;
-
   Chatroom.findOne({roomId:req.params.id}, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
-    // var updated = _.merge(chat, req.body);
-    if (name) {
-      room.messages.push({message: message, name: name, picture: picture});
-    }
-    else {
-      room.messages.push({message: message})
-    }
+
+    room.messages.push(req.body);
+
     room.save(function (err) {
       if (err) { return handleError(res, err); }
-      console.log(room);
+
       return res.json(200, room);
     });
   });

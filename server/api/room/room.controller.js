@@ -35,27 +35,10 @@ exports.showByGeo = function(req, res) {
 
 // Creates a new room in the DB.
 exports.create = function(req, res) {
-  var lat = req.body.lat;
-  var lon = req.body.lon;
-  var latLonCoordsArray = req.body.geoRoomArr; 
-  var color = req.body.color;
-  var createdAt = new Date();
-  var timerLength = req.body.timerLength;
-  var timerMinutes = timerLength.substring(0, timerLength.indexOf(":"));
-  var ourExpTime = new Date(new Date().getTime() + (60000 * Number(timerMinutes)) ); //300000);
-  var lock = req.body.lock;
-  var type = req.body.type;
-  var roomName = req.body.roomName;
-  Room.create({latLonCoords: latLonCoordsArray,
-               rawLat: lat,
-               rawLon: lon, 
-               color: color,
-               createdAt: createdAt,
-               ourExpTime: ourExpTime,
-               lock: lock,
-               type: type,
-               roomName: roomName,
-               }, function(err, room) {
+  
+  req.body.ourExpTime = Room.makeExpTime(req.body.timerLength)
+
+  Room.create(req.body, function(err, room) {
            if(err) { return handleError(res, err); }
            return res.status(200).send(room);
   });
