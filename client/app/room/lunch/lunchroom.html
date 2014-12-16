@@ -1,6 +1,5 @@
  <div room-accent 
-    		 id="lunchroom-body"
-    		 ng-hide="lunch.timeUp">
+    		 id="lunchroom-body">
 
 	 <div id="lunch-list" class="input-list col-sm-6 col-md-6 col-lg-6">
 	 		    <h3 ng-show="lunch.errorUpdatingRoomData">
@@ -29,24 +28,25 @@
 			  			</li>
 			  	   </ul>
 			  	</div>
+                
+                <div ng-hide="lunch.winner">
+				   <restaurant-list room-trim-font>
+				   </restaurant-list>
 
-				<restaurant-list room-trim-font ng-hide="lunch.winner">
-				</restaurant-list>
+					<four-square>
+					</four-square>
+				
+				    <h1 room-trim-font>Or</h1>
 
-
-				<four-square>
-				</four-square>
-			
-			  <h1 room-trim-font>Or</h1>
-
-				<form id="inputForm" 
-							name="lunchForm"
-							ng-submit="lunch.submitInput()" 
-							novalidate>
-		      <label for="textInput"
-		      			 room-trim-font
-		      			 room-trip>Enter the name of a restaurant:</label>
-		        <br/>
+					<form id="inputForm" 
+								name="lunchForm"
+								ng-submit="lunch.submitInput()" 
+								novalidate>
+			            <label for="textInput"
+			      			 room-trim-font
+			      			 room-trip>Enter the name of a restaurant:
+			      		</label>
+			            <br/>
 		        	    <h3 ng-show="lunch.inputField.length > 49">Restaurant name is too long</h3>
 						<input id="textInput" 
 								 name="textInput" 
@@ -57,11 +57,12 @@
 						   class="btn" 
 						   type="submit"
 						   room-trim room-accent>
-				</form>
+				    </form>
+                </div>
+  </div> 				
+  <div ng-hide="lunch.winner" class="col-sm-6 col-md-6 col-lg-6" ui-view='nested-view-chat'></div>
+</div>
 
-     </div>
 
-				<div class="col-sm-6 col-md-6 col-lg-6" ui-view='nested-view-chat'></div>
 
-  </div> 
 

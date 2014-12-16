@@ -61,7 +61,6 @@ angular.module('roomApp')
             if (data.event==='timeUp') {
               //in case the user is in multiple rooms (which is not supposed to happen)
               if (eventRoomId !== roomId) return;
-              ctrl.timeUp = true;
               $http.get("/api/lunchRoom/" + roomId)
                 .success(function(room) {
                   if (!room.choices) return;
@@ -102,13 +101,16 @@ angular.module('roomApp')
                      roomData.choices[index].voters = el.voters;
                   }
                   else {
-                    data.choices.forEach(function(el, index) {
-                      if (el.votes !== roomData.choices[index].votes) {
-                         roomData.choices[index].votes = el.votes;
-                         roomData.choices[index].voters = el.voters;
-                      }
-                    });
+                    console.log("here");
                   }
+                  // else {
+                  //   data.choices.forEach(function(el, index) {
+                  //     if (el.votes !== roomData.choices[index].votes) {
+                  //        roomData.choices[index].votes = el.votes;
+                  //        roomData.choices[index].voters = el.voters;
+                  //     }
+                  //   });
+                  // }
                 });
               }  
             }//close "if (data.event==='vote')"
