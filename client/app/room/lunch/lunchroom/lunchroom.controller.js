@@ -14,12 +14,16 @@ angular.module('roomApp')
     var geoRoomArr = geoRoomArrVal.geoRooms;
     this.user = usernameVal.name;
     
-    //maxVotes and winner are assigned by the callback of
-    //the 'updateRoom' socket event listener in lunchRoomService
+    //maxVotes and winner are assigned, and timeUp is changed to true,
+    //by the callback of the 'updateRoom' socket event listener in 
+    //lunchRoomService, if data.event === 'timeUp'
     this.maxVotes;
     this.winner;
+    this.timeUp = false;
 
-    this.roomData; //assigned in getRoomSuccessCallback
+    this.roomData; //assigned in getRoomSuccessCallback, and also by
+    //by the callback of the 'updateRoom' socket event listener in 
+    //lunchRoomService, if data.event === 'vote'
 
     this.restaurants = []; //assigned to the array of restaurants
     //returned by getFourSquare, if getFourSquare is called

@@ -61,6 +61,7 @@ angular.module('roomApp')
             if (data.event==='timeUp') {
               //in case the user is in multiple rooms (which is not supposed to happen)
               if (eventRoomId !== roomId) return;
+              ctrl.timeUp = true;
               $http.get("/api/lunchRoom/" + roomId)
                 .success(function(room) {
                   if (!room.choices) return;
@@ -78,7 +79,7 @@ angular.module('roomApp')
                     }
                   }
                 })
-                ,error(function(error){
+                .error(function(error){
 
                 })
             } //close "if (data.event==='timeUp')"
