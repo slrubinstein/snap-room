@@ -4,9 +4,6 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var RoomSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean,
   latLonCoords: [String],
   rawLat: Number,
   rawLon: Number,
@@ -18,5 +15,11 @@ var RoomSchema = new Schema({
   type: String,
   roomName: String
 });
+
+RoomSchema.statics.makeExpTime = function(timerLength) {
+  var timerMinutes = timerLength.substring(0, timerLength.indexOf(":"));
+  return new Date(new Date().getTime() + (60000 * Number(timerMinutes)) );
+}
+
 
 module.exports = mongoose.model('Room', RoomSchema);

@@ -93,7 +93,7 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     })
 
   socket.on('updateRoom', function(roomId, data) {
-    console.log(data);
+
     socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
     socket.emit('updateRoom', roomId, data);
   })
