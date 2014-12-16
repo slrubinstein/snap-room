@@ -2,30 +2,32 @@
 
 angular.module('roomApp')
   .controller('LunchroomCtrl', function ($scope, $stateParams, socket, $http, 
-  	                    $interval, lunchRoomService, Auth, $state, roomCreationService,
-                         fourSquareService, roomSocketsService, $window,
-                         personCounterService, geoRoomArrVal, usernameVal) {
-
+  	                                    lunchRoomService, fourSquareService, 
+                                        geoRoomArrVal, usernameVal) {
 
     var ctrl = this;
+
     this.params = $stateParams;
     var roomId = this.params.roomId;
-    var geoRoomArr = geoRoomArrVal.geoRooms;
     this.roomColor = this.params.color;
+
+    var geoRoomArr = geoRoomArrVal.geoRooms;
     this.user = usernameVal.name;
+    
+    //maxVotes and winner are assigned by the callback of
+    //the 'updateRoom' socket event listener in lunchRoomService
     this.maxVotes;
     this.winner;
 
-    //roomData, roomType, and roomColor are all assigned in
-    //getRoomSuccessCallback
-    this.roomData;
+    this.roomData; //assigned in getRoomSuccessCallback
 
+    this.errorUpdatingRoomData = false; //assigned to true when
+    //getRoomErrorCallback is called, and causes a message to
+    //be shown to the user
 
-    // display number of people in room
-    // this.numberPeople = personCounterService.numberPeople;
-    // this.namesOfPeople = personCounterService.namesOfPeople;
-    // personCounterService.listen(this, $scope);
-
+    this.errorSubmittingRest = false; //assigned to true when
+    //submitMessageErrorCb is called, and causes a message to
+    //be shown to the user
 
     this.restaurants = []; //assigned to the array of restaurants
     //returned by getFourSquare, if getFourSquare is called
@@ -34,9 +36,7 @@ angular.module('roomApp')
 
     //getRoom is called whenever a user enters a room. The method call
     //is just below the function definition. Its purpose is to make available
-    //to the client any info that has already been posted in the room, the
-    //amount of time left before the room expires, and the room color/type,
-    //as well as to start the interval that runs the timer.
+    //to the client any info specifc to this type of room
     this.getRoom = function(roomId) {
       var promise = lunchRoomService.get(roomId, ctrl.roomType)
       .then(getRoomSuccessCallback, getRoomErrorCallback)
@@ -49,12 +49,12 @@ angular.module('roomApp')
     }
 
     function getRoomErrorCallback(error) {
-      
+      ctrl.errorUpdatingRoomData = true;
     }
     
     //submitInput is called when the user submits the name of a restaurant
-    //or a message. It calls lunchRoomService.submitInput with a number of
-    //parameters that varies depending on whether the user is logged in
+    //It calls lunchRoomService.submitInput with a number of parameters that
+    //varies depending on whether the user is logged in
     this.submitInput = function() {
  
       if (ctrl.inputField.length < 100) {
