@@ -4,9 +4,6 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var RoomSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean,
   latLonCoords: [String],
   rawLat: Number,
   rawLon: Number,
@@ -18,5 +15,24 @@ var RoomSchema = new Schema({
   type: String,
   roomName: String
 });
+
+
+RoomSchema.methods.fourSquareCall = function(cb) {
+  var lat = this.rawLat;
+  var lon = this.rawLon;
+  var rm = this;
+
+  var url = 'https://api.foursquare.com/v2/venues/explore?' +
+  'll='+ lat + ','+ lon + '&section=food&client_id=' + foursquareID + '&client_secret=' +
+  foursquareSecret + '&v=20141120';
+
+  request.get(url, function(err, body) {
+    if (err) {
+      cb('error with fourSquare call', null);
+    }
+    cb(null, body);
+  });
+}
+
 
 module.exports = mongoose.model('Room', RoomSchema);

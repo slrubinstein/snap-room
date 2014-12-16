@@ -29,8 +29,6 @@ exports.showByGeo = function(req, res) {
        .exec(function (err, rooms) {
     if(err) { return handleError(res, err); }
     if(!rooms) { return res.status(500).send("not OK"); }
-    console.log("date: ",  new Date().getTime());
-    console.log("rooms: ", rooms);
     return res.json(200, rooms);
   });
 };
@@ -41,7 +39,6 @@ exports.create = function(req, res) {
   var lon = req.body.lon;
   var latLonCoordsArray = req.body.geoRoomArr; 
   var color = req.body.color;
-  //var roomNumber = Math.floor(Math.random()*1000000);
   var createdAt = new Date();
   var timerLength = req.body.timerLength;
   var timerMinutes = timerLength.substring(0, timerLength.indexOf(":"));
@@ -68,34 +65,10 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   Room.findById(req.params.id, function (err, room) {
-  //Room.findById(req.params.id, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
-    var newChoice = true;
-    room.choices.forEach(function(choice){
-      if (choice.choice === req.body.choice) {
-        if (req.body.upOrDown === 'up') {
-          choice.votes++;
-          newChoice = false;
-        } else if (req.body.upOrDown === 'down') {
-          choice.votes--;
-          newChoice = false;
-        }
-        if (req.body.name) {
-          choice.voters.push(req.body.name);
-        }
-      }
-    });
-    if (newChoice) {
-      if (req.body.name) {
-        room.choices.push({choice: req.body.choice, votes: 1, voters:[req.body.name]});
-      }
-      else {
-        room.choices.push({choice: req.body.choice, votes: 1});
-      }  
-    }
-    //_.merge(room, req.body);
-    room.save(function (err) {
+    var updated = _.merge(room, req.body);
+    updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, room);
     });

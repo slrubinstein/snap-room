@@ -3,9 +3,6 @@
 var _ = require('lodash');
 var Lunchroom = require('./lunchRoom.model');
 var Room = require('../room/room.model');
-var request = require('request');
-var foursquareID = process.env.FOURSQUARE_ID;
-var foursquareSecret = process.env.FOURSQUARE_SECRET;
 
 // Get list of lunchRooms
 exports.index = function(req, res) {
@@ -38,35 +35,18 @@ exports.update = function(req, res) {
   Lunchroom.findOne({roomId:req.params.id}, function (err, room) {
     if (err) { return handleError(res, err); }
     if(!room) { return res.send(404); }
-    var newChoice = true;
-    room.choices.forEach(function(choice){
-      if (choice.choice === req.body.choice) {
-        if (req.body.upOrDown === 'up') {
-          choice.votes++;
-          newChoice = false;
-        } else if (req.body.upOrDown === 'down') {
-          choice.votes--;
-          newChoice = false;
-        }
-        if (req.body.name) {
-          choice.voters.push(req.body.name);
-        }
-      }
-    });
-    if (newChoice) {
-      if (req.body.name) {
-        room.choices.push({choice: req.body.choice, votes: 1, voters:[req.body.name]});
-      }
-      else {
-        room.choices.push({choice: req.body.choice, votes: 1});
-      }  
-    }
-    //_.merge(room, req.body);
-    room.save(function (err) {
+
+    room.updateVote(req.body, function(err, room) {
       if (err) { return handleError(res, err); }
-      return res.json(200, room);
+      if(!room) { return res.send(404); }
+
+      room.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return res.json(200, room);
+      });
     });
-  });
+
+  })
 };
 
 exports.foursquare = function(req, res) {
@@ -77,24 +57,14 @@ exports.foursquare = function(req, res) {
     var lat = room.rawLat;
     var lon = room.rawLon;
 
-    var url = 'https://api.foursquare.com/v2/venues/explore?' +
-    'll='+ lat + ','+ lon + '&section=food&client_id=' + foursquareID + '&client_secret=' +
-    foursquareSecret + '&v=20141120';
-
-    // var url = 'https://api.foursquare.com/v2/venues/trending?' +
-    // 'll='+ lat + ','+ lon + '&client_id=' + foursquareID + '&client_secret=' +
-    // foursquareSecret + '&v=20141120';
-
-
-    request.get(url, function(err, response, body) {
+    Lunchroom.fourSquareCall(lat, lon, function(err, body) {
       if (err) {
-        return res.send(500);
+        console.log(err);
+        res.send(500);
       }
-      res.send(body);
+      res.status(200).send(body);
     });
-
-
-    // return res.status(200).send("OK");
+    
   });
 };
 
