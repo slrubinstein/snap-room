@@ -125,6 +125,13 @@ angular.module('roomApp')
     };
 
     function fourSquareSuccessCb(resp) {
+      if (!resp.data) return;
+      if (!resp.data.response) return;
+            console.log(resp.data.response);
+      if (!resp.data.response.groups) return;
+            console.log(resp.data.response.groups);
+      if (!resp.data.response.groups[0]) return;
+            console.log(resp.data.response.groups[0]);
       var restaurants = resp.data.response.groups[0].items;
       ctrl.restaurants = restaurants;
     }

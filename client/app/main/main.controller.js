@@ -196,10 +196,10 @@ angular.module('roomApp')
       //then a specific type of room (lunch, chat, etc) is created
       //and $state.go is called     
       var createGeneralRoom = roomCreationService.createGeneral({
-                                lat: ctrl.geoData.lat,
-                                lon: ctrl.geoData.lon, 
+                                rawLat: ctrl.geoData.lat,
+                                rawLon: ctrl.geoData.lon, 
                                 color: color, 
-                                geoRoomArr: ctrl.geoRoomArr,
+                                latLonCoords: ctrl.geoRoomArr,
                                 type: type,
                                 lock: lock,
                                 roomName: roomName,

@@ -35,7 +35,7 @@ exports.showByGeo = function(req, res) {
 
 // Creates a new room in the DB.
 exports.create = function(req, res) {
-  
+  req.body.createdAt = new Date();
   req.body.ourExpTime = Room.makeExpTime(req.body.timerLength)
 
   Room.create(req.body, function(err, room) {
