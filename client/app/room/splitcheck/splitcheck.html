@@ -6,30 +6,29 @@
   <table class="table bill-items">
 		<thead>
 			<tr>
-				<th></th>
-				<th>Select</th>
-				<th>Name</th>
+				<th class="thin-col">Select</th>
+				<th class="thin-col"></th>
+				<th class="mid-col">Name</th>
 				<th>Item</th>
 				<th>Price</th>
-				<th>Tax</th>
-				<th>Tip</th>
+				<th>Tax+Tip</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="item in split.bill.billSoFar track by $index">
-				<td>
+				<td class="thin-col">
 					<button class="btn btn-danger btn-xs"
 									ng-click="split.deleteItem($index)">X</button></td>
-				<td>
+				<td 
+						class="thin-col">
 					<input 
 								 type="checkbox"
 								 ng-model="split.selected[$index]"
 								 ng-change="split.calculateMyTotal()"></td>
-				<td>{{item.user}}</td>
+				<td class="mid-col">{{item.user}}</td>
 				<td>{{item.food}}</td>
 				<td>${{item.price | number:2}}</td>
-				<td>${{item.tax | number:2}}</td>
-				<td>${{item.tip | number:2}}</td>
+				<td>${{item.tax + item.tip | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -90,19 +89,17 @@
 
 	<div class="panel-body bill-updating-numbers">	
 		<div class="row">
-			<div class="third-col">
+			<div class="half-col">
 				<p><strong>In the pot: </strong></p>
 				<p>${{split.bill.runningTotal | number:2}}</p>
 			</div>
-			<div class="third-col">
+			<div class="half-col">
 				<p><strong>Still short: </strong></p>
 				<p ng-class="{negative: split.bill.remainder > 0,
 											positive: split.bill.remainder < 0}"
 					>${{split.bill.remainder | number:2}}</p>
 			</div>
-			<div class="third-col">
 
-			</div>
 		</div>
 	</div>
 </div>
@@ -125,7 +122,7 @@
    	</div>
 
       <div class="panel panel-default">
-         <h4>Select items to calculate what you owe</h4>
+         <h4>Select items to calculate <br> what you owe</h4>
          <p>Food total: ${{split.personalTotal.food | number:2}}</p>
          <p>Tax: ${{split.personalTotal.tax | number:2}}</p>
          <p>Tip: ${{split.personalTotal.tip | number:2}}</p>

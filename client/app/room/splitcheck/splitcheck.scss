@@ -43,5 +43,25 @@
 }
 
 .bill-items {
-	max-width: 90%;
+	table-layout: fixed;
+	width: 348px;
+	td {
+		overflow: hidden;
+		&.thin-col {
+			overflow: visible;
+		}
+	}
+}
+
+.thin-col {
+	width: 20px;
+	.btn-xs {
+		margin-left: -6px;
+		background-color: #801515;
+		font-size: 10px;
+	}
+}
+
+th.mid-col {
+	padding-left: 20px !important;
 }
