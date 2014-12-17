@@ -84,42 +84,37 @@ angular.module('roomApp')
 
                 })
             } //close "if (data.event==='timeUp')"
+
             if (data.event==='vote') {
               //to prevent events in a different room 
               //from affecting this room
-              if (eventRoomId !== roomId) return;
-              
-              if (!data.doc) return;
-              if (!ctrl.roomData || !data.doc.data) return;
-              var roomData = ctrl.roomData;
-              var data = data.doc.data; 
-              if (!roomData.choices || !data.choices) return;
-              if (roomData.choices.length !== data.choices.length) {
-                roomData.choices.push(data.choices[data.choices.length-1]);
-                 $scope.$apply();
-              }
-              else {
-                data.choices.forEach(function(el, index) {
-                  if (el.votes !== roomData.choices[index].votes) {
-                     roomData.choices[index].votes = el.votes;
-                     roomData.choices[index].voters = el.voters;
-                  }
-                  else {
-                    console.log("here");
-                  }
-                  // else {
-                  //   data.choices.forEach(function(el, index) {
-                  //     if (el.votes !== roomData.choices[index].votes) {
-                  //        roomData.choices[index].votes = el.votes;
-                  //        roomData.choices[index].voters = el.voters;
-                  //     }
-                  //   });
-                  // }
-                });
-              }  
-            }//close "if (data.event==='vote')"
+              if (eventRoomId !== roomId) {return;}
+              if (!data.doc || !ctrl.roomData || !data.doc.data 
+                 ||!ctrl.roomData.choices || !data.doc.data.choices) {return;}
 
-        })
+              updateVotes(ctrl.roomData.choices, data.doc.data.choices)
+
+            }
+          })//close 'updateRoom' listener
+    
+          function updateVotes(roomChoices, socketChoices) {
+            //if a new restaurant has been voted on, add the new
+            //restaurant to roomChoices
+            if (roomChoices.length !== socketChoices.length) {
+              roomChoices.push(socketChoices[socketChoices.length-1]);
+            }
+            //else, if more votes have been added to an already voted-on restaurant,
+            //find the restaurant which has an updated vote total, and add the new
+            //vote total and list of voters
+            else {
+              socketChoices.forEach(function(el, index) {
+                if (el.votes !== roomChoices[index].votes) {
+                   roomChoices[index].votes = el.votes;
+                   roomChoices[index].voters = el.voters;
+                }
+              });
+            }  
+          }//close updateVotes function
       },
       seeVotes : function(event) {
         $(event.target).closest('.list-group-item').next().toggleClass('ng-hide');

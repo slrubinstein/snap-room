@@ -70,17 +70,17 @@ angular.module('roomApp')
       if (ctrl.inputField.length < 100) {
         var submitRestName = lunchRoomService.submitInput(ctrl.inputField, 
           roomId, this.user)
-        .then(submitMessageSuccessCb, submitMessageErrorCb);
+        .then(submitRestSuccessCb, submitRestErrorCb);
         //to empty the input field:
         ctrl.inputField = '';
       }
     }
 
-    function submitMessageSuccessCb(data) {
+    function submitRestSuccessCb(data) {
        socket.socket.emit('updateRoom', roomId, {event: 'vote', doc: data})
     }
 
-    function submitMessageErrorCb() {
+    function submitRestErrorCb() {
        ctrl.errorSubmittingRest = true; 
     }
 
@@ -125,10 +125,8 @@ angular.module('roomApp')
     };
 
     function fourSquareSuccessCb(resp) {
-      if (!resp.data) return;
-      if (!resp.data.response) return;
-      if (!resp.data.response.groups) return;
-      if (!resp.data.response.groups[0]) return;
+      if (!resp.data || !resp.data.response || !resp.data.response.groups
+          || !resp.data.response.groups[0]) {return;}
       var restaurants = resp.data.response.groups[0].items;
       ctrl.restaurants = restaurants;
     }
