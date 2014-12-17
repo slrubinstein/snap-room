@@ -44,6 +44,11 @@ angular.module('roomApp')
     //submitVoteErrorCb is called, and causes a message to
     //be shown to the user
 
+    this.errorCalcWinningRest = false; //assigned to true in socket listener
+    //for 'updateRoom' event, after there's a timeUp event and an error
+    //retrieving restaurant data from the database. Causes a message to
+    //be shown to the user
+
     //getRoom is called whenever a user enters a room. The method call
     //is just below the function definition. Its purpose is to make available
     //to the client any info specifc to this type of room

@@ -65,36 +65,27 @@ angular.module('roomApp')
 
               $http.get("/api/lunchRoom/" + roomId)
                 .success(function(room) {
-                  if (!room.choices) return;
-                  if (room.choices.length === 0) return;
-                  ctrl.winner = [room.choices[0].choice];
-                  ctrl.maxVotes = room.choices[0].votes;
-                  for (var i = 0; i < room.choices.length; i++) {
-                    if (room.choices[i].votes > ctrl.maxVotes) {
-                      ctrl.winner[0] = room.choices[i].choice;
-                      ctrl.maxVotes = room.choices[i].votes;
-                    }
-                    else if (room.choices[i].votes === ctrl.maxVotes
-                            && room.choices[i].choice !== ctrl.winner[0]) {
-                      ctrl.winner.push(room.choices[i].choice);
-                    }
-                  }
+                  if (!room.choices || room.choices.length === 0) return;
+
+                  determineWinningRest(room.choices);
                 })
                 .error(function(error){
-
+                  ctrl.errorCalcWinningRest = true;
                 })
-            } //close "if (data.event==='timeUp')"
+            }
 
             if (data.event==='vote') {
               //to prevent events in a different room 
               //from affecting this room
               if (eventRoomId !== roomId) {return;}
+
               if (!data.doc || !ctrl.roomData || !data.doc.data 
                  ||!ctrl.roomData.choices || !data.doc.data.choices) {return;}
 
               updateVotes(ctrl.roomData.choices, data.doc.data.choices)
 
             }
+
           })//close 'updateRoom' listener
     
           function updateVotes(roomChoices, socketChoices) {
@@ -115,6 +106,25 @@ angular.module('roomApp')
               });
             }  
           }//close updateVotes function
+          
+          function determineWinningRest(roomChoices) {
+            //start by setting the first restaurant in the array as 
+            //the winner, and that restaurant's number of votes as
+            //the highest vote total  
+            ctrl.winner = [roomChoices[0].choice];
+            ctrl.maxVotes = roomChoices[0].votes;
+
+            for (var i = 0; i < roomChoices.length; i++) {
+              if (roomChoices[i].votes > ctrl.maxVotes) {
+                ctrl.winner[0] = roomChoices[i].choice;
+                ctrl.maxVotes = roomChoices[i].votes;
+              }
+              else if (roomChoices[i].votes === ctrl.maxVotes
+                      && roomChoices[i].choice !== ctrl.winner[0]) {
+                ctrl.winner.push(roomChoices[i].choice);
+              }
+            }
+         }//close determineWinningRest function
       },
       seeVotes : function(event) {
         $(event.target).closest('.list-group-item').next().toggleClass('ng-hide');
