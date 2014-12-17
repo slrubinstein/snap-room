@@ -65,54 +65,6 @@ button.greenWall{
   color: #144711;
 }
 
-/********** ANIMATION **********/
-
-@-webkit-keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, 100%, 0);
-            transform: translate3d(0, 100%, 0);
-  }
-
-
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-            transform: none;
-  }
-}
-
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, 100%, 0);
-            transform: translate3d(0, 100%, 0);
-  }
-
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-            transform: none;
-  }
-}
-
-
-.animate{
-  position: absolute;
-  top: 500px;
-  left: 500px;
-}
-
-@-webkit-keyframes move {
-  from { top: 500px; left: 500px; }
-  to  { top: 0; left: 0; }
-}
-
-.animate{
-  -webkit-animation: move 2s forwards;
-}
-
-
 /**************** NG-ANIMATE ****************/
 .animate-show.ng-hide-add.ng-hide-add-active,
 .animate-show.ng-hide-remove.ng-hide-remove-active {
@@ -125,12 +77,6 @@ button.greenWall{
   opacity: 0;
   padding: 0 10px;
 }
-
-.fadeInUp {
-  -webkit-animation-name: fadeInUp;
-          animation-name: fadeInUp;
-}
-
 
 .animate-repeat.ng-move,
 .animate-repeat.ng-enter,
@@ -153,6 +99,11 @@ button.greenWall{
   max-height:40px;
 }
 /*********************************/
+
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+          animation-name: fadeInUp;
+}
 
 input-list {
   margin-top: 10px;
