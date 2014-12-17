@@ -37,9 +37,6 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
   //out of a room, remaining users in room will be given an updated
   //list of users in that room
   socket.on('onMainPage', function() {
-    //roomObject has all socket rooms that this user is in
-    var roomsObject = socket.nsp.adapter.rooms;
-    //roomId will be undefined if user hasn't navigated from a room
     var roomId = socket.roomId;
     socket.leave(roomId);
     var nameArray = findUsernamesInRoom(socket, roomId);
@@ -97,10 +94,6 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
     socket.emit('updateRoom', roomId, data);
   })
-
-  // socket.on('updateRoomForMe', function(roomId, data) {
-  //   socket.broadcast.to(roomId).emit('updateRoomForMe', roomId, data);
-  // })
 
   // Insert sockets below
   require('../api/splitcheckRoom/splitcheckRoom.socket').register(socket);
