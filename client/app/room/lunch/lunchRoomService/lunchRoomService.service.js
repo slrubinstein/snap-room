@@ -128,6 +128,9 @@ angular.module('roomApp')
       },
       seeVotes : function(event) {
         $(event.target).closest('.list-group-item').next().toggleClass('ng-hide');
+      },
+      animateFoursquareRest: function(animation) {
+        $(event.target).parent().addClass('animated ' + animation);
       }
     }
 });

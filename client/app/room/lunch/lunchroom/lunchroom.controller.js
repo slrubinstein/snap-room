@@ -99,7 +99,7 @@ angular.module('roomApp')
       }
 
       else {
-        $(event.target).parent().addClass('animated fadeOutUp');
+        lunchRoomService.animateFoursquareRest('fadeOutUp');
         ctrl.restaurants.splice(index,1);
       } 
 
