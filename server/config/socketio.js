@@ -68,7 +68,7 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
     socket.emit('countPeople', nameArray.length, nameArray);
   })
 
-  socket.on('timeUp', function(roomId, geoRoomArr) {
+  socket.on('timeUp', function(roomId) {
     var data = {event: 'timeUp'};
     Room.findById(roomId, function(err, room) {
       if (!room) {return;}
@@ -79,7 +79,8 @@ function onConnect(socket, socketio, findUsernamesInRoom) {
           socket.broadcast.to(roomId).emit('updateRoom', roomId, data);
           socket.emit('updateRoom', roomId, data);
 
-          geoRoomArr.forEach(function(el) {
+          room.latLonCoords.forEach(function(el) {
+            console.log(el)
             socket.broadcast.to(el).emit('refreshRoomList');
           });
 

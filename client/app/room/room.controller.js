@@ -56,7 +56,7 @@ angular.module('roomApp')
 
       if(Number(minutesLeftDecimal) < 0.01) {
         $interval.cancel(ctrl.countDown);
-        socket.socket.emit('timeUp', roomId, geoRoomArr);
+        socket.socket.emit('timeUp', roomId);
       }
     };
     
