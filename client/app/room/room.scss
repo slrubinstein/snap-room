@@ -105,16 +105,9 @@ button.greenWall{
           animation-name: fadeInUp;
 }
 
-input-list {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  text-align: left;
-
-  > div:last-child {
-    @extend .fadeInUp;
-    @extend .animated;
-  
-  }
+.restList > li {
+  @extend .fadeInUp;
+  @extend .animated;
 }
 
 .overflow-box {
