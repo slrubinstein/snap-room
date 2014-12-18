@@ -4,9 +4,12 @@ angular.module('roomApp')
   .factory('gameLogic', function () {
 return {
   
+    //called when player clicks the roll button
     rollFunction : function(ctrl, gameState) {
       gameState.roll[0] = Math.floor(Math.random() * 6 + 1);
       gameState.roll[1] = Math.floor(Math.random() * 6 + 1);
+      
+      //if player rolled doubles:
       if (gameState.roll[0] === gameState.roll[1]) {
         gameState.numberRolls = 4;
       }
@@ -15,24 +18,45 @@ return {
       ctrl.saveGame(ctrl.roomId);
     },
 
+    //called when player clicks on a piece that is in jail,
+    //and it's their turn
     checkSpacesFromJail : function(color, ctrl, gameState) {
+      
       if (color === "green") {
-        ctrl.pieceToMove = -1;
+        //pieceToMove is at space -1;
         var space1 = gameState.roll[0] - 1;
-        //-1 to account for 0-indexing of spaces
         var space2 = gameState.roll[1] - 1;
       }
+      
       else if (color === "blue") {
-        ctrl.pieceToMove = 24;
+        //pieceToMove is at space 24;
         var space1 = 24 - gameState.roll[0];
         var space2 = 24 - gameState.roll[1];
       }
-      if (gameState.roll[0] !== 0 && (color === gameState.piecesColor[space1] || gameState.pieces[space1] < 2)) {
-        ctrl.possibleMove[space1] = 1; 
+      
+      if (gameState.roll[0] !== 0) {
+        this.checkIfMovePossible(space1, color, ctrl, gameState);
       }
-      if (gameState.roll[1] !== 0 && (color === gameState.piecesColor[space2] || gameState.pieces[space2] < 2)) {
-        ctrl.possibleMove[space2] = 1; 
+      if (gameState.roll[1] !== 0) {
+        this.checkIfMovePossible(space2, color, ctrl, gameState);
       }
+
+    },
+
+    checkIfMovePossible : function(spaceNumber, color, ctrl, gameState) {
+        //if the space has the same color pieces as the piece potentially being moved, or
+        //if there is only piece belonging to the opponent
+        if (color === gameState.piecesColor[spaceNumber] || gameState.pieces[spaceNumber] < 2) {
+          ctrl.possibleMove[spaceNumber] = 1; 
+        }
+
+        if (spaceNumber === -1 && color === "blue" && gameState.blueHomeNumber === 15) {
+            ctrl.showOffBoardBlue = true;
+        }
+        else if (spaceNumber === 24 && color === "green" && gameState.greenHomeNumber === 15) {
+            ctrl.showOffBoardGreen = true;
+        }
+
     },
 
     moveOffBoard : function(color, ctrl, gameState) {
@@ -86,46 +110,42 @@ return {
        }
        ctrl.saveGame(ctrl.roomId);    
     },
-
+    
+    //called when a player clicks on a piece (except pieces in jail),
+    //and it's their turn
     checkSpaces : function(spaceNumber, color, ctrl, gameState) {
-      ctrl.pieceToMove  = spaceNumber; 
+
+      var pieceToMove  = spaceNumber; 
+      
+      //clear all green squares from the previous checkSpaces call
       for (var i = 0; i < ctrl.possibleMove.length; i++) {
         ctrl.possibleMove[i] = 0;
       }
       ctrl.showOffBoardGreen = false;
       ctrl.showOffBoardBlue = false;
+
       if (color === "blue" && gameState.bluePiecesInJail === 0) {
         var space1 = spaceNumber - gameState.roll[0];
         var space2 = spaceNumber - gameState.roll[1];
       }
+
       else if ((color === "green" && gameState.greenPiecesInJail === 0)) {
         var space1 = spaceNumber + gameState.roll[0];
         var space2 = spaceNumber + gameState.roll[1];
       }
-
-      if (gameState.roll[0] !== 0 && (color === gameState.piecesColor[space1] || gameState.pieces[space1] < 2)) {
-        ctrl.possibleMove[space1] = 1;
-        }
-      if (gameState.roll[1] !== 0 && (color === gameState.piecesColor[space2] || gameState.pieces[space2] < 2)) {
-        ctrl.possibleMove[space2] = 1; 
+      
+      if (gameState.roll[0] !== 0) {
+        this.checkIfMovePossible(space1, color, ctrl, gameState);
+      }
+      if (gameState.roll[1] !== 0) {
+        this.checkIfMovePossible(space2, color, ctrl, gameState);
       }
 
-      if (space1 === -1 && color === "blue" && gameState.blueHomeNumber === 15) {
-            ctrl.showOffBoardBlue = true;
-        }
-      else if (space1 === 24 && color === "green" && gameState.greenHomeNumber === 15) {
-            ctrl.showOffBoardGreen = true;
-        }
-      if (space2 === -1 && color === "blue" && gameState.blueHomeNumber === 15) {
-            ctrl.showOffBoardBlue = true;
-        }
-      else if (space2 === 24 && color === "green" && gameState.greenHomeNumber === 15) {
-            ctrl.showOffBoardGreen = true;
-        }
+
       //////only if there are no pieces behind pieceToMove
       if (space1 < -1 && color === "blue" && gameState.blueHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = ctrl.pieceToMove + 1; i <= 5; i++) {
+            for (var i = pieceToMove + 1; i <= 5; i++) {
               if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
               }
@@ -137,7 +157,7 @@ return {
         }
       else if (space1 > 24 && color === "green" && gameState.greenHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = 18; i < ctrl.pieceToMove; i++) {
+            for (var i = 18; i < pieceToMove; i++) {
               if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
                 break;
@@ -150,7 +170,7 @@ return {
         }
       if (space2 < -1 && color === "blue" && gameState.blueHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = ctrl.pieceToMove + 1; i <= 5; i++) {
+            for (var i = pieceToMove + 1; i <= 5; i++) {
               if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
                 break;
@@ -163,7 +183,7 @@ return {
         }
       else if (space2 > 24 && color === "green" && gameState.greenHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = 18; i < ctrl.pieceToMove; i++) {
+            for (var i = 18; i < pieceToMove; i++) {
               if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
                 break;
