@@ -19,13 +19,17 @@ angular.module('roomApp')
     this.showOffBoardBlue = false;
     this.showOffBoardGreen = false;
 
-    this.checkSpacesFromJail = gameLogic.checkSpacesFromJail;
-
-    this.checkOffBoardSpaces = gameLogic.checkOffBoardSpaces;
-
-    this.moveOffBoard = gameLogic.moveOffBoard;
-
-    this.checkSpaces = gameLogic.checkSpaces;
+    this.checkSpaces = function(spaceNumber, color) {
+      gameLogic.checkSpaces(spaceNumber, color, ctrl, ctrl.gameState);
+    }
+  
+    this.checkSpacesFromJail = function(color) {
+      gameLogic.checkSpacesFromJail(color, ctrl, ctrl.gameState);
+    }
+ 
+    this.moveOffBoard = function(color) {
+      gameLogic.moveOffBoard(color, ctrl, ctrl.gameState);
+    }
 
     this.rollFunction = function() {
       gameLogic.rollFunction(ctrl, ctrl.gameState);
@@ -36,7 +40,7 @@ angular.module('roomApp')
     }
 
     this.changeTurn = function() {
-      gameLogic.changeTurn(ctrl.gameState);      
+      gameLogic.changeTurn(ctrl, ctrl.gameState);      
     }
 
     this.returnArray = function(num) {

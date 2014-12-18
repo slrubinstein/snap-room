@@ -15,165 +15,162 @@ return {
       ctrl.saveGame(ctrl.roomId);
     },
 
-    checkSpacesFromJail : function(color) {
+    checkSpacesFromJail : function(color, ctrl, gameState) {
       if (color === "green") {
-        this.pieceToMove = -1;
-        var space1 = this.gameState.roll[0] - 1;
+        ctrl.pieceToMove = -1;
+        var space1 = gameState.roll[0] - 1;
         //-1 to account for 0-indexing of spaces
-        var space2 = this.gameState.roll[1] - 1;
+        var space2 = gameState.roll[1] - 1;
       }
       else if (color === "blue") {
-        this.pieceToMove = 24;
-        var space1 = 24 - this.gameState.roll[0];
-        var space2 = 24 - this.gameState.roll[1];
+        ctrl.pieceToMove = 24;
+        var space1 = 24 - gameState.roll[0];
+        var space2 = 24 - gameState.roll[1];
       }
-      if (this.gameState.roll[0] !== 0 && (color === this.gameState.piecesColor[space1] || this.gameState.pieces[space1] < 2)) {
-        this.possibleMove[space1] = 1; 
+      if (gameState.roll[0] !== 0 && (color === gameState.piecesColor[space1] || gameState.pieces[space1] < 2)) {
+        ctrl.possibleMove[space1] = 1; 
       }
-      if (this.gameState.roll[1] !== 0 && (color === this.gameState.piecesColor[space2] || this.gameState.pieces[space2] < 2)) {
-        this.possibleMove[space2] = 1; 
+      if (gameState.roll[1] !== 0 && (color === gameState.piecesColor[space2] || gameState.pieces[space2] < 2)) {
+        ctrl.possibleMove[space2] = 1; 
       }
     },
 
-    checkOffBoardSpaces : function(color) {
-      this.pieceToMove  = spaceNumber; 
-    },
-
-    moveOffBoard : function(color) {
-      this.gameState.pieces[this.pieceToMove] -= 1;
-      if (this.gameState.pieces[this.pieceToMove] === 0) {
-           this.gameState.piecesColor[this.pieceToMove] = 0;
+    moveOffBoard : function(color, ctrl, gameState) {
+      gameState.pieces[ctrl.pieceToMove] -= 1;
+      if (gameState.pieces[ctrl.pieceToMove] === 0) {
+           gameState.piecesColor[ctrl.pieceToMove] = 0;
        }
 
       if (color === "blue") {
-        this.gameState.blueScore++;
-        var difference = Math.abs(- 1 - this.pieceToMove);
+        gameState.blueScore++;
+        var difference = Math.abs(- 1 - ctrl.pieceToMove);
       }
       else if (color === "green") {
-        this.gameState.greenScore++;
-        var difference = 24 - this.pieceToMove;
+        gameState.greenScore++;
+        var difference = 24 - ctrl.pieceToMove;
       }
-      if (this.gameState.numberRolls < 3) {
-        if (difference === this.gameState.roll[0]){
-            this.gameState.roll[0] = 0;
+      if (gameState.numberRolls < 3) {
+        if (difference === gameState.roll[0]){
+            gameState.roll[0] = 0;
         }
-        else if (difference === this.gameState.roll[1]){
-            this.gameState.roll[1] = 0;
+        else if (difference === gameState.roll[1]){
+            gameState.roll[1] = 0;
         }
-        else if (this.gameState.roll[0] > difference  || this.gameState.roll[1] > difference){
-            if (this.gameState.roll[0] > difference  && this.gameState.roll[1] > difference) {
-                this.gameState.roll[0] <= this.gameState.roll[1] ? this.gameState.roll[0] = 0 : this.gameState.roll[1] = 0;
+        else if (gameState.roll[0] > difference  || gameState.roll[1] > difference){
+            if (gameState.roll[0] > difference  && gameState.roll[1] > difference) {
+                gameState.roll[0] <= gameState.roll[1] ? gameState.roll[0] = 0 : gameState.roll[1] = 0;
             }
-            else if (this.gameState.roll[0] > difference){
-                this.gameState.roll[0] = 0;
+            else if (gameState.roll[0] > difference){
+                gameState.roll[0] = 0;
             }
-            else if (this.gameState.roll[1] > difference){
-                this.gameState.roll[1] = 0;
+            else if (gameState.roll[1] > difference){
+                gameState.roll[1] = 0;
             }
         }
       }
       else {
-          this.gameState.numberRolls-- ;
+          gameState.numberRolls-- ;
       }
 
 //at end of function
-       for (var i = 0; i < this.possibleMove.length; i++) {
-            this.possibleMove[i] = 0;
+       for (var i = 0; i < ctrl.possibleMove.length; i++) {
+            ctrl.possibleMove[i] = 0;
        }
-        this.showOffBoardGreen = false;
-        this.showOffBoardBlue = false;
+        ctrl.showOffBoardGreen = false;
+        ctrl.showOffBoardBlue = false;
 
-       if (!this.gameState.roll[0] && !this.gameState.roll[1]) {
-          this.gameState.turn === "green" ? this.gameState.turn = "blue" :
-          this.gameState.turn = "green";
-          this.gameState.showRollButton = true;
+       if (!gameState.roll[0] && !gameState.roll[1]) {
+          gameState.turn === "green" ? gameState.turn = "blue" :
+          gameState.turn = "green";
+          gameState.showRollButton = true;
        }
        ctrl.saveGame(ctrl.roomId);    
     },
 
-    checkSpaces : function(spaceNumber, color) {
-      this.pieceToMove  = spaceNumber; 
-      for (var i = 0; i < this.possibleMove.length; i++) {
-        this.possibleMove[i] = 0;
+    checkSpaces : function(spaceNumber, color, ctrl, gameState) {
+      ctrl.pieceToMove  = spaceNumber; 
+      for (var i = 0; i < ctrl.possibleMove.length; i++) {
+        ctrl.possibleMove[i] = 0;
       }
-      this.showOffBoardGreen = false;
-      this.showOffBoardBlue = false;
-      if (color === "blue" && this.gameState.bluePiecesInJail === 0) {
-        var space1 = spaceNumber - this.gameState.roll[0];
-        var space2 = spaceNumber - this.gameState.roll[1];
+      ctrl.showOffBoardGreen = false;
+      ctrl.showOffBoardBlue = false;
+      if (color === "blue" && gameState.bluePiecesInJail === 0) {
+        var space1 = spaceNumber - gameState.roll[0];
+        var space2 = spaceNumber - gameState.roll[1];
       }
-      else if ((color === "green" && this.gameState.greenPiecesInJail === 0)) {
-        var space1 = spaceNumber + this.gameState.roll[0];
-        var space2 = spaceNumber + this.gameState.roll[1];
+      else if ((color === "green" && gameState.greenPiecesInJail === 0)) {
+        var space1 = spaceNumber + gameState.roll[0];
+        var space2 = spaceNumber + gameState.roll[1];
       }
 
-      if (this.gameState.roll[0] !== 0 && (color === this.gameState.piecesColor[space1] || this.gameState.pieces[space1] < 2)) {
-        this.possibleMove[space1] = 1;
+      if (gameState.roll[0] !== 0 && (color === gameState.piecesColor[space1] || gameState.pieces[space1] < 2)) {
+        ctrl.possibleMove[space1] = 1;
         }
-      if (this.gameState.roll[1] !== 0 && (color === this.gameState.piecesColor[space2] || this.gameState.pieces[space2] < 2)) {
-        this.possibleMove[space2] = 1; 
+      if (gameState.roll[1] !== 0 && (color === gameState.piecesColor[space2] || gameState.pieces[space2] < 2)) {
+        ctrl.possibleMove[space2] = 1; 
       }
-      if (space1 === -1 && color === "blue" && this.gameState.blueHomeNumber === 15) {
-            this.showOffBoardBlue = true;
+
+      if (space1 === -1 && color === "blue" && gameState.blueHomeNumber === 15) {
+            ctrl.showOffBoardBlue = true;
         }
-      else if (space1 === 24 && color === "green" && this.gameState.greenHomeNumber === 15) {
-            this.showOffBoardGreen = true;
+      else if (space1 === 24 && color === "green" && gameState.greenHomeNumber === 15) {
+            ctrl.showOffBoardGreen = true;
         }
-      if (space2 === -1 && color === "blue" && this.gameState.blueHomeNumber === 15) {
-            this.showOffBoardBlue = true;
+      if (space2 === -1 && color === "blue" && gameState.blueHomeNumber === 15) {
+            ctrl.showOffBoardBlue = true;
         }
-      else if (space2 === 24 && color === "green" && this.gameState.greenHomeNumber === 15) {
-            this.showOffBoardGreen = true;
+      else if (space2 === 24 && color === "green" && gameState.greenHomeNumber === 15) {
+            ctrl.showOffBoardGreen = true;
         }
       //////only if there are no pieces behind pieceToMove
-      if (space1 < -1 && color === "blue" && this.gameState.blueHomeNumber === 15) {
+      if (space1 < -1 && color === "blue" && gameState.blueHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = this.pieceToMove + 1; i <= 5; i++) {
-              if (this.gameState.pieces[i] > 0) {
+            for (var i = ctrl.pieceToMove + 1; i <= 5; i++) {
+              if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
               }
             }
             if (!trailingPieces) {
-              this.showOffBoardBlue = true;
+              ctrl.showOffBoardBlue = true;
             }
             trailingPieces = false;
         }
-      else if (space1 > 24 && color === "green" && this.gameState.greenHomeNumber === 15) {
+      else if (space1 > 24 && color === "green" && gameState.greenHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = 18; i < this.pieceToMove; i++) {
-              if (this.pieces[i] > 0) {
+            for (var i = 18; i < ctrl.pieceToMove; i++) {
+              if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
                 break;
               }
             }
             if (!trailingPieces) {
-              this.showOffBoardGreen = true;
+              ctrl.showOffBoardGreen = true;
             }
             trailingPieces = false;
         }
-      if (space2 < -1 && color === "blue" && this.gameState.blueHomeNumber === 15) {
+      if (space2 < -1 && color === "blue" && gameState.blueHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = this.pieceToMove + 1; i <= 5; i++) {
-              if (this.gameState.pieces[i] > 0) {
+            for (var i = ctrl.pieceToMove + 1; i <= 5; i++) {
+              if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
                 break;
               }
             }
             if (!trailingPieces) {
-              this.showOffBoardBlue = true;
+              ctrl.showOffBoardBlue = true;
             }
             trailingPieces = false;
         }
-      else if (space2 > 24 && color === "green" && this.gameState.greenHomeNumber === 15) {
+      else if (space2 > 24 && color === "green" && gameState.greenHomeNumber === 15) {
             var trailingPieces = false;
-            for (var i = 18; i < this.pieceToMove; i++) {
-              if (this.gameState.pieces[i] > 0) {
+            for (var i = 18; i < ctrl.pieceToMove; i++) {
+              if (gameState.pieces[i] > 0) {
                 trailingPieces = true;
                 break;
               }
             }
             if (!trailingPieces) {
-              this.showOffBoardGreen = true;
+              ctrl.showOffBoardGreen = true;
             }
             trailingPieces = false;
         }
@@ -230,11 +227,11 @@ return {
           gameState.greenPiecesInJail-- ;
        }
 
-       if (gameState.turn === "green" && gameState.pieceToMove < 18 && spaceNumber >= 18) {
+       if (gameState.turn === "green" && ctrl.pieceToMove < 18 && spaceNumber >= 18) {
            gameState.greenHomeNumber++;
        }
 
-       else if (gameState.turn === "blue" && gameState.pieceToMove > 5 && spaceNumber <= 5) {
+       else if (gameState.turn === "blue" && ctrl.pieceToMove > 5 && spaceNumber <= 5) {
            gameState.blueHomeNumber++;
        }
 
@@ -247,7 +244,7 @@ return {
        ctrl.saveGame(ctrl.roomId);
     },
 
-    changeTurn : function(gameState) {
+    changeTurn : function(ctrl, gameState) {
       gameState.turn === "blue" ? gameState.turn = "green":
          gameState.turn = "blue";
        gameState.roll[0] = 0;
