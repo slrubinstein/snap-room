@@ -1,6 +1,6 @@
 <div class="overflow-box" scroll-glue>
 	<p ng-repeat="message in chat.roomData.messages">
-		<img ng-src={{message.picture}}/>
+		<img class="user-photo" ng-src={{message.picture}}>
 		<span ng-show="message.name"><strong>{{message.name}}:</strong></span> 
 		<span>{{message.message}}</span> 
 	</p>
