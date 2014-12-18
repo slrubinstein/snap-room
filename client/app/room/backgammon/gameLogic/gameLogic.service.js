@@ -181,8 +181,8 @@ return {
     },
 
     movePiece : function(spaceNumber, ctrl, gameState) {
-       gameState.pieces[gameState.pieceToMove] -= 1;
-       if (gameState.pieces[gameState.pieceToMove] === 0) {
+       gameState.pieces[ctrl.pieceToMove] -= 1;
+       if (gameState.pieces[ctrl.pieceToMove] === 0) {
            gameState.piecesColor[ctrl.pieceToMove] = 0;
        }
        ctrl.showOffBoardGreen = false;

@@ -69,21 +69,7 @@ angular.module('roomApp')
       showRollButton : true
     })
       .success(function(data) {
-        //ctrl.gameID = data._id;
-        ctrl.gameState.turn = "blue";
-        ctrl.gameState.roll = [0,0];
-        ctrl.gameState.numberRolls = 2;
-        ctrl.gameState.pieces = [2,0,0,0,0,5,0,3,0,0,0,5,5,0,0,0,3,0,5,0,0,0,0,2];
-        ctrl.gameState.piecesColor = ["green",0,0,0,0,"blue",0,"blue",0,0,0,"green",
-                     "blue",0,0,0,"green",0,"green",0,0,0,0,"blue"];
-
-        ctrl.gameState.greenHomeNumber = 5;
-        ctrl.gameState.blueHomeNumber = 5;
-        ctrl.gameState.greenPiecesInJail = 0;
-        ctrl.gameState.bluePiecesInJail = 0;
-        ctrl.gameState.blueScore = 0;
-        ctrl.gameState.greenScore = 0;
-        ctrl.gameState.showRollButton = true;
+        ctrl.gameState = data;
      })
       .error(function(error) {
          console.log(error);
