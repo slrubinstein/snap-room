@@ -22,12 +22,10 @@ exports.show = function(req, res) {
 
 // Creates a new backgammonRoom in the DB.
 exports.create = function(req, res) { 
-  Backgammonroom.create({}, function(err, backgammonRoom) {
+  Backgammonroom.create(req.body, function(err, backgammonRoom) {
     if(err) { return handleError(res, err); }
     if(!backgammonRoom) { return res.send(404); }
-    //backgammonRoom.players.push(req.user.name);
     var updated = _.merge(backgammonRoom, req.body);
-    updated.roomId = req.body.roomId;
     updated.save(function(err, updatedBackgammonRoom){
       if (err) { return handleError(res, err); }
       return res.json(201, updatedBackgammonRoom);

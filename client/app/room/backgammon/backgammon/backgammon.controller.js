@@ -77,24 +77,16 @@ angular.module('roomApp')
     }
 
     this.saveGame = function(gameId) {
-      $http.put("/api/backgammonRoom/" + roomId, {
-            turn : this.gameState.turn,
-            roll : this.gameState.roll,
-            showRollButton : this.gameState.showRollButton,
-            numberRolls : this.gameState.numberRolls,
-            pieces : this.gameState.pieces,
-            piecesColor : this.gameState.piecesColor, 
-            greenHomeNumber : this.gameState.greenHomeNumber,
-            blueHomeNumber : this.gameState.blueHomeNumber,
-            greenPiecesInJail : this.gameState.greenPiecesInJail,
-            bluePiecesInJail : this.gameState.bluePiecesInJail,
-            blueScore : this.gameState.blueScore,
-            greenScore : this.gameState.greenScore
+      delete this.gameState.__v;
+      delete this.gameState._id;
+      $http.put("/api/backgammonRoom/" + roomId, this.gameState)
 
-      }).success(function(data) {
+      .success(function(data) {
 
 
-      });
+      }).error(function(error) {
+
+      })
     };
 
     ctrl.gameState.pieces = {piecesArray: []};
