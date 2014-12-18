@@ -16,7 +16,7 @@ return {
       }
 
       gameState.showRollButton = false;
-      ctrl.saveGame(ctrl.roomId);
+      ctrl.saveGame();
 
     },
 
@@ -210,7 +210,7 @@ return {
           this.changeTurn(gameState);
        }
 
-       ctrl.saveGame(ctrl.roomId);
+       ctrl.saveGame();
 
     },
 
@@ -267,7 +267,7 @@ return {
         this.changeTurn(gameState);
       }
       
-      ctrl.saveGame(ctrl.roomId);    
+      ctrl.saveGame();    
     
     },
 
@@ -288,7 +288,7 @@ return {
        gameState.roll[1] = 0;
        gameState.numberRolls = 2;
        this.clearGreenSquares(ctrl);
-       ctrl.saveGame(ctrl.roomId);
+       ctrl.saveGame();
     },
 
     changeTurn : function(gameState) {
