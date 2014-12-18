@@ -14,6 +14,9 @@ angular.module('roomApp')
 
     this.pieceToMove = null;
    
+    //each element in possibleMove corresponds to a space on the board.
+    //If the element is changed to 1, then a green square will be shown in
+    //that space, meaning that a specific piece can be moved there
     this.possibleMove = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
     this.showOffBoardBlue = false;
@@ -39,8 +42,8 @@ angular.module('roomApp')
       gameLogic.movePiece(spaceNumber, ctrl, ctrl.gameState);      
     }
 
-    this.changeTurn = function() {
-      gameLogic.changeTurn(ctrl, ctrl.gameState);      
+    this.manualChangeTurn = function() {
+      gameLogic.manualChangeTurn(ctrl, ctrl.gameState);      
     }
 
     this.returnArray = function(num) {
