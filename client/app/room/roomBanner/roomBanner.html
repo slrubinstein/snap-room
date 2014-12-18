@@ -18,11 +18,7 @@
 
     <p ng-show="room.isLoggedIn">Logged in as {{room.user.facebook.first_name}}</p>
 
-    <h2 ng-show="room.timeUp && !room.winner && room.roomType==='lunch'">
-      No votes were cast
-    </h2>
-
-    <h2 ng-show="room.timeUp && !room.winner && room.roomType !=='lunch'">
+    <h2 ng-show="room.timeUp && !room.winner">
         Time expired
     </h2>
 
