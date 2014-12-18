@@ -26,13 +26,7 @@ return {
 
       ctrl.pieceToMove  = spaceNumber; 
       
-      //clear all green squares from the previous checkSpaces call
-      for (var i = 0; i < ctrl.possibleMove.length; i++) {
-        ctrl.possibleMove[i] = 0;
-      }
-
-      ctrl.showOffBoardGreen = false;
-      ctrl.showOffBoardBlue = false;
+      this.clearGreenSquares(ctrl);
 
       if (color === "blue" && gameState.bluePiecesInJail === 0) {
         var space1 = spaceNumber - gameState.roll[0];
@@ -59,10 +53,7 @@ return {
     //and it's their turn
     checkSpacesFromJail : function(color, ctrl, gameState) {
       
-      //clear all green squares from the previous checkSpaces call
-      for (var i = 0; i < ctrl.possibleMove.length; i++) {
-        ctrl.possibleMove[i] = 0;
-      }
+      this.clearGreenSquares(ctrl);
 
       if (color === "green") {
         ctrl.pieceToMove = -1;
@@ -149,17 +140,8 @@ return {
     
     //called by clicking on green square
     movePiece : function(spaceNumber, ctrl, gameState) {
-
-       //remove the pieceToMove from its current space
-       gameState.pieces[ctrl.pieceToMove] -= 1;
-       //if there are no more pieces remaining on that space,
-       //remove the color assigned to that space
-       if (gameState.pieces[ctrl.pieceToMove] === 0) {
-           gameState.piecesColor[ctrl.pieceToMove] = 0;
-       }
-
-       ctrl.showOffBoardGreen = false;
-       ctrl.showOffBoardBlue = false;
+       
+       this.removePieceFromCurrentSpace(ctrl, gameState);
        
        //if moving to a space where an opponent's piece
        //can be attacked
@@ -195,10 +177,7 @@ return {
             gameState.pieces[spaceNumber] += 1;
        }
 
-       //clear all green squares
-       for (var i = 0; i < ctrl.possibleMove.length; i++) {
-            ctrl.possibleMove[i] = 0;
-       }
+       this.clearGreenSquares(ctrl);
        
        //if the player had 1 or 2 moves left:
        if (gameState.numberRolls < 3) {
@@ -220,17 +199,15 @@ return {
 
        //if the piece was moved into the home base
        if (gameState.turn === "green" && ctrl.pieceToMove < 18 && spaceNumber >= 18) {
-           gameState.greenHomeNumber++;
+          gameState.greenHomeNumber++;
        }
        else if (gameState.turn === "blue" && ctrl.pieceToMove > 5 && spaceNumber <= 5) {
-           gameState.blueHomeNumber++;
+          gameState.blueHomeNumber++;
        }
 
        //if the player has no remaining moves
        if (!gameState.roll[0] && !gameState.roll[1]) {
-          gameState.turn === "green" ? gameState.turn = "blue" :
-          gameState.turn = "green";
-          gameState.showRollButton = true;
+          this.changeTurn(gameState);
        }
 
        ctrl.saveGame(ctrl.roomId);
@@ -239,27 +216,33 @@ return {
 
     moveOffBoard : function(color, ctrl, gameState) {
 
-      gameState.pieces[ctrl.pieceToMove] -= 1;
-      if (gameState.pieces[ctrl.pieceToMove] === 0) {
-           gameState.piecesColor[ctrl.pieceToMove] = 0;
-       }
+      this.removePieceFromCurrentSpace(ctrl, gameState)
+      var difference;//the distance the piece moved to leave the board
 
       if (color === "blue") {
         gameState.blueScore++;
-        var difference = Math.abs(- 1 - ctrl.pieceToMove);
+        difference = Math.abs(- 1 - ctrl.pieceToMove);
       }
       else if (color === "green") {
         gameState.greenScore++;
-        var difference = 24 - ctrl.pieceToMove;
+        difference = 24 - ctrl.pieceToMove;
       }
+
+      //if player had 1 or 2 moves left
       if (gameState.numberRolls < 3) {
+
+        //if roll 1 or roll 2 was exactly the amount needed to leave the board 
         if (difference === gameState.roll[0]){
             gameState.roll[0] = 0;
         }
         else if (difference === gameState.roll[1]){
             gameState.roll[1] = 0;
         }
+        //////////////////////////////////////////////////////////////////////
+        // if a roll was used that was in excess of what was needed (for instance, 
+        // a 6 being used to move a piece 3 spaces to leave the board)
         else if (gameState.roll[0] > difference  || gameState.roll[1] > difference){
+
             if (gameState.roll[0] > difference  && gameState.roll[1] > difference) {
                 gameState.roll[0] <= gameState.roll[1] ? gameState.roll[0] = 0 : gameState.roll[1] = 0;
             }
@@ -269,40 +252,59 @@ return {
             else if (gameState.roll[1] > difference){
                 gameState.roll[1] = 0;
             }
+        
         }
+
       }
+      //if player rolled doubles, and had 3 or 4 moves left
       else {
           gameState.numberRolls-- ;
       }
 
-//at end of function
-       for (var i = 0; i < ctrl.possibleMove.length; i++) {
-            ctrl.possibleMove[i] = 0;
-       }
-        ctrl.showOffBoardGreen = false;
-        ctrl.showOffBoardBlue = false;
+      this.clearGreenSquares(ctrl);
 
-       if (!gameState.roll[0] && !gameState.roll[1]) {
-          gameState.turn === "green" ? gameState.turn = "blue" :
-          gameState.turn = "green";
-          gameState.showRollButton = true;
-       }
-       ctrl.saveGame(ctrl.roomId);    
+      if (!gameState.roll[0] && !gameState.roll[1]) {
+        this.changeTurn(gameState);
+      }
+      
+      ctrl.saveGame(ctrl.roomId);    
+    
     },
 
-    changeTurn : function(ctrl, gameState) {
-      gameState.turn === "blue" ? gameState.turn = "green":
-         gameState.turn = "blue";
+    removePieceFromCurrentSpace : function(ctrl, gameState) {
+       //remove the pieceToMove from its current space
+       gameState.pieces[ctrl.pieceToMove] -= 1;
+       //if there are no more pieces remaining on that space,
+       //remove the color assigned to that space
+       if (gameState.pieces[ctrl.pieceToMove] === 0) {
+           gameState.piecesColor[ctrl.pieceToMove] = 0;
+       }
+
+    },
+
+    manualChangeTurn : function(ctrl, gameState) {
+       this.changeTurn(gameState);
        gameState.roll[0] = 0;
        gameState.roll[1] = 0;
        gameState.numberRolls = 2;
-       ctrl.showOffBoardBlue = false;
-       ctrl.showOffBoardGreen = false;
-       for (var i = 0; i < ctrl.possibleMove.length; i++) {
-         ctrl.possibleMove[i] = 0;
-       }
-       gameState.showRollButton = true;
+       this.clearGreenSquares(ctrl);
        ctrl.saveGame(ctrl.roomId);
+    },
+
+    changeTurn : function(gameState) {
+      gameState.turn === "green" ? gameState.turn = "blue" :
+      gameState.turn = "green";
+      gameState.showRollButton = true;
+    },
+
+    clearGreenSquares : function(ctrl) {
+      for (var i = 0; i < ctrl.possibleMove.length; i++) {
+        ctrl.possibleMove[i] = 0;
+      }
+
+      ctrl.showOffBoardGreen = false;
+      ctrl.showOffBoardBlue = false;
     }
+
    };
 });

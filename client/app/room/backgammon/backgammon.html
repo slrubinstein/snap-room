@@ -22,7 +22,7 @@
         <div ng-hide="table.gameState.pieces.piecesArray.length===0" >Turn: {{table.gameState.turn}}</div>
       </div>
       <div id="buttonCol2">
-        <div id="noMoveButton" ng-hide="table.gameState.pieces.piecesArray.length===0" ng-click="table.changeTurn()">No Move</div>
+        <div id="noMoveButton" ng-hide="table.gameState.pieces.piecesArray.length===0" ng-click="table.manualChangeTurn()">No Move</div>
         <button id="newGameButton" ng-show="table.gameState.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
       </div>
       <div class="clearfix"></div>

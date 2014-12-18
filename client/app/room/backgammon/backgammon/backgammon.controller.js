@@ -42,8 +42,8 @@ angular.module('roomApp')
       gameLogic.movePiece(spaceNumber, ctrl, ctrl.gameState);      
     }
 
-    this.changeTurn = function() {
-      gameLogic.changeTurn(ctrl, ctrl.gameState);      
+    this.manualChangeTurn = function() {
+      gameLogic.manualChangeTurn(ctrl, ctrl.gameState);      
     }
 
     this.returnArray = function(num) {
