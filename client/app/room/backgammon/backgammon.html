@@ -1,7 +1,9 @@
 
   <h1 id="landscapeMessage">Please turn your device to horizontal orientation</h1>
+  
   <div id="gameBoard">
-    <div ng-hide="table.pieces.piecesArray.length===0" id="topRow">
+  
+    <div id="topRow" ng-hide="table.pieces.piecesArray.length===0">
 
       <space  ng-init ="row='topRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
       ng-class="{leftOfDivider : i===5}" class="space">
@@ -26,43 +28,37 @@
       <div class="clearfix"></div>
   </div>
     
-    <div ng-hide="table.pieces.piecesArray.length===0" id="bottomRow">
+  <div id="bottomRow" ng-hide="table.pieces.piecesArray.length===0">
 
-      <space ng-init ="row='bottomRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
-      ng-class="{rightOfDivider : i===5}" class="bottomRowSpace space">
-      </space>
+    <space ng-init ="row='bottomRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
+    ng-class="{rightOfDivider : i===5}" class="bottomRowSpace space">
+    </space>
 
-      <div id="offBoardBlue" ng-show="table.showOffBoardBlue">
-          <div ng-click="table.moveOffBoard('blue')" class="greenSquare"></div> 
+    <div id="offBoardBlue" ng-show="table.showOffBoardBlue">
+      <div ng-click="table.moveOffBoard('blue')" class="greenSquare">
+      </div> 
+    </div>
+
+  </div>
+
+  <div id="jails">
+
+    <div id="blueJail" class="jail">
+
+      <div ng-repeat="piece in table.returnArray(table.bluePiecesInJail)"
+      class="piece bluePiece" ng-click="table.checkSpacesFromJail('blue')">
       </div>
 
     </div>
 
-    <div id="jails">
+    <div id="greenJail" class="jail">
 
-      <div id="blueJail" class="jail">
-
-        <div ng-repeat="piece in table.returnArray(table.bluePiecesInJail)"
-        class="piece bluePiece" ng-click="table.checkSpacesFromJail('blue')">
-
-        </div>
-
-      </div>
-
-      <div id="greenJail" class="jail">
-
-        <div ng-repeat="piece in table.returnArray(table.greenPiecesInJail)"
-        class="piece greenPiece" ng-click="table.checkSpacesFromJail('green')">
-        </div>
-
+      <div ng-repeat="piece in table.returnArray(table.greenPiecesInJail)"
+      class="piece greenPiece" ng-click="table.checkSpacesFromJail('green')">
       </div>
 
     </div>
 
+  </div>
 
-
-  <!-- <button ng-click="table.seeGames()">See who's playing</button> -->
-
-  <!-- <div ng-repeat="game in table.gameList">{{game.players}}</div>
-   -->
 </div>
