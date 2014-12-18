@@ -10,7 +10,7 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomId = this.params.roomId;
 
-    ctrl.gameState = {};
+    this.gameState = {};
 
     this.pieceToMove = null;
    
@@ -18,10 +18,6 @@ angular.module('roomApp')
 
     this.showOffBoardBlue = false;
     this.showOffBoardGreen = false;
-
-    this.rollFunction = function() {
-      gameLogic.rollFunction(ctrl, ctrl.gameState);
-    }
 
     this.checkSpacesFromJail = gameLogic.checkSpacesFromJail;
 
@@ -31,15 +27,17 @@ angular.module('roomApp')
 
     this.checkSpaces = gameLogic.checkSpaces;
 
+    this.rollFunction = function() {
+      gameLogic.rollFunction(ctrl, ctrl.gameState);
+    }
+
     this.movePiece = function(spaceNumber) {
-       gameLogic.movePiece(spaceNumber, ctrl, ctrl.gameState);      
+      gameLogic.movePiece(spaceNumber, ctrl, ctrl.gameState);      
     }
 
     this.changeTurn = function() {
       gameLogic.changeTurn(ctrl.gameState);      
     }
-
-    this.gameList = [];
 
     this.returnArray = function(num) {
       var arr = []; 
@@ -50,29 +48,29 @@ angular.module('roomApp')
     };
 
     this.newGame = function() {
-    $http.post("/api/backgammonRoom", {
+      $http.post("/api/backgammonRoom", {
 
-      roomId: roomId,
-      turn : "blue",
-      roll : [0,0],
-      numberRolls : 2,
-      pieces : [2,0,0,0,0,5,0,3,0,0,0,5,5,0,0,0,3,0,5,0,0,0,0,2],
-      piecesColor : ["green",0,0,0,0,"blue",0,"blue",0,0,0,"green",
-                   "blue",0,0,0,"green",0,"green",0,0,0,0,"blue"],
+        roomId: roomId,
+        turn : "blue",
+        roll : [0,0],
+        numberRolls : 2,
+        pieces : [2,0,0,0,0,5,0,3,0,0,0,5,5,0,0,0,3,0,5,0,0,0,0,2],
+        piecesColor : ["green",0,0,0,0,"blue",0,"blue",0,0,0,"green",
+                     "blue",0,0,0,"green",0,"green",0,0,0,0,"blue"],
 
-      greenHomeNumber : 5,
-      blueHomeNumber : 5,
-      greenPiecesInJail : 0,
-      bluePiecesInJail : 0,
-      blueScore : 0,
-      greenScore : 0,
-      showRollButton : true
-    })
+        greenHomeNumber : 5,
+        blueHomeNumber : 5,
+        greenPiecesInJail : 0,
+        bluePiecesInJail : 0,
+        blueScore : 0,
+        greenScore : 0,
+        showRollButton : true
+      })
       .success(function(data) {
         ctrl.gameState = data;
-     })
+      })
       .error(function(error) {
-         console.log(error);
+        console.log(error);
       });
     }
 
@@ -84,28 +82,28 @@ angular.module('roomApp')
       .success(function(data) {
 
 
-      }).error(function(error) {
+      })
+      .error(function(error) {
 
       })
     };
 
-    ctrl.gameState.pieces = {piecesArray: []};
-
     this.getGame = function(roomId) {
       $http.get("/api/backgammonRoom/" + roomId)
+
       .success(function(data) {
         ctrl.gameState = data;
-     })
+      })
 
       .error(function(error) {
          console.log(error);
       });
     };
 
-  this.getGame(roomId);
+    this.getGame(roomId);
 
-   socket.socket.on("updateGame", function(doc) {
-       ctrl.gameState = doc
+    socket.socket.on("updateGame", function(doc) {
+      ctrl.gameState = doc
    });
   })
 
