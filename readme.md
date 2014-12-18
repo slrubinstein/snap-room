@@ -41,6 +41,7 @@ When entering a room (either just after creating the room to enter, or entering 
 
 
 1.) roomService.get method is called in order to retrieve the room name (if one was provided) and the amount of time left before the room expires, as well as to start interval that runs the timer.
+
 2.) roomSocketsService.listen is called, which emits ‘join’ socket event to server along with the roomId and the username, and instantiates listener for ‘updateRoom’ socket event. On the server-side, the ‘join’ event causes: 
     
 a.) the user to join a socket room identified by the roomId
@@ -82,8 +83,8 @@ a.) removes the user from that socket room
 b.) finds the names of the other users in that room and sends the names to all users  
          in that room, along with the ‘countPeople’ event
 
-(‘onMainPage’ is also emitted when a user first lands at the main page, but serves no  
- purpose in that case)  
+Note: ‘onMainPage’ is also emitted when a user first lands at the main page, but serves no  
+ purpose in that case 
 
 Note: When you leave a room and then enter another room, the socket listeners from the old room don't go away. That's why each of the socket listeners have an if-statement to check if the eventRoomId matches the roomId, so they’re not responding to events that took place in other rooms
 
