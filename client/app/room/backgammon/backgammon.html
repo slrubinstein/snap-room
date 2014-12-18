@@ -1,8 +1,12 @@
 
   <h1 id="landscapeMessage">Please turn your device to horizontal orientation</h1>
-  
+
+  <h3 ng-show="table.errorCreatingGame">Error creating new game</h3>
+  <h3 ng-show="table.errorSavingGame">Error saving game</h3>
+  <h3 ng-show="table.errorFindingGameData">Error retrieving game data</h3>
+
   <div id="gameBoard">
-  
+
     <div id="topRow" ng-hide="table.gameState.pieces.piecesArray.length===0">
 
       <space  ng-init ="row='topRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 

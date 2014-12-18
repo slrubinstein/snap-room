@@ -23,6 +23,13 @@ angular.module('roomApp')
     this.showOffBoardBlue = false;
     this.showOffBoardGreen = false;
 
+    this.errorCreatingGame = false; //assigned to true in error callback
+    //for backgammonService.create
+    this.errorSavingGame = false; //assigned to true in error callback
+    //for backgammonService.save
+    this.errorFindingGameData = false; //assigned to true in error callback
+    //for backgammonService.get
+
     this.checkSpaces = function(spaceNumber, color) {
       gameLogic.checkSpaces(spaceNumber, color, ctrl, ctrl.gameState);
     }
@@ -62,7 +69,7 @@ angular.module('roomApp')
           ctrl.gameState = data;
         })
         .error(function(error) {
-          console.log(error);
+          ctrl.errorCreatingGame = true;
         })
     }
 
@@ -78,7 +85,7 @@ angular.module('roomApp')
 
         })
         .error(function(error) {
-
+          ctrl.errorSavingGame = true;
         })
     };
 
@@ -90,7 +97,7 @@ angular.module('roomApp')
         })
 
         .error(function(error) {
-          console.log(error);
+          ctrl.errorFindingGameData = true;
         });
     };
 
