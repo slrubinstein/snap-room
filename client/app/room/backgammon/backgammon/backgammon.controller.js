@@ -3,7 +3,8 @@
 angular.module('roomApp')
   .controller('BackgammonCtrl', function ($stateParams, $scope,
                                       roomSocketsService,
-                                      socket, gameLogic, $http) {
+                                      socket, gameLogic, $http,
+                                      backgammonService) {
 
     var ctrl = this;
 
@@ -55,56 +56,42 @@ angular.module('roomApp')
     };
 
     this.newGame = function() {
-      $http.post("/api/backgammonRoom", {
-
-        roomId: roomId,
-        turn : "blue",
-        roll : [0,0],
-        numberRolls : 2,
-        pieces : [2,0,0,0,0,5,0,3,0,0,0,5,5,0,0,0,3,0,5,0,0,0,0,2],
-        piecesColor : ["green",0,0,0,0,"blue",0,"blue",0,0,0,"green",
-                     "blue",0,0,0,"green",0,"green",0,0,0,0,"blue"],
-
-        greenHomeNumber : 5,
-        blueHomeNumber : 5,
-        greenPiecesInJail : 0,
-        bluePiecesInJail : 0,
-        blueScore : 0,
-        greenScore : 0,
-        showRollButton : true
-      })
-      .success(function(data) {
-        ctrl.gameState = data;
-      })
-      .error(function(error) {
-        console.log(error);
-      });
+      var startNewGame = backgammonService.create(roomId)
+      
+        .success(function(data) {
+          ctrl.gameState = data;
+        })
+        .error(function(error) {
+          console.log(error);
+        })
     }
 
-    this.saveGame = function(gameId) {
+    this.saveGame = function() {
       delete this.gameState.__v;
       delete this.gameState._id;
-      $http.put("/api/backgammonRoom/" + roomId, this.gameState)
 
-      .success(function(data) {
+      var saveGameState = backgammonService.save(roomId, 
+                                        this.gameState)
+
+        .success(function(data) {
 
 
-      })
-      .error(function(error) {
+        })
+        .error(function(error) {
 
-      })
+        })
     };
 
     this.getGame = function(roomId) {
-      $http.get("/api/backgammonRoom/" + roomId)
+      var getGameState = backgammonService.get(roomId)
 
-      .success(function(data) {
-        ctrl.gameState = data;
-      })
+        .success(function(data) {
+          ctrl.gameState = data;
+        })
 
-      .error(function(error) {
-         console.log(error);
-      });
+        .error(function(error) {
+          console.log(error);
+        });
     };
 
     this.getGame(roomId);
@@ -112,6 +99,7 @@ angular.module('roomApp')
     socket.socket.on("updateGame", function(doc) {
       ctrl.gameState = doc
    });
+  
   })
 
 .directive("space", function() {
