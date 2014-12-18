@@ -6,7 +6,7 @@ angular.module('roomApp')
   // usernameVal makes username accessible to all controllers
   .value('usernameVal', {
            name: '', 
-           picture: 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg'})
+           picture: 'assets/images/unicorn.png'})
 
   .controller('MainCtrl', function ($scope, $http, socket,
           $window, geolocationService, roomCreationService, Auth, $state, 
@@ -296,7 +296,7 @@ angular.module('roomApp')
     };
 
     this.logout = function() {
-      usernameVal.picture = 'https://pbs.twimg.com/profile_images/413202074466131968/ZeuqFOYQ_normal.jpeg';
+      usernameVal.picture = 'assets/images/unicorn.png';
       usernameVal.name = nameGeneratorService.getName();
       Auth.logout();
       $state.reload();
