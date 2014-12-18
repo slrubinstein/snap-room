@@ -1,7 +1,7 @@
 <div ng-init="spaceNumber = (row === 'topRow')? (12 + i) : (11 - i);"
-ng-repeat="piece in table.returnArray(table.pieces[spaceNumber])" 
-class="piece {{table.piecesColor[spaceNumber] + 'Piece'}}" 
-ng-click="table.turn === table.piecesColor[spaceNumber] && table.checkSpaces(spaceNumber, table.piecesColor[spaceNumber])"
+ng-repeat="piece in table.returnArray(table.gameState.pieces[spaceNumber])" 
+class="piece {{table.gameState.piecesColor[spaceNumber] + 'Piece'}}" 
+ng-click="table.gameState.turn === table.gameState.piecesColor[spaceNumber] && table.checkSpaces(spaceNumber, table.gameState.piecesColor[spaceNumber])"
  ></div>
 
 <div ng-init="spaceNumber = (row === 'topRow')? (12 + i) : (11 - i);" ng-click="table.movePiece(spaceNumber)" ng-show="table.possibleMove[spaceNumber]" class="greenSquare"></div> 

@@ -3,7 +3,7 @@
   
   <div id="gameBoard">
   
-    <div id="topRow" ng-hide="table.pieces.piecesArray.length===0">
+    <div id="topRow" ng-hide="table.gameState.pieces.piecesArray.length===0">
 
       <space  ng-init ="row='topRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
       ng-class="{leftOfDivider : i===5}" class="space">
@@ -17,18 +17,18 @@
 
     <div id="buttonsAndInfo">
       <div id="buttonCol1">
-        <button ng-hide="table.pieces.piecesArray.length===0 || !table.showRollButton" ng-click="table.rollFunction()">Roll</button>
-        <div ng-hide="table.pieces.piecesArray.length===0" >Roll: {{table.roll[0]}},{{table.roll[1]}}</div>
-        <div ng-hide="table.pieces.piecesArray.length===0" >Turn: {{table.turn}}</div>
+        <button ng-hide="table.gameState.pieces.piecesArray.length===0 || !table.gameState.showRollButton" ng-click="table.rollFunction()">Roll</button>
+        <div ng-hide="table.gameState.pieces.piecesArray.length===0" >Roll: {{table.gameState.roll[0]}},{{table.gameState.roll[1]}}</div>
+        <div ng-hide="table.gameState.pieces.piecesArray.length===0" >Turn: {{table.gameState.turn}}</div>
       </div>
       <div id="buttonCol2">
-        <div id="noMoveButton" ng-hide="table.pieces.piecesArray.length===0" ng-click="table.changeTurn()">No Move</div>
-        <button id="newGameButton" ng-show="table.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
+        <div id="noMoveButton" ng-hide="table.gameState.pieces.piecesArray.length===0" ng-click="table.changeTurn()">No Move</div>
+        <button id="newGameButton" ng-show="table.gameState.pieces.piecesArray.length===0" ng-click="table.newGame()">New game</button>
       </div>
       <div class="clearfix"></div>
   </div>
     
-  <div id="bottomRow" ng-hide="table.pieces.piecesArray.length===0">
+  <div id="bottomRow" ng-hide="table.gameState.pieces.piecesArray.length===0">
 
     <space ng-init ="row='bottomRow' ; i = $index" ng-repeat="piece in table.returnArray(12)" 
     ng-class="{rightOfDivider : i===5}" class="bottomRowSpace space">
@@ -45,7 +45,7 @@
 
     <div id="blueJail" class="jail">
 
-      <div ng-repeat="piece in table.returnArray(table.bluePiecesInJail)"
+      <div ng-repeat="piece in table.returnArray(table.gameState.bluePiecesInJail)"
       class="piece bluePiece" ng-click="table.checkSpacesFromJail('blue')">
       </div>
 
@@ -53,7 +53,7 @@
 
     <div id="greenJail" class="jail">
 
-      <div ng-repeat="piece in table.returnArray(table.greenPiecesInJail)"
+      <div ng-repeat="piece in table.returnArray(table.gameState.greenPiecesInJail)"
       class="piece greenPiece" ng-click="table.checkSpacesFromJail('green')">
       </div>
 

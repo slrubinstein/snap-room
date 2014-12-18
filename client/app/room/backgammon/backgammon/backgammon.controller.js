@@ -10,6 +10,8 @@ angular.module('roomApp')
     this.params = $stateParams;
     var roomId = this.params.roomId;
 
+    ctrl.gameState = {};
+
     this.pieceToMove = null;
    
     this.possibleMove = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -18,7 +20,7 @@ angular.module('roomApp')
     this.showOffBoardGreen = false;
 
     this.rollFunction = function() {
-      gameLogic.rollFunction(ctrl);
+      gameLogic.rollFunction(ctrl, ctrl.gameState);
     }
 
     this.checkSpacesFromJail = gameLogic.checkSpacesFromJail;
@@ -30,11 +32,11 @@ angular.module('roomApp')
     this.checkSpaces = gameLogic.checkSpaces;
 
     this.movePiece = function(spaceNumber) {
-       gameLogic.movePiece(spaceNumber, ctrl);      
+       gameLogic.movePiece(spaceNumber, ctrl, ctrl.gameState);      
     }
 
     this.changeTurn = function() {
-      gameLogic.changeTurn(ctrl);      
+      gameLogic.changeTurn(ctrl.gameState);      
     }
 
     this.gameList = [];
@@ -68,20 +70,20 @@ angular.module('roomApp')
     })
       .success(function(data) {
         //ctrl.gameID = data._id;
-        ctrl.turn = "blue";
-        ctrl.roll = [0,0];
-        ctrl.numberRolls = 2;
-        ctrl.pieces = [2,0,0,0,0,5,0,3,0,0,0,5,5,0,0,0,3,0,5,0,0,0,0,2];
-        ctrl.piecesColor = ["green",0,0,0,0,"blue",0,"blue",0,0,0,"green",
+        ctrl.gameState.turn = "blue";
+        ctrl.gameState.roll = [0,0];
+        ctrl.gameState.numberRolls = 2;
+        ctrl.gameState.pieces = [2,0,0,0,0,5,0,3,0,0,0,5,5,0,0,0,3,0,5,0,0,0,0,2];
+        ctrl.gameState.piecesColor = ["green",0,0,0,0,"blue",0,"blue",0,0,0,"green",
                      "blue",0,0,0,"green",0,"green",0,0,0,0,"blue"];
 
-        ctrl.greenHomeNumber = 5;
-        ctrl.blueHomeNumber = 5;
-        ctrl.greenPiecesInJail = 0;
-        ctrl.bluePiecesInJail = 0;
-        ctrl.blueScore = 0;
-        ctrl.greenScore = 0;
-        ctrl.showRollButton = true;
+        ctrl.gameState.greenHomeNumber = 5;
+        ctrl.gameState.blueHomeNumber = 5;
+        ctrl.gameState.greenPiecesInJail = 0;
+        ctrl.gameState.bluePiecesInJail = 0;
+        ctrl.gameState.blueScore = 0;
+        ctrl.gameState.greenScore = 0;
+        ctrl.gameState.showRollButton = true;
      })
       .error(function(error) {
          console.log(error);
@@ -90,18 +92,18 @@ angular.module('roomApp')
 
     this.saveGame = function(gameId) {
       $http.put("/api/backgammonRoom/" + roomId, {
-            turn : this.turn,
-            roll : this.roll,
-            showRollButton : this.showRollButton,
-            numberRolls : this.numberRolls,
-            pieces : this.pieces,
-            piecesColor : this.piecesColor, 
-            greenHomeNumber : this.greenHomeNumber,
-            blueHomeNumber : this.blueHomeNumber,
-            greenPiecesInJail : this.greenPiecesInJail,
-            bluePiecesInJail : this.bluePiecesInJail,
-            blueScore : this.blueScore,
-            greenScore : this.greenScore
+            turn : this.gameState.turn,
+            roll : this.gameState.roll,
+            showRollButton : this.gameState.showRollButton,
+            numberRolls : this.gameState.numberRolls,
+            pieces : this.gameState.pieces,
+            piecesColor : this.gameState.piecesColor, 
+            greenHomeNumber : this.gameState.greenHomeNumber,
+            blueHomeNumber : this.gameState.blueHomeNumber,
+            greenPiecesInJail : this.gameState.greenPiecesInJail,
+            bluePiecesInJail : this.gameState.bluePiecesInJail,
+            blueScore : this.gameState.blueScore,
+            greenScore : this.gameState.greenScore
 
       }).success(function(data) {
 
@@ -109,23 +111,12 @@ angular.module('roomApp')
       });
     };
 
-    ctrl.pieces = {piecesArray: []};
+    ctrl.gameState.pieces = {piecesArray: []};
 
     this.getGame = function(roomId) {
       $http.get("/api/backgammonRoom/" + roomId)
       .success(function(data) {
-        ctrl.turn = data.turn;
-        ctrl.roll = data.roll;
-        ctrl.showRollButton = data.showRollButton;
-        ctrl.numberRolls = data.numberRolls;
-        ctrl.pieces = data.pieces;
-        ctrl.piecesColor = data.piecesColor;
-        ctrl.greenHomeNumber = data.greenHomeNumber;
-        ctrl.blueHomeNumber = data.blueHomeNumber;
-        ctrl.greenPiecesInJail = data.greenPiecesInJail;
-        ctrl.bluePiecesInJail = data.bluePiecesInJail;
-        ctrl.blueScore = data.blueScore;
-        ctrl.greenScore = data.greenScore;
+        ctrl.gameState = data;
      })
 
       .error(function(error) {
@@ -136,18 +127,7 @@ angular.module('roomApp')
   this.getGame(roomId);
 
    socket.socket.on("updateGame", function(doc) {
-       ctrl.turn = doc.turn;
-       ctrl.roll = doc.roll;
-       ctrl.showRollButton = doc.showRollButton;
-       ctrl.numberRolls = doc.numberRolls;
-       ctrl.pieces = doc.pieces;
-       ctrl.piecesColor = doc.piecesColor; 
-       ctrl.greenHomeNumber = doc.greenHomeNumber;
-       ctrl.blueHomeNumber = doc.blueHomeNumber;
-       ctrl.greenPiecesInJail = doc.greenPiecesInJail;
-       ctrl.bluePiecesInJail = doc.bluePiecesInJail;
-       ctrl.blueScore = doc.blueScore;
-       ctrl.greenScore = doc.greenScore;
+       ctrl.gameState = doc
    });
   })
 
