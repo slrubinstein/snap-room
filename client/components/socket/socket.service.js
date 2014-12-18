@@ -9,7 +9,7 @@ angular.module('roomApp')
       // Send auth token on connection, you will need to DI the Auth service above
       // 'query': 'token=' + Auth.getToken()
       path: '/socket.io-client',
-      transports: ["websocket"]
+      transports: ["polling", "websocket"]
     });
 
     var socket = socketFactory({
