@@ -12,7 +12,7 @@ angular.module('roomApp')
 
     this.gameState = {};
 
-    //this.pieceToMove = null;
+    this.pieceToMove = null;
    
     //each element in possibleMove corresponds to a space on the board.
     //If the element is changed to 1, then a green square will be shown in
