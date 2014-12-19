@@ -14,7 +14,7 @@ module.exports = function(app) {
   app.use('/api/lunchRoom', require('./api/lunchRoom'));
   app.use('/api/chatRoom', require('./api/chatRoom'));
   app.use('/yes', require('./api/room'));
-  app.use('/api/things', require('./api/thing'));
+  //app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
   app.use('/api/room', require('./api/room'));
 

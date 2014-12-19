@@ -148,7 +148,7 @@ module.exports = function (socketio) {
   });
   require('../api/chatRoom/chatRoom.socket').register(socketio);
   require('../api/room/room.socket').register(socketio);
-  require('../api/thing/thing.socket').register(socketio);
+ // require('../api/thing/thing.socket').register(socketio);
   require('../api/lunchRoom/lunchRoom.socket').register(socketio);
   require('../api/splitcheckRoom/splitcheckRoom.socket').register(socketio);
 };
