@@ -58,7 +58,7 @@ c.) the names of the other users in that room to be found and sent to all users 
 
 Note: real-time updating in rooms happens in one of two ways:
 
-1.) In a lunch room or chat room, when messages or votes are submitted, the ‘updateRoom’ socket event is emitted by the client along with the roomId and room data. That data is then sent back to clients in that room. 
+1.) In a lunch room or chat room, when messages or votes are submitted, the ‘updateRoom’ socket event is emitted by the client along with the roomId, room data, and info about what type of data was submitted ("chat" or "vote"). That data is then sent back to clients in that room. 
 
 2.) In a backgammon room, updates to that room’s db document cause the server to emit the ‘updateGame' event to clients, along with data on game state.
 
