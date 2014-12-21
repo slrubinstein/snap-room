@@ -4,6 +4,8 @@ angular.module('roomApp')
   .factory('gameLogic', function () {
 return {
   
+    pieceToMove : null,
+
     //called when player clicks the roll button
     rollFunction : function(ctrl, gameState) {
 
@@ -24,7 +26,7 @@ return {
     //and it's their turn
     checkSpaces : function(spaceNumber, color, ctrl, gameState) {
 
-      ctrl.pieceToMove  = spaceNumber; 
+      this.pieceToMove  = spaceNumber; 
       
       this.clearGreenSquares(ctrl);
 
@@ -56,13 +58,13 @@ return {
       this.clearGreenSquares(ctrl);
 
       if (color === "green") {
-        ctrl.pieceToMove = -1;
+        this.pieceToMove = -1;
         var space1 = gameState.roll[0] - 1;
         var space2 = gameState.roll[1] - 1;
       }
       
       else if (color === "blue") {
-        ctrl.pieceToMove = 24;
+        this.pieceToMove = 24;
         var space1 = 24 - gameState.roll[0];
         var space2 = 24 - gameState.roll[1];
       }
@@ -101,9 +103,9 @@ return {
 
         var trailingPieces = false;
         
-        //the pieceToMove is on space 0,1,2,3, or 4, so
-        //check for trailingPieces from that space to space 5
-        for (var i = ctrl.pieceToMove + 1; i <= 5; i++) {
+        //pieceToMove is on space 0,1,2,3, or 4, so
+        //check for trailingPieces from space 1-5
+        for (var i = this.pieceToMove + 1; i <= 5; i++) {
           if (gameState.pieces[i] > 0) {
             trailingPieces = true;
           }
@@ -120,9 +122,9 @@ return {
         
         var trailingPieces = false;
         
-        //the pieceToMove is on space 19,20,21,22 ,or 23, so
-        //check for trailingPieces from space 18 to that space
-        for (var i = 18; i < ctrl.pieceToMove; i++) {
+        //pieceToMove is on space 19,20,21,22 ,or 23, so check for 
+        //trailingPieces from space 18 to that space - 1
+        for (var i = 18; i < this.pieceToMove; i++) {
           if (gameState.pieces[i] > 0) {
             trailingPieces = true;
             break;
@@ -181,7 +183,7 @@ return {
        
        //if the player had 1 or 2 moves left:
        if (gameState.numberRolls < 3) {
-         Math.abs(spaceNumber - ctrl.pieceToMove) === gameState.roll[0] ?
+         Math.abs(spaceNumber - this.pieceToMove) === gameState.roll[0] ?
            gameState.roll[0] = 0 : gameState.roll[1] = 0;
        }
        //if the player rolled doubles and still had 3 or 4 moves left
@@ -198,10 +200,10 @@ return {
        }
 
        //if the piece was moved into the home base
-       if (gameState.turn === "green" && ctrl.pieceToMove < 18 && spaceNumber >= 18) {
+       if (gameState.turn === "green" && this.pieceToMove < 18 && spaceNumber >= 18) {
           gameState.greenHomeNumber++;
        }
-       else if (gameState.turn === "blue" && ctrl.pieceToMove > 5 && spaceNumber <= 5) {
+       else if (gameState.turn === "blue" && this.pieceToMove > 5 && spaceNumber <= 5) {
           gameState.blueHomeNumber++;
        }
 
@@ -221,11 +223,11 @@ return {
 
       if (color === "blue") {
         gameState.blueScore++;
-        difference = Math.abs(- 1 - ctrl.pieceToMove);
+        difference = Math.abs(- 1 - this.pieceToMove);
       }
       else if (color === "green") {
         gameState.greenScore++;
-        difference = 24 - ctrl.pieceToMove;
+        difference = 24 - this.pieceToMove;
       }
 
       //if player had 1 or 2 moves left
@@ -272,12 +274,12 @@ return {
     },
 
     removePieceFromCurrentSpace : function(ctrl, gameState) {
-       //remove the pieceToMove from its current space
-       gameState.pieces[ctrl.pieceToMove] -= 1;
+       //remove the this.pieceToMove from its current space
+       gameState.pieces[this.pieceToMove] -= 1;
        //if there are no more pieces remaining on that space,
        //remove the color assigned to that space
-       if (gameState.pieces[ctrl.pieceToMove] === 0) {
-           gameState.piecesColor[ctrl.pieceToMove] = 0;
+       if (gameState.pieces[this.pieceToMove] === 0) {
+           gameState.piecesColor[this.pieceToMove] = 0;
        }
 
     },
