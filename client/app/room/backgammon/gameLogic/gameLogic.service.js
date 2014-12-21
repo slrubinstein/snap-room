@@ -103,8 +103,8 @@ return {
 
         var trailingPieces = false;
         
-        //pieceToMove is on space 0,1,2,3, or 4, so
-        //check for trailingPieces from space 1-5
+        //pieceToMove is on space 0,1,2,3, or 4, so check for 
+        //trailingPieces from that space + 1 to space 5
         for (var i = this.pieceToMove + 1; i <= 5; i++) {
           if (gameState.pieces[i] > 0) {
             trailingPieces = true;
