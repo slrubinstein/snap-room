@@ -53,8 +53,8 @@ angular.module('roomApp')
     //is just below the function definition. Its purpose is to make available
     //to the client any info specifc to this type of room
     this.getRoom = function(roomId) {
-      var promise = lunchRoomService.get(roomId, ctrl.roomType)
-      .then(getRoomSuccessCallback, getRoomErrorCallback)
+      lunchRoomService.get(roomId, ctrl.roomType)
+       .then(getRoomSuccessCallback, getRoomErrorCallback)
     };
 
     this.getRoom(roomId);
@@ -73,9 +73,8 @@ angular.module('roomApp')
     this.submitInput = function() {
  
       if (ctrl.inputField.length < 100) {
-        var submitRestName = lunchRoomService.submitInput(ctrl.inputField, 
-          roomId, this.user)
-        .then(submitRestSuccessCb, submitRestErrorCb);
+        lunchRoomService.submitInput(ctrl.inputField, roomId, this.user)
+         .then(submitRestSuccessCb, submitRestErrorCb);
         //to empty the input field:
         ctrl.inputField = '';
       }
@@ -103,7 +102,7 @@ angular.module('roomApp')
         ctrl.restaurants.splice(index,1);
       } 
 
-      var submitRestVote = lunchRoomService.submitVote(roomId, choice, upOrDown, this.user)
+      lunchRoomService.submitVote(roomId, choice, upOrDown, this.user)
         .then(submitVoteSuccessCb, submitVoteErrorCb)
 
     };
@@ -125,7 +124,7 @@ angular.module('roomApp')
 
     //fourSquare API call
     this.getFourSquare = function() {
-      var promise = fourSquareService.get(roomId)
+      fourSquareService.get(roomId)
         .then(fourSquareSuccessCb, fourSquareErrorCb)
     };
 

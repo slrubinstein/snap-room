@@ -30,8 +30,8 @@ angular.module('roomApp')
     //amount of time left before the room expires, as well as to start the 
     //interval that runs the timer.
     this.getRoom = function(roomId) {
-       var promise = roomService.get(roomId)
-       .then(getRoomSuccessCallback, getRoomErrorCallback)
+       roomService.get(roomId)
+        .then(getRoomSuccessCallback, getRoomErrorCallback)
      };
 
      this.getRoom(roomId);

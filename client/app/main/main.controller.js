@@ -76,8 +76,8 @@ angular.module('roomApp')
     //purpose is to show the user a list of available rooms near 
     //their geolocation, and join them to a socket geoRoom
     this.getRoomByGeo = function() {
-      //get geolocation. getGeo is a promise
-      var getGeo = geolocationService.getLocation()
+
+      geolocationService.getLocation()
         .then(geoSuccessCallback, geoErrorCallback);
     };
 
@@ -99,17 +99,17 @@ angular.module('roomApp')
       //this statement causes the user to join a geoRoom 
       socket.socket.emit("joinGeoRoom", ctrl.geoRoomArr[0]);
 
-      //getRooms is a promise. The purpose of roomCreationService.get 
-      //is to find any rooms that have the user's lat/long pair
-      //included in its array of 9 lat/long pairs 
-      var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
+      //the purpose of roomCreationService.get is to find any rooms 
+      //that have the user's lat/long pair included in its array of 
+      //9 lat/long pairs 
+      roomCreationService.get(ctrl.geoRoomArr[0])
         .then(getRoomsSuccessCallback, getRoomsErrorCallback);
      
      //the refreshRoomList event is emitted by the server whenever
      //a room is created or expires. It is sent to the members of
      //the relevant geoRoom
       socket.socket.on('refreshRoomList', function() {
-        var getRooms = roomCreationService.get(ctrl.geoRoomArr[0])
+        roomCreationService.get(ctrl.geoRoomArr[0])
           .then(getRoomsSuccessCallback, getRoomsErrorCallback);
       });
 
@@ -195,7 +195,7 @@ angular.module('roomApp')
       //first a generic room is created. If that is successful,
       //then a specific type of room (lunch, chat, etc) is created
       //and $state.go is called     
-      var createGeneralRoom = roomCreationService.createGeneral({
+      roomCreationService.createGeneral({
                                 rawLat: ctrl.geoData.lat,
                                 rawLon: ctrl.geoData.lon, 
                                 color: color, 
@@ -210,16 +210,14 @@ angular.module('roomApp')
     function roomCreateSuccessCb(data) {
       var room = data.data;
 
-      var createSpecificRoom = 
-            roomCreationService.createSpecific(room.type, room._id)
-            .then(specificRoomCreateSuccessCb, specificRoomCreateErrorCb);
+      roomCreationService.createSpecific(room.type, room._id)
+        .then(specificRoomCreateSuccessCb, specificRoomCreateErrorCb);
 
       function specificRoomCreateSuccessCb(data) {
         socket.socket.emit('createRoom', room._id, ctrl.geoRoomArr);
 
         if (room.type === 'lunch') {
-          var createSpecificRoom = 
-            roomCreationService.createSpecific('chat', room._id)
+          roomCreationService.createSpecific('chat', room._id)
             .then(function(data) {
                 roomCreationService.enter({roomId: room._id, 
                      color: room.color, 

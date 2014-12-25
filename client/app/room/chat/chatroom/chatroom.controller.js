@@ -32,8 +32,8 @@ angular.module('roomApp')
     //is just below the function definition. Its purpose is to make 
     //available to the client any info specific to this type of room
     this.getRoom = function(roomId) {
-      var promise = chatroomService.get(roomId)
-      .then(getRoomSuccessCallback, getRoomErrorCallback)
+      chatroomService.get(roomId)
+       .then(getRoomSuccessCallback, getRoomErrorCallback)
     };
 
     this.getRoom(roomId);
@@ -57,9 +57,8 @@ angular.module('roomApp')
       var picture = usernameVal.picture; 
 
       if (ctrl.inputField.length < 100) {
-        var submitChatMessage = chatroomService.submitInput(ctrl.inputField, 
-                                                      roomId, name, picture)
-        .then(submitSuccessCb, submitErrorCb);
+        chatroomService.submitInput(ctrl.inputField, roomId, name, picture)
+         .then(submitSuccessCb, submitErrorCb);
         //to empty the input field:
         ctrl.inputField = '';
       }
