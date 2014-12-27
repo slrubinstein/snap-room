@@ -50,14 +50,16 @@ angular.module('roomApp')
     var timeNow,
         minutesLeftDecimal,
         rawSecondsLeft;
+    this.minutesLeft;
+    this.secondsLeft;
 
     this.runTimer = function(expiresAt) {
       timeNow = new Date().getTime();
       minutesLeftDecimal = String((ctrl.expiresAt.getTime() - timeNow) / 1000 / 60);
-      $scope.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
+      ctrl.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
       rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
-      $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
-      if (Number($scope.secondsLeft) < 10) {$scope.secondsLeft = "0" + $scope.secondsLeft}; 
+      ctrl.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
+      if (Number(ctrl.secondsLeft) < 10) {ctrl.secondsLeft = "0" + ctrl.secondsLeft}; 
 
       if(Number(minutesLeftDecimal) < 0.01) {
         $interval.cancel(ctrl.countDown);
