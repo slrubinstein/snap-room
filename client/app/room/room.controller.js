@@ -46,13 +46,18 @@ angular.module('roomApp')
         ctrl.showTimerError = true;
     }
 
+    //timer variables
+    var timeNow,
+        minutesLeftDecimal,
+        rawSecondsLeft;
+
     this.runTimer = function(expiresAt) {
-      $scope.timeNow = new Date().getTime();
-      var minutesLeftDecimal = String((ctrl.expiresAt.getTime() - $scope.timeNow) / 1000 / 60);
+      timeNow = new Date().getTime();
+      minutesLeftDecimal = String((ctrl.expiresAt.getTime() - timeNow) / 1000 / 60);
       $scope.minutesLeft = minutesLeftDecimal.substring(0, minutesLeftDecimal.indexOf("."));
-      var rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
+      rawSecondsLeft = String(minutesLeftDecimal.substring(minutesLeftDecimal.indexOf(".")) * 60);
       $scope.secondsLeft =  rawSecondsLeft.substring(0, rawSecondsLeft.indexOf("."));
-      if (Number($scope.secondsLeft) < 10) $scope.secondsLeft = "0" + $scope.secondsLeft; 
+      if (Number($scope.secondsLeft) < 10) {$scope.secondsLeft = "0" + $scope.secondsLeft}; 
 
       if(Number(minutesLeftDecimal) < 0.01) {
         $interval.cancel(ctrl.countDown);
