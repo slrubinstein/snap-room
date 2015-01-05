@@ -42,15 +42,15 @@ When entering a room (either just after creating the room to enter, or entering 
 
 1.) roomService.get method is called in order to retrieve the room name (if one was provided) and the amount of time left before the room expires, as well as to start interval that runs the timer.
 
-2.) roomSocketsService.listen is called, which emits ‘join’ socket event to server along with the roomId and the username, and instantiates listener for ‘updateRoom’ socket event. On the server-side, the ‘join’ event causes: 
+2.) personCounterService.listen is called, to instantiate listener for ‘countPeople’ socket event.
+
+3.) roomSocketsService.listen is called, which emits ‘join’ socket event to server along with the roomId and the username, and instantiates listener for ‘updateRoom’ socket event. On the server-side, the ‘join’ event causes: 
     
 a.) the user to join a socket room identified by the roomId
     
 b.) the user’s socket to be assigned a nickname (username)  and roomId
     
 c.) the names of the other users in that room to be found and sent to all users in that room, along with the ‘countPeople’ event
-
-3.) personCounterService.listen is called, to instantiate listener for ‘countPeople’ socket event.
 
 4.) A room-specific get method is called.
 
