@@ -42,15 +42,15 @@ When entering a room (either just after creating the room to enter, or entering 
 
 1.) roomService.get method is called in order to retrieve the room name (if one was provided) and the amount of time left before the room expires, as well as to start interval that runs the timer.
 
-2.) roomSocketsService.listen is called, which emits ‘join’ socket event to server along with the roomId and the username, and instantiates listener for ‘updateRoom’ socket event. On the server-side, the ‘join’ event causes: 
+2.) personCounterService.listen is called, to instantiate listener for ‘countPeople’ socket event.
+
+3.) roomSocketsService.listen is called, which emits ‘join’ socket event to server along with the roomId and the username, and instantiates listener for ‘updateRoom’ socket event. On the server-side, the ‘join’ event causes: 
     
 a.) the user to join a socket room identified by the roomId
     
 b.) the user’s socket to be assigned a nickname (username)  and roomId
     
 c.) the names of the other users in that room to be found and sent to all users in that room, along with the ‘countPeople’ event
-
-3.) personCounterService.listen is called, to instantiate listener for ‘countPeople’ socket event.
 
 4.) A room-specific get method is called.
 
@@ -60,7 +60,7 @@ Note: real-time updating in rooms happens in one of two ways:
 
 1.) In a lunch room or chat room, when messages or votes are submitted, the ‘updateRoom’ socket event is emitted by the client along with the roomId, room data, and info about what type of data was submitted ("chat" or "vote"). That data is then sent back to clients in that room. 
 
-2.) In a backgammon room, updates to that room’s db document cause the server to emit the ‘updateGame' event to clients, along with data on game state.
+2.) In a backgammon or split-a-check room, updates to that room’s db document cause the server to emit an event to clients in that room, along with room data.
 
 
 When time expires in a room:
@@ -80,11 +80,9 @@ When navigating to the main page from a room:
 
 a.) removes the user from that socket room
 
-b.) finds the names of the other users in that room and sends the names to all users  
-         in that room, along with the ‘countPeople’ event
+b.) finds the names of the other users in that room and sends the names to all users in that room, along with the ‘countPeople’ event
 
-Note: ‘onMainPage’ is also emitted when a user first lands at the main page, but serves no  
- purpose in that case 
+Note: ‘onMainPage’ is also emitted when a user first lands at the main page, but serves no purpose in that case 
 
 Note: When you leave a room and then enter another room, the socket listeners from the old room don't go away. That's why each of the socket listeners have an if-statement to check if the eventRoomId matches the roomId, so they’re not responding to events that took place in other rooms
 
