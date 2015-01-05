@@ -71,12 +71,12 @@ angular.module('roomApp')
     this.user = Auth.getCurrentUser();
     this.isLoggedIn = Auth.isLoggedIn();
 
-    // set up socket event listeners
-    roomSocketsService.listen(roomId, ctrl);
-
     //to instantiate listener for countPeople socket event, 
     //which sends data for namesOfPeople and numberOfPeople
     personCounterService.listen(ctrl);
+
+    // set up socket event listeners
+    roomSocketsService.listen(roomId, ctrl);
     
     this.numberOfPeople = personCounterService.numberOfPeople;
     this.namesOfPeople = personCounterService.namesOfPeople;
