@@ -40,10 +40,10 @@ angular.module('roomApp')
 
         var latLonArr = [];
 
-        var northernLat = (Number(latToHundrethPlace) + .001).toFixed(2);
-        var southernLat = (Number(latToHundrethPlace) - .001).toFixed(2);
-        var easternLon = (Number(lonToHundrethPlace) + .001).toFixed(2);
-        var westernLon = (Number(lonToHundrethPlace) - .001).toFixed(2);
+        var northernLat = (Number(latToHundrethPlace) + .01).toFixed(2);
+        var southernLat = (Number(latToHundrethPlace) - .01).toFixed(2);
+        var easternLon = (Number(lonToHundrethPlace) + .01).toFixed(2);
+        var westernLon = (Number(lonToHundrethPlace) - .01).toFixed(2);
 
         latLonArr.push(latToHundrethPlace + lonToHundrethPlace);
 
