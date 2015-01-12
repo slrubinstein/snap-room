@@ -139,11 +139,11 @@ angular.module('roomApp')
       ctrl.fourSquareError = true;
     }
         
-    this.showFoursquare = function() {
+    this.showFoursquare = function(event) {
       fourSquareService.show(event);
     }
 
-    this.hideFoursquare = function() {
+    this.hideFoursquare = function(event) {
       fourSquareService.hide(event);
     }
 
