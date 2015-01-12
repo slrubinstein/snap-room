@@ -1,20 +1,24 @@
-<button class="foursquareButton" 
+<foursquare-button class="foursquareButton"
+                buttontype="load" 
 				room-trim 
 				ng-show="lunch.restaurants.length===0"
-				ng-click="lunch.getFourSquare()">Find Local Restaurants From Foursquare</button>
+				when-clicked="lunch.getFourSquare()">
+				Find Local Restaurants From Foursquare
+</foursquare-button>
 
-<button ng-show="lunch.restaurants.length!==0"
+<foursquare-button ng-show="lunch.restaurants.length!==0"
 				class="foursquareButton"
-				room-trim 
-				ng-click="lunch.hideFoursquare($event)">Hide Foursquare Restaurants
-</button>
+				room-trim buttontype="hide">
+				Hide Foursquare Restaurants
+</foursquare-button>
 
-<button ng-click="lunch.showFoursquare($event)"
+<foursquare-button buttontype="show"
 				class="foursquareButton ng-hide"
-				room-trim 
-				>Show Foursquare Restaurants</button>
+				room-trim>
+				Show Foursquare Restaurants
+</foursquare-button>
 
-<div class="foursquareRests"
+<div class="foursquareRests" ng-class="{'addMargin30' : lunch.restaurants.length>0}"
 	 room-accent> 
 	<div class="animated fadeInDownBig" ng-repeat="restaurant in lunch.restaurants">
 		<p>

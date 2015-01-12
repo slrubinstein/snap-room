@@ -139,14 +139,6 @@ angular.module('roomApp')
       ctrl.fourSquareError = true;
     }
         
-    this.showFoursquare = function(event) {
-      fourSquareService.show(event);
-    }
-
-    this.hideFoursquare = function(event) {
-      fourSquareService.hide(event);
-    }
-
     //returnArray is used to display the correct number of 
     //dollar signs for the list of restaurants from foursquare
     this.returnArray = function(num) {

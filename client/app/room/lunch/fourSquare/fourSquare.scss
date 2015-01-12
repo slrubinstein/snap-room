@@ -6,16 +6,15 @@
   box-shadow: none;
   border: none;
   border-radius: 3px;
-  margin-bottom: 10px;
 }
+
+
 
 .foursquareRests {
   max-height: 300px;
   overflow-y: scroll;
   max-width: 440px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
+  margin: auto 20px;
 
   .glyphicon-info-sign {
       color: white;
@@ -23,4 +22,8 @@
         color: white;
       }
     }
+}
+
+.addMargin30 {
+  margin-top: 30px;
 }
