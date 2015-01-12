@@ -103,11 +103,8 @@ angular.module('roomApp')
               }
             }
          }//close determineWinningRest function
-      },
-
-      animateFoursquareRest: function(animation) {
-        $(event.target).parent().addClass('animated ' + animation);
       }
+
     }
 });
 

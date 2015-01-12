@@ -22,8 +22,8 @@
 	 room-accent> 
 	<div class="animated fadeInDownBig" ng-repeat="restaurant in lunch.restaurants">
 		<p>
-			<button class="btn btn-default" ng-click="lunch.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}
-			</button>
+			<foursquarerest-button class="btn btn-default" vote-function="lunch.vote(restaurant.venue.name, null, $event, $index)">{{restaurant.venue.name}}
+			</foursquarerest-button>
       		<span ng-repeat="element in lunch.returnArray(restaurant.venue.price.tier)">$</span> 
 			<span>{{restaurant.venue.location.address}}</span> 
 			<a target="_blank" href="{{restaurant.tips[0].canonicalUrl}}">

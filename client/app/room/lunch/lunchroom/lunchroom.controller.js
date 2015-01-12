@@ -94,7 +94,6 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, event, index) {
       //if called by selecting restaurant from foursquare list
       if (!upOrDown) {
-        lunchRoomService.animateFoursquareRest('fadeOutUp');
         ctrl.restaurants.splice(index,1);
       } 
 
