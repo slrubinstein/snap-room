@@ -34,28 +34,6 @@ angular.module('roomApp')
                         upOrDown: upOrDown})
       },
 
-      toggleColors: function(roomColor, event) {
-
-        var colorClass;
-
-        switch(roomColor) {
-          case 'red':
-            colorClass = 'redTrim';
-            break;
-          case 'blue':
-            colorClass = 'blueTrim';
-            break;
-          case 'green':
-            colorClass = 'greenTrim';
-            break;
-        }
-
-        $(event.target).closest('.list-group-item').addClass(colorClass);
-        setTimeout(function() {
-          $(event.target).closest('.list-group-item').removeClass(colorClass);
-        }, 100);
-      },
-
         listen: function(roomId, $scope, ctrl, user) {
           socket.socket.on('updateRoom', function(eventRoomId, data) {
             if (data.event==='timeUp') {

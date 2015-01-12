@@ -5,12 +5,16 @@
 
 				<div class="">
 					<span>
-						<button class="btn btn-default" 
-										ng-click="lunch.vote(choice.choice, 'up', $event)">+</button>
+						<vote-button class="btn btn-default" 
+                        vote="lunch.vote(choice.choice,'up')";>
+                        +
+						</vote-button>
 					</span>
 					<span>
-						<button class="btn btn-default" 
-										ng-click="lunch.vote(choice.choice, 'down', $event)">-</button>
+						<vote-button class="btn btn-default" 
+	                     vote="lunch.vote(choice.choice,'down')";>
+	                     -
+						</vote-button>
 					</span>
 				</div>
 

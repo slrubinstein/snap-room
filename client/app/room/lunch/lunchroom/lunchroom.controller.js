@@ -94,7 +94,7 @@ angular.module('roomApp')
     this.vote = function(choice, upOrDown, event, index) {
       //if called by up/downvoting
       if (upOrDown) {
-        lunchRoomService.toggleColors(ctrl.roomColor, event)
+        //lunchRoomService.toggleColors(ctrl.roomColor)
       }
 
       else {
