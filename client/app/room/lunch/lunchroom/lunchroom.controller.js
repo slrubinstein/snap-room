@@ -92,12 +92,8 @@ angular.module('roomApp')
     //vote is called either by up/downvoting an already-selected
     //restaurant, or selecting a restaurant from the foursquare list
     this.vote = function(choice, upOrDown, event, index) {
-      //if called by up/downvoting
-      if (upOrDown) {
-        //lunchRoomService.toggleColors(ctrl.roomColor)
-      }
-
-      else {
+      //if called by selecting restaurant from foursquare list
+      if (!upOrDown) {
         lunchRoomService.animateFoursquareRest('fadeOutUp');
         ctrl.restaurants.splice(index,1);
       } 
