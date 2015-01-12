@@ -72,7 +72,7 @@ angular.module('roomApp')
     //varies depending on whether the user is logged in
     this.submitInput = function() {
  
-      if (ctrl.inputField.length < 100) {
+      if (ctrl.inputField.length < 50) {
         lunchRoomService.submitInput(ctrl.inputField, roomId, this.user)
          .then(submitRestSuccessCb, submitRestErrorCb);
         //to empty the input field:
