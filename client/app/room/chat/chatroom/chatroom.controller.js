@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('roomApp')
-  .controller('ChatroomCtrl', function ($scope, $stateParams, socket, 
+  .controller('ChatroomCtrl', function ($stateParams, socket, 
                                         chatroomService, geoRoomArrVal,
                                         usernameVal) {
 
@@ -47,7 +47,7 @@ angular.module('roomApp')
     }
 
     // set up socket event listeners
-    chatroomService.listen(roomId, $scope, ctrl, this.user);
+    chatroomService.listen(roomId, ctrl, this.user);
     
     //submitInput is called when the user submits a message. It calls 
     //chatroomService.submitInput with a number of parameters that varies 

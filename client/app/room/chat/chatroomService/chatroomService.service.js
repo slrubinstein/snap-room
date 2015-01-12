@@ -25,7 +25,7 @@ angular.module('roomApp')
              picture: picture})
      },
 
-     listen: function(roomId, $scope, ctrl, user) {
+     listen: function(roomId, ctrl, user) {
          socket.socket.on('updateRoom', function(eventRoomId, data) {
            if (data.event==='timeUp') {
               //to prevent events in a different room 
