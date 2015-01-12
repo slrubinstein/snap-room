@@ -6,6 +6,7 @@ angular.module('roomApp')
       templateUrl: 'app/room/lunch/restaurantList/restaurantList.html',
       restrict: 'E',
       link: function (scope, element, attrs) {
+      	
       }
     };
   });

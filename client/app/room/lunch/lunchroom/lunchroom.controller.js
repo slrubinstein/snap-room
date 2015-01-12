@@ -112,12 +112,6 @@ angular.module('roomApp')
     }
 
 
-    //to see the usernames of voters for each restaurant
-    this.seeVotes = function(event) {
-      lunchRoomService.seeVotes(event);
-    }
-
-
     //fourSquare API call
     this.getFourSquare = function() {
       fourSquareService.get(roomId)

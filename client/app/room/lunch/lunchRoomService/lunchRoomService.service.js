@@ -104,9 +104,7 @@ angular.module('roomApp')
             }
          }//close determineWinningRest function
       },
-      seeVotes : function(event) {
-        $(event.target).closest('.list-group-item').next().toggleClass('ng-hide');
-      },
+
       animateFoursquareRest: function(animation) {
         $(event.target).parent().addClass('animated ' + animation);
       }

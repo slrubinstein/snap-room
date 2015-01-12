@@ -20,10 +20,10 @@
 
 				<div class="restChoice">{{choice.choice}}</div>
 
-				<button class="btn btn-default votes" ng-click="lunch.seeVotes($event)">
+				<seevotes-button class="btn btn-default votes">
 					<span>{{choice.votes}}</span>
 					<span class="glyphicon glyphicon-user"></span>
-				</button>
+				</seevotes-button>
 			</li>
 			<li class="list-group-item voters" ng-show="lunch.showVoters">
 				<span ng-repeat="voter in choice.voters track by $index">{{voter + " "}}  </span>
