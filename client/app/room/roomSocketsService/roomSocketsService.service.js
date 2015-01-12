@@ -14,7 +14,7 @@ angular.module('roomApp')
           socket.socket.on('updateRoom', function(eventRoomId, data) {
 
             if (data.event==='timeUp') {
-              //in case the user is in multiple rooms (which is not supposed to happen)
+
               if (eventRoomId === roomId) {
                 ctrl.timeUp = true
              }
