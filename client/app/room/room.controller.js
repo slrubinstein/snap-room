@@ -36,7 +36,8 @@ angular.module('roomApp')
 
      this.getRoom(roomId);
 
-    function getRoomSuccessCallback(room) {
+    function getRoomSuccessCallback(roomState) {
+        var room = roomState.data;
         ctrl.roomName = room.roomName;
         ctrl.expiresAt = new Date(Date.parse(room.ourExpTime));
         ctrl.countDown = $interval(ctrl.runTimer, 1000);

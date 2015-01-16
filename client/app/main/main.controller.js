@@ -127,8 +127,8 @@ angular.module('roomApp')
     //when the roomCreationService.get() method resolves the deferred 
     //that the getRooms promise is associated with  
     function getRoomsSuccessCallback(rooms) {
-      ctrl.availableRooms = rooms;
-      assignRoomColorAndNum(rooms);
+      ctrl.availableRooms = rooms.data;
+      assignRoomColorAndNum(rooms.data);
     }
 
 

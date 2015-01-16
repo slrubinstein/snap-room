@@ -6,16 +6,7 @@ angular.module('roomApp')
     return {
 
       get: function (latLong) {
-        var deferred = $q.defer();
-
-        $http.get("/api/room/latlon/" + latLong)  
-         .success(function(rooms){
-            deferred.resolve(rooms);
-          })
-         .error(function(error){
-            deferred.reject();
-          });
-         return deferred.promise;
+        return $http.get("/api/room/latlon/" + latLong)  
       },
       
       enter: function(options) {
